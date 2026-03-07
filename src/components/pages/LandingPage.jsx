@@ -1,4 +1,5 @@
 import React from "react";
+import NavBar from "../Navbar";
 import HeroSection from "../sections/HeroSection";
 import HowItWorksSection from "../sections/HowItWorksSection";
 import FeaturesSection from "../sections/FeaturesSection";
@@ -9,6 +10,7 @@ import CTASection from "../sections/CTASection";
 function landingPage () {
     return (
         <>
+            <NavBar />
             <HeroSection />
             <HowItWorksSection />
             <FeaturesSection />

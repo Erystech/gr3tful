@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,7 +29,8 @@ function NavBar() {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {["Features", "Journal", "About"].map((item) => (
-            <a
+            <Link
+              to="/entry"  
               key={item}
               href="#"
               style={{
@@ -39,7 +41,7 @@ function NavBar() {
               }}
             >
               {item}
-            </a>
+            </Link>
           ))}
           <button
             style={{
