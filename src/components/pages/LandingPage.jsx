@@ -7,7 +7,7 @@ import TestimonialsSection from "../sections/TestimonialsSection";
 import CTASection from "../sections/CTASection";
 
 
-function landingPage () {
+function LandingPage () {
     return (
         <>
             <NavBar />
@@ -20,4 +20,4 @@ function landingPage () {
     )
 }
 
-export default landingPage;
+export default LandingPage;

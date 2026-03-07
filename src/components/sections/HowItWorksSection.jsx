@@ -4,7 +4,7 @@ const steps = [
   {
     number: "01",
     title: "Open your journal",
-    desc: "Each morning (or whenever feels right), open Gratefuly to your clean, distraction-free entry page.",
+    desc: "Each morning (or whenever feels right), open Gr3tful to your clean, distraction-free entry page.",
   },
   {
     number: "02",
