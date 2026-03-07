@@ -146,7 +146,6 @@ export default function DailyEntryPage() {
             </div>
 
             {/* Intro line */}
-            {/* FIX #2: Replaced invalid border-l-[2px_solid_rgba(...)] shorthand with valid split utilities */}
             <div className="opacity-0 [animation:fadeSlideUp_0.5s_ease_forwards_0.1s] mb-[28px]">
               <p
                 className="font-['Lora',serif] text-[15px] text-[#9B6A45] leading-[1.7] italic border-l-2 border-l-[rgba(196,98,45,0.3)] pl-[16px]"
@@ -195,7 +194,7 @@ export default function DailyEntryPage() {
                 {MOOD_TAGS.map((tag) => {
                   const active = selectedTags.find((t) => t.label === tag.label);
                   return (
-                    // FIX #3: Replaced broken dynamic Tailwind interpolation with inline styles
+                   
                     <button
                       key={tag.label}
                       onClick={() => handleTagToggle(tag)}
