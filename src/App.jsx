@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import React from 'react'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import NavBar from './components/Navbar'
 import LandingPage from './components/pages/LandingPage'
 import Footer from './components/layout/Footer'
 import DailyEntryPage from './components/pages/DailyEntryPage'
+import JournalPage from './components/pages/JournalPage'
+
 
 export default function App() {
   return (
@@ -12,7 +13,8 @@ export default function App() {
     
     <Routes>
       <Route path='/' element={<LandingPage />} />
-      <Route path='/entry' element={<DailyEntryPage />} />
+      <Route path='/entry' element={<DailyEntryPage />} /> 
+      <Route path='/journal' element={<JournalPage />} />
     </Routes>
     <Footer />
     </>

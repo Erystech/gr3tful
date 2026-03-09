@@ -28,7 +28,7 @@ function NavBar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {["Features", "Journal", "About"].map((item) => (
+          {["Home", "Features", "About"].map((item) => (
             <Link
               to="/entry"  
               key={item}

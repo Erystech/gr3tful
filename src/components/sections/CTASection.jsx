@@ -62,7 +62,7 @@ function CTASection() {
         </button>
 
         <p style={{ fontFamily: "'Lora', serif", fontSize: 13, color: "#6B4A35", marginTop: 14 }}>
-          No account required to start. No credit card. Ever.
+          Make gratitude part of your everyday life. sign up now
         </p>
       </div>
     </section>
