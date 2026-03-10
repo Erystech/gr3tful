@@ -5,6 +5,7 @@ import HowItWorksSection from "../sections/HowItWorksSection";
 import FeaturesSection from "../sections/FeaturesSection";
 import TestimonialsSection from "../sections/TestimonialsSection";
 import CTASection from "../sections/CTASection";
+import Footer from "../layout/Footer";
 
 
 function LandingPage () {
@@ -16,6 +17,7 @@ function LandingPage () {
             <FeaturesSection />
             <TestimonialsSection />
             <CTASection />
+            <Footer />
       </>
     )
 }

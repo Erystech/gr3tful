@@ -6,16 +6,6 @@ import EntryCard from "../Journal/EntryCard";
 import StatsBar from "../Journal/StatsBar";
 import Sidebar from "../Journal/SideBar";
 
-
-
-
-
-
-
-
-
-
-
 // ── Main Page ─────────────────────────────────────────────────────────────
 export default function JournalPage() {
   const [search, setSearch]           = useState("");
