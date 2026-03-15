@@ -20,7 +20,7 @@ const steps = [
 
 function HowItWorksSection() {
   return (
-    <section className="w-full py-20 md:py-32 px-6 md:px-10" style={{ background: "#FFF8F0" }}>
+    <section id="how-it-works" className="w-full py-20 md:py-32 px-6 md:px-10" style={{ background: "#FFF8F0" }}>
       
       {/* Content container */}
       <div className="mx-auto w-full max-w-6xl">

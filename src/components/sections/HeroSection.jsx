@@ -1,4 +1,6 @@
 import React from "react";
+import { Link, Links } from "react-router-dom";
+import HowItWorksSection from "./HowItWorksSection";
 
 function HeroSection() {
   return (
@@ -92,12 +94,12 @@ function HeroSection() {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 flex-wrap">
-          <button className="primary-btn w-full sm:w-auto">
+          <Link to="/signup" className="primary-btn w-full sm:w-auto inline-block text-center">
             Start your journal →
-          </button>
-          <button className="secondary-btn w-full sm:w-auto">
+          </Link>
+          <a href="#how-it-works" className="secondary-btn w-full sm:w-auto">
             See how it works
-          </button>
+          </a>
         </div>
 
         {/* Social proof */}

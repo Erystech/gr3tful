@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function CTASection() {
   return (
@@ -33,7 +34,8 @@ function CTASection() {
           It takes 90 seconds. It costs nothing. And it might just change the way you see everything.
         </p>
 
-        <button
+        <Link
+          to="/signup"  
           className="w-full sm:w-auto"
           style={{
             background: "#F5A623",
@@ -49,17 +51,10 @@ function CTASection() {
             boxShadow: "0 8px 40px rgba(245,166,35,0.3)",
             transition: "transform 0.2s, box-shadow 0.2s",
           }}
-          onMouseEnter={(e) => {
-            e.target.style.transform = "translateY(-2px)";
-            e.target.style.boxShadow = "0 12px 50px rgba(245,166,35,0.45)";
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.transform = "translateY(0)";
-            e.target.style.boxShadow = "0 8px 40px rgba(245,166,35,0.3)";
-          }}
+          
         >
           Begin your practice — it's free →
-        </button>
+        </Link>
 
         <p style={{ fontFamily: "'Lora', serif", fontSize: 13, color: "#6B4A35", marginTop: 14 }}>
           Make gratitude part of your everyday life. sign up now

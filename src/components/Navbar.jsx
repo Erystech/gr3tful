@@ -43,7 +43,9 @@ function NavBar() {
               {item}
             </Link>
           ))}
-          <button
+          <Link 
+            to="/signup"
+            className=""
             style={{
               background: "#C4622D",
               color: "#FFF8F0",
@@ -57,7 +59,7 @@ function NavBar() {
             }}
           >
             Begin today →
-          </button>
+          </Link>
         </div>
 
         {/* Mobile Hamburger */}
@@ -100,7 +102,8 @@ function NavBar() {
             {item}
           </a>
         ))}
-        <button
+        <Link
+          to="/signup"  
           style={{
             background: "#C4622D",
             color: "#FFF8F0",
@@ -114,7 +117,7 @@ function NavBar() {
           }}
         >
           Begin today →
-        </button>
+        </Link>
       </div>
     </>
   );
