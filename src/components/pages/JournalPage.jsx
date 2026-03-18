@@ -71,7 +71,7 @@ export default function JournalPage() {
       }}>
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
           <span style={{ fontSize:18 }}>✦</span>
-          <span style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:18, color:"#3D2314" }}>gratefuly</span>
+          <span style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:18, color:"#3D2314" }}>gr3tful</span>
         </div>
         <div style={{ display:"flex", alignItems:"center", gap: isMobile ? 10 : 20 }}>
           {!isMobile && ["Today","Journal","Settings"].map(n => (

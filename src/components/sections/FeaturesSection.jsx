@@ -11,23 +11,22 @@ const features = [
 
 function FeaturesSection() {
   return (
-    <section className="py-20 md:py-28 px-6 md:px-10" style={{ background: "#FEF3E2" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+    <section className="bg-secondary-bg py-20 md:py-28 px-6 md:px-10" >
+      <div className="m-auto" style={{ maxWidth: 1100 }}>
 
         {/* Heading */}
         <div className="text-center mb-12 md:mb-20">
           <h2
+            className="text-primary-text-dark font-heading "
             style={{
-              fontFamily: "'Playfair Display', serif",
               fontSize: "clamp(28px, 4vw, 54px)",
-              color: "#3D2314",
               letterSpacing: "-1.5px",
               lineHeight: 1.2,
             }}
           >
             Everything you need.
             <br />
-            <span style={{ fontStyle: "italic", color: "#C4622D" }}>Nothing you don't.</span>
+            <span className="italic text-secondary">Nothing you don't.</span>
           </h2>
         </div>
 
@@ -35,12 +34,9 @@ function FeaturesSection() {
           {features.map((f, i) => (
             <div
               key={i}
-              className="rounded-2xl p-6 md:p-7"
+              className="bg-fwhite rounded-2xl border border-borderline cursor-default p-6 md:p-7"
               style={{
-                background: "#FFF8F0",
-                border: "1px solid rgba(196,98,45,0.12)",
                 transition: "transform 0.2s, box-shadow 0.2s",
-                cursor: "default",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-4px)";
@@ -51,22 +47,19 @@ function FeaturesSection() {
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
-              <div style={{ fontSize: 26, marginBottom: 12 }}>{f.icon}</div>
+              <div className="text-4xl mb-3">{f.icon}</div>
               <h3
+                className="font-heading text-primary-text-dark mb-2"
                 style={{
-                  fontFamily: "'Playfair Display', serif",
                   fontSize: "clamp(16px, 2vw, 18px)",
-                  color: "#3D2314",
-                  marginBottom: 8,
                 }}
               >
                 {f.title}
               </h3>
               <p
+                className="font-parag text-secondary-text"
                 style={{
-                  fontFamily: "'Lora', serif",
                   fontSize: 14,
-                  color: "#7A4A2A",
                   lineHeight: 1.7,
                 }}
               >

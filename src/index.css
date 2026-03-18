@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+@theme { 
+    --color-secondary: #C4622D;
+    --color-darkb: #3D2314;
+    --color-darkerb: #2A1A0E;
+    --color-primary-text-dark: #3D2314;
+    --color-secondary-text: #7A4A2A;
+    --color-secondary-bg: #FEF3E2;
+    --color-fwhite : #FFF8F0;
+    --color-gold: #F5A623;
+    --color-gray-t: #C4A882;
+    --color-footer-text: #6B4A35;
+    --color-borderline: rgba(196,98,45,0.12);
+
+
+
+    --font-fontSize: "clamp(16px, 2vw, 18px)";
+
+
+    --font-heading: "'Playfair Display', serif";
+    --font-parag: "'Lora', serif";
+}
+  
+  

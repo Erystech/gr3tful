@@ -3,6 +3,7 @@ import PROMPTS from "../utils/prompts";
 import ProgressRing from "../ProgressRing";
 import GratitudeInput from "../GratitudeInput";
 import SuccessState from "../SuccessState";
+import { Link } from "react-router-dom";
 
 const MOOD_TAGS = [
   { label: "Family", emoji: "👨‍👩‍👧" },
@@ -94,7 +95,7 @@ export default function DailyEntryPage() {
         <div className="flex items-center gap-2">
           <span className="text-[18px]">✦</span>
           <span className="font-['Playfair_Display',serif] font-bold text-[18px] text-[#3D2314]">
-            Gr3tful
+            gr3tful
           </span>
         </div>
 

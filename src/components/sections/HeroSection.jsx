@@ -5,86 +5,75 @@ import HowItWorksSection from "./HowItWorksSection";
 function HeroSection() {
   return (
     <section
-      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16"
-      style={{ background: "#FFF8F0" }}
+      className="bg-fwhite relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16"
     >
       {/* Background rings — hidden on small screens for perf */}
       <div
-        className="absolute hidden sm:block"
+        className="absolute top-1/2 left-1/2  hidden sm:block"
         style={{
           width: 700, height: 700,
           borderRadius: "50%",
           border: "1px solid rgba(196,98,45,0.1)",
-          top: "50%", left: "50%",
           transform: "translate(-50%, -50%)",
         }}
       />
       <div
-        className="absolute hidden sm:block"
+        className="absolute top-1/2 left-1/2 hidden sm:block"
         style={{
           width: 950, height: 950,
           borderRadius: "50%",
           border: "1px solid rgba(196,98,45,0.06)",
-          top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)",
+          transform: "translate(-50%, -50%)", 
         }}
       />
 
       {/* Gradient blobs */}
       <div
-        className="absolute"
+        className="absolute top-1/5 right-[5%]"
         style={{
           width: "min(500px, 60vw)", height: "min(500px, 60vw)",
           borderRadius: "50%",
           background: "radial-gradient(circle, rgba(245,166,35,0.15) 0%, transparent 70%)",
-          top: "20%", right: "5%",
         }}
       />
       <div
-        className="absolute"
+        className="absolute bottom-1/6 left-[5%]"
         style={{
           width: "min(300px, 40vw)", height: "min(300px, 40vw)",
           borderRadius: "50%",
           background: "radial-gradient(circle, rgba(196,98,45,0.12) 0%, transparent 70%)",
-          bottom: "15%", left: "5%",
         }}
       />
 
       {/* Main Content */}
-      <div className="relative text-center px-6 w-full" style={{ maxWidth: 720, margin: "0 auto" }}>
+      <div className="relative text-center px-6 w-full m-auto" style={{ maxWidth: 720 }}>
         <div
-          className="inline-block mb-5 px-5 py-2 rounded-full"
+          className="inline-block mb-5 px-5 py-2 rounded-full border border-borderline"
           style={{
             background: "rgba(196,98,45,0.1)",
-            border: "1px solid rgba(196,98,45,0.2)",
           }}
         >
-          <span style={{ fontFamily: "'Lora', serif", fontSize: 13, color: "#C4622D", fontStyle: "italic" }}>
+          <span className="font-parag text-secondary italic"
+           style={{ fontSize: 13}}>
             A daily ritual for a happier mind
           </span>
         </div>
 
-        <h1
+        <h1 className="font-heading text-primary-text-dark mb-5"
           style={{
-            fontFamily: "'Playfair Display', serif",
             fontSize: "clamp(40px, 8vw, 80px)",
-            color: "#3D2314",
             lineHeight: 1.1,
             letterSpacing: "-2px",
-            marginBottom: 20,
           }}
         >
           Three things.
           <br />
-          <span style={{ color: "#C4622D", fontStyle: "italic" }}>Every day.</span>
+          <span className="italic text-secondary">Every day.</span>
         </h1>
 
-        <p
+        <p className="font-parag text-secondary-text mb-9"
           style={{
-            fontFamily: "'Lora', serif",
             fontSize: "clamp(14px, 2vw, 16px)",
-            color: "#9B6A45",
-            marginBottom: 36,
             lineHeight: 1.7,
           }}
         >
@@ -104,8 +93,9 @@ function HeroSection() {
 
         {/* Social proof */}
         <div className="flex items-center justify-center gap-3 mt-8">
-          <span style={{ fontFamily: "'Lora', serif", fontSize: 13, color: "#9B6A45" }}>
-            <strong style={{ color: "#5C3A1E" }}>4,200+</strong> gratitudes written this week
+          <span className="font-parag text-secondary-text"
+          style={{  fontSize: 13}}>
+            <strong className="text-darkerb" >4,200+</strong> gratitudes written this week
           </span>
         </div>
       </div>

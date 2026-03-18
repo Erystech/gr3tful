@@ -20,39 +20,32 @@ const steps = [
 
 function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="w-full py-20 md:py-32 px-6 md:px-10" style={{ background: "#FFF8F0" }}>
+    <section id="how-it-works" className="bg-fwhite w-full py-20 md:py-32 px-6 md:px-10">
       
       {/* Content container */}
       <div className="mx-auto w-full max-w-6xl">
 
         {/* Heading */}
         <div className="text-center mb-14 md:mb-20">
-          <p
+          <p className="font-parag text-secondary italic uppercase mb-4"
             style={{
-              fontFamily: "'Lora', serif",
               fontSize: 13,
-              color: "#C4622D",
-              fontStyle: "italic",
               letterSpacing: 2,
-              textTransform: "uppercase",
-              marginBottom: 16,
             }}
           >
             How it works
           </p>
 
-          <h2
+          <h2 className="font-heading text-darkb"
             style={{
-              fontFamily: "'Playfair Display', serif",
               fontSize: "clamp(30px,4vw,54px)",
-              color: "#3D2314",
               letterSpacing: "-1.5px",
               lineHeight: 1.15,
             }}
           >
             Simple enough to stick with.
             <br />
-            <span style={{ fontStyle: "italic", color: "#C4622D" }}>
+            <span className="italic text-secondary" >
               Meaningful enough to matter.
             </span>
           </h2>
@@ -70,31 +63,24 @@ function HowItWorksSection() {
               }}
             >
               {/* Large background number */}
-              <div
+              <div className="absolute top-4 right-5 font-heading select-none"
                 style={{
-                  position: "absolute",
-                  top: 16,
-                  right: 22,
-                  fontFamily: "'Playfair Display', serif",
                   fontSize: "clamp(56px,8vw,80px)",
                   fontWeight: 800,
                   color: i === 1
                     ? "rgba(255,248,235,0.06)"
                     : "rgba(196,98,45,0.08)",
                   lineHeight: 1,
-                  userSelect: "none",
                 }}
               >
                 {step.number}
               </div>
 
               {/* Title */}
-              <h3
+              <h3 className="font-heading mb-3"
                 style={{
-                  fontFamily: "'Playfair Display', serif",
                   fontSize: "clamp(18px,2.5vw,22px)",
                   color: i === 1 ? "#FFF8F0" : "#3D2314",
-                  marginBottom: 12,
                   letterSpacing: "-0.5px",
                 }}
               >
@@ -102,9 +88,8 @@ function HowItWorksSection() {
               </h3>
 
               {/* Description */}
-              <p
+              <p className="font-parag"
                 style={{
-                  fontFamily: "'Lora', serif",
                   fontSize: 15,
                   color: i === 1 ? "#C4A882" : "#7A4A2A",
                   lineHeight: 1.7,

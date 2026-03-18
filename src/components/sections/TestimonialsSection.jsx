@@ -8,18 +8,16 @@ const quotes = [
 
 function TestimonialsSection() {
   return (
-    <section className="py-20 md:py-28 px-6 md:px-10" style={{ background: "#FFF8F0" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+    <section className="bg-fwhite py-20 md:py-28 px-6 md:px-10">
+      <div className="m-auto"
+       style={{ maxWidth: 1100}}>
 
         {/* Heading */}
         <div className="text-center mb-10 md:mb-16">
-          <h2
+          <h2 className="font-heading text-darkb italic"
             style={{
-              fontFamily: "'Playfair Display', serif",
               fontSize: "clamp(28px, 4vw, 48px)",
-              color: "#3D2314",
               letterSpacing: "-1px",
-              fontStyle: "italic",
             }}
           >
             Real people. Real shifts.
@@ -30,36 +28,26 @@ function TestimonialsSection() {
           {quotes.map((q, i) => (
             <div
               key={i}
-              className="rounded-3xl p-6 md:p-8"
-              style={{
-                background: "#FEF3E2",
-                border: "1px solid rgba(196,98,45,0.1)",
-              }}
+              className="bg-secondary-bg border border-borderline rounded-3xl p-6 md:p-8"
             >
-              <p
+              <p className="font-parag text-primary-text-dark italic mb-5"
                 style={{
-                  fontFamily: "'Lora', serif",
                   fontSize: "clamp(14px, 1.5vw, 15px)",
-                  color: "#5C3A1E",
                   lineHeight: 1.8,
-                  fontStyle: "italic",
-                  marginBottom: 20,
                 }}
               >
                 "{q.text}"
               </p>
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <span style={{ fontFamily: "'Lora', serif", fontSize: 14, color: "#7A4A2A", fontWeight: 600 }}>
+                <span  className="font-parag text-secondary-text"
+                style={{ fontSize: 14,  fontWeight: 600 }}>
                   — {q.name}
                 </span>
-                <span
-                  className="px-3 py-1 rounded-full"
+                <span 
+                  className="font-parag text-gold px-3 py-1 rounded-full whitespace-nowrap"
                   style={{
                     background: "rgba(196,98,45,0.1)",
-                    fontFamily: "'Lora', serif",
                     fontSize: 12,
-                    color: "#C4622D",
-                    whiteSpace: "nowrap",
                   }}
                 >
                   🔥 {q.days}
