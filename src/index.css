@@ -13,13 +13,15 @@
     --color-footer-text: #6B4A35;
     --color-borderline: rgba(196,98,45,0.12);
 
-
-
     --font-fontSize: "clamp(16px, 2vw, 18px)";
-
 
     --font-heading: "'Playfair Display', serif";
     --font-parag: "'Lora', serif";
+
+    --animate-float: float 2s ease-in-out infinite;
 }
-  
-  
+
+@keyframes float {
+    0%, 100% { transform: translate(-50%, 0); }
+    50%       { transform: translate(-50%, -10px); }
+}

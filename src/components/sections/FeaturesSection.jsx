@@ -11,19 +11,12 @@ const features = [
 
 function FeaturesSection() {
   return (
-    <section className="bg-secondary-bg py-20 md:py-28 px-6 md:px-10" >
-      <div className="m-auto" style={{ maxWidth: 1100 }}>
+    <section className="bg-secondary-bg py-20 md:py-28 px-6 md:px-10">
+      <div className="m-auto max-w-[1100px]">
 
         {/* Heading */}
         <div className="text-center mb-12 md:mb-20">
-          <h2
-            className="text-primary-text-dark font-heading "
-            style={{
-              fontSize: "clamp(28px, 4vw, 54px)",
-              letterSpacing: "-1.5px",
-              lineHeight: 1.2,
-            }}
-          >
+          <h2 className="text-primary-text-dark font-heading text-[clamp(28px,4vw,54px)] tracking-[-1.5px] leading-[1.2]">
             Everything you need.
             <br />
             <span className="italic text-secondary">Nothing you don't.</span>
@@ -34,40 +27,21 @@ function FeaturesSection() {
           {features.map((f, i) => (
             <div
               key={i}
-              className="bg-fwhite rounded-2xl border border-borderline cursor-default p-6 md:p-7"
-              style={{
-                transition: "transform 0.2s, box-shadow 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 12px 40px rgba(196,98,45,0.12)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
+              className="bg-fwhite rounded-2xl border border-borderline cursor-default p-6 md:p-7
+                transition-[transform,box-shadow] duration-200
+                hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(196,98,45,0.12)]"
             >
               <div className="text-4xl mb-3">{f.icon}</div>
-              <h3
-                className="font-heading text-primary-text-dark mb-2"
-                style={{
-                  fontSize: "clamp(16px, 2vw, 18px)",
-                }}
-              >
+              <h3 className="font-heading text-primary-text-dark mb-2 text-[clamp(16px,2vw,18px)]">
                 {f.title}
               </h3>
-              <p
-                className="font-parag text-secondary-text"
-                style={{
-                  fontSize: 14,
-                  lineHeight: 1.7,
-                }}
-              >
+              <p className="font-parag text-secondary-text text-[14px] leading-[1.7]">
                 {f.desc}
               </p>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

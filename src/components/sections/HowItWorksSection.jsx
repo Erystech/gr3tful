@@ -21,31 +21,20 @@ const steps = [
 function HowItWorksSection() {
   return (
     <section id="how-it-works" className="bg-fwhite w-full py-20 md:py-32 px-6 md:px-10">
-      
+
       {/* Content container */}
       <div className="mx-auto w-full max-w-6xl">
 
         {/* Heading */}
         <div className="text-center mb-14 md:mb-20">
-          <p className="font-parag text-secondary italic uppercase mb-4"
-            style={{
-              fontSize: 13,
-              letterSpacing: 2,
-            }}
-          >
+          <p className="font-parag text-secondary italic uppercase mb-4 text-[13px] tracking-[2px]">
             How it works
           </p>
 
-          <h2 className="font-heading text-darkb"
-            style={{
-              fontSize: "clamp(30px,4vw,54px)",
-              letterSpacing: "-1.5px",
-              lineHeight: 1.15,
-            }}
-          >
+          <h2 className="font-heading text-darkb text-[clamp(30px,4vw,54px)] tracking-[-1.5px] leading-[1.15]">
             Simple enough to stick with.
             <br />
-            <span className="italic text-secondary" >
+            <span className="italic text-secondary">
               Meaningful enough to matter.
             </span>
           </h2>
@@ -56,44 +45,35 @@ function HowItWorksSection() {
           {steps.map((step, i) => (
             <div
               key={i}
-              className="relative rounded-3xl p-8 overflow-hidden"
-              style={{
-                background: i === 1 ? "#3D2314" : "rgba(196,98,45,0.06)",
-                border: i === 1 ? "none" : "1px solid rgba(196,98,45,0.12)",
-              }}
+              className={`relative rounded-3xl p-8 overflow-hidden ${
+                i === 1
+                  ? "bg-darkb"
+                  : "bg-secondary/[.06] border border-borderline"
+              }`}
             >
               {/* Large background number */}
-              <div className="absolute top-4 right-5 font-heading select-none"
-                style={{
-                  fontSize: "clamp(56px,8vw,80px)",
-                  fontWeight: 800,
-                  color: i === 1
-                    ? "rgba(255,248,235,0.06)"
-                    : "rgba(196,98,45,0.08)",
-                  lineHeight: 1,
-                }}
+              <div
+                className={`absolute top-4 right-5 font-heading select-none leading-none font-extrabold text-[clamp(56px,8vw,80px)] ${
+                  i === 1 ? "text-fwhite/[.06]" : "text-secondary/[.08]"
+                }`}
               >
                 {step.number}
               </div>
 
               {/* Title */}
-              <h3 className="font-heading mb-3"
-                style={{
-                  fontSize: "clamp(18px,2.5vw,22px)",
-                  color: i === 1 ? "#FFF8F0" : "#3D2314",
-                  letterSpacing: "-0.5px",
-                }}
+              <h3
+                className={`font-heading mb-3 text-[clamp(18px,2.5vw,22px)] tracking-[-0.5px] ${
+                  i === 1 ? "text-fwhite" : "text-darkb"
+                }`}
               >
                 {step.title}
               </h3>
 
               {/* Description */}
-              <p className="font-parag"
-                style={{
-                  fontSize: 15,
-                  color: i === 1 ? "#C4A882" : "#7A4A2A",
-                  lineHeight: 1.7,
-                }}
+              <p
+                className={`font-parag text-[15px] leading-[1.7] ${
+                  i === 1 ? "text-gray-t" : "text-secondary-text"
+                }`}
               >
                 {step.desc}
               </p>
