@@ -25,57 +25,26 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "#FFF8F0",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "24px",
-      fontFamily: "'Lora', serif",
-    }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
-        @keyframes fadeSlideUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        input:focus { outline: none; }
-        input::placeholder { color: rgba(155,106,69,0.5); font-style: italic; }
-      `}</style>
+    <div className="min-h-screen bg-fwhite flex items-center justify-center p-6 font-parag">
+      
 
-      <div style={{
-        width: "100%",
-        maxWidth: 420,
-        animation: "fadeSlideUp 0.5s ease forwards",
-      }}>
+      <div className="w-full max-w-[420px] animate-fade-slide-up">
         {/* Logo */}
-        <div style={{ textAlign: "center", marginBottom: 40 }}>
-          <div style={{ fontSize: 28, marginBottom: 8 }}>✦</div>
-          <h1 style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: 32,
-            color: "#3D2314",
-            letterSpacing: "-1px",
-            marginBottom: 8,
-          }}>
+        <div className="text-center mb-10">
+          <div className="text-3xl mb-2">✦</div>
+          <h1 className="font-heading text-4xl text-darkb tracking-[-1px] mb-2">
             Welcome back
           </h1>
-          <p style={{ fontSize: 14, color: "#9B6A45", fontStyle: "italic" }}>
+          <p className="text-[16px] text-secondary-text italic">
             Your gratitudes are waiting for you.
           </p>
         </div>
 
         {/* Card */}
-        <div style={{
-          background: "#FEFAF4",
-          border: "1px solid rgba(196,98,45,0.15)",
-          borderRadius: 24,
-          padding: "36px 32px",
-        }}>
+        <div className="bg-fwhite border border-borderline rounded-3xl py-9 px-8">
           {/* Email */}
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ display: "block", fontSize: 12, color: "#9B6A45", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8 }}>
+          <div className="mb-4">
+            <label className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
               Email
             </label>
             <input
@@ -83,23 +52,12 @@ export default function LoginPage() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="you@example.com"
-              style={{
-                width: "100%",
-                boxSizing: "border-box",
-                background: "#FFF8F0",
-                border: "1px solid rgba(196,98,45,0.2)",
-                borderRadius: 12,
-                padding: "13px 16px",
-                fontFamily: "'Lora', serif",
-                fontSize: 14,
-                color: "#3D2314",
-              }}
-            />
+              className="w-full box-border bg-fwhite border border-borderline rounded-xl py-3.5 px-5 font-parag text-[14px] text-darkb"/>
           </div>
 
           {/* Password */}
-          <div style={{ marginBottom: 24 }}>
-            <label style={{ display: "block", fontSize: 12, color: "#9B6A45", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8 }}>
+          <div className="mb-4">
+            <label className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
               Password
             </label>
             <input
@@ -108,31 +66,12 @@ export default function LoginPage() {
               onChange={e => setPassword(e.target.value)}
               placeholder="••••••••"
               onKeyDown={e => e.key === "Enter" && handleLogin()}
-              style={{
-                width: "100%",
-                boxSizing: "border-box",
-                background: "#FFF8F0",
-                border: "1px solid rgba(196,98,45,0.2)",
-                borderRadius: 12,
-                padding: "13px 16px",
-                fontFamily: "'Lora', serif",
-                fontSize: 14,
-                color: "#3D2314",
-              }}
-            />
+              className="w-full box-border bg-fwhite border border-borderline rounded-xl py-3.5 px-5 font-parag text-[14px] text-darkb"/>
           </div>
 
           {/* Error */}
           {error && (
-            <div style={{
-              background: "rgba(196,98,45,0.08)",
-              border: "1px solid rgba(196,98,45,0.2)",
-              borderRadius: 10,
-              padding: "10px 14px",
-              marginBottom: 18,
-              fontSize: 13,
-              color: "#C4622D",
-            }}>
+            <div  className="bg-secondary-bg border border-borderline rounded-xl py-2.5 px-3.5 mb-5 text-[13px] text-red-700">
               {error}
             </div>
           )}
@@ -141,18 +80,11 @@ export default function LoginPage() {
           <button
             onClick={handleLogin}
             disabled={loading || !email || !password}
+            className="w-full p-3.5 rounded-2xl font-heading text-[16px] italic font-bold "
             style={{
-              width: "100%",
-              padding: "15px",
               background: loading || !email || !password
                 ? "rgba(196,98,45,0.2)"
                 : "linear-gradient(135deg, #C4622D, #E07B3A)",
-              border: "none",
-              borderRadius: 14,
-              fontFamily: "'Playfair Display', serif",
-              fontSize: 16,
-              fontStyle: "italic",
-              fontWeight: 700,
               color: loading || !email || !password ? "rgba(196,98,45,0.5)" : "#FFF8F0",
               cursor: loading || !email || !password ? "not-allowed" : "pointer",
               transition: "all 0.2s",
@@ -163,9 +95,9 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <p style={{ textAlign: "center", fontSize: 14, color: "#9B6A45", marginTop: 24 }}>
+        <p className="text-center text-[14px] text-secondary-text mt-6" >
           Don't have an account?{" "}
-          <Link to="/signup" style={{ color: "#C4622D", textDecoration: "none", fontWeight: 600 }}>
+          <Link to="/signup" className="text-secondary font-semibold">
             Sign up
           </Link>
         </p>
