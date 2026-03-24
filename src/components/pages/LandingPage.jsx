@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "../Navbar";
+import MobileNavbar from "../MobileNavbar";
 import HeroSection from "../sections/HeroSection";
 import HowItWorksSection from "../sections/HowItWorksSection";
 import FeaturesSection from "../sections/FeaturesSection";
@@ -11,7 +11,8 @@ import Footer from "../layout/Footer";
 function LandingPage () {
     return (
         <>
-            <NavBar />
+            <MobileNavbar 
+              showLinks={true}/>
             <HeroSection />
             <HowItWorksSection />
             <FeaturesSection />

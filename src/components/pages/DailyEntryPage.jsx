@@ -1,9 +1,12 @@
 import { useState } from "react";
+import Navbar from "../Navbar";
 import PROMPTS from "../utils/prompts";
 import ProgressRing from "../ProgressRing";
 import GratitudeInput from "../GratitudeInput";
 import SuccessState from "../SuccessState";
+import { formatDate } from "../utils/NewDateUtil";
 import { Link } from "react-router-dom";
+
 
 const MOOD_TAGS = [
   { label: "Family", emoji: "👨‍👩‍👧" },
@@ -21,14 +24,6 @@ function getRandomPrompt(exclude = "") {
   return options[Math.floor(Math.random() * options.length)];
 }
 
-function getToday() {
-  return new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-}
 
 export default function DailyEntryPage() {
   const [entries, setEntries] = useState(["", "", ""]);
@@ -36,7 +31,9 @@ export default function DailyEntryPage() {
   const [placeholders, setPlaceholders] = useState([0, 1, 2].map(() => getRandomPrompt()));
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitted, setSubmitted] = useState(false);
-  const [streak] = useState(7);
+  const [streak] = useState(20);
+
+  const today = new Date().toISOString().split("T")[0];
 
   const filledCount = entries.filter((e) => e.trim().length > 0).length;
   const allFilled = filledCount === 3;
@@ -63,64 +60,25 @@ export default function DailyEntryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF8F0]">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
-
-        @keyframes fadeSlideUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes popIn {
-          from { transform: scale(0.5); opacity: 0; }
-          to   { transform: scale(1); opacity: 1; }
-        }
-        @keyframes sparkle {
-          0%   { opacity: 0; transform: rotate(var(--r)) translateX(40px) scale(0); }
-          60%  { opacity: 1; }
-          100% { opacity: 0; transform: rotate(var(--r)) translateX(80px) scale(1); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50%       { transform: translateY(-6px); }
-        }
-        textarea::placeholder { color: rgba(155,106,69,0.55); }
-        textarea:focus { outline: none; }
-      `}</style>
-
-      {/* Sticky top bar */}
-      <div
-        className="sticky top-0 z-40 bg-[rgba(255,248,235,0.9)] backdrop-blur-[12px] border-b border-[rgba(196,98,45,0.1)] p-[14px_24px] flex items-center justify-between"
-      >
-        <div className="flex items-center gap-2">
-          <span className="text-[18px]">✦</span>
-          <span className="font-['Playfair_Display',serif] font-bold text-[18px] text-[#3D2314]">
-            gr3tful
-          </span>
-        </div>
-
-        <div className="flex items-center gap-4">
-          {/* Streak badge */}
-          <div
-            className="flex items-center gap-[6px] bg-[rgba(196,98,45,0.08)] rounded-[100px] p-[6px_14px]"
-          >
-            <span className="text-[14px]">🔥</span>
-            <span className="font-['Lora',serif] text-[13px] text-[#C4622D]">
-              <strong>{streak}</strong> day streak
-            </span>
+    <>
+    <div className="min-h-screen bg-fwhite">
+      <Navbar 
+        showLinks={false}
+        showStreak
+        streak={streak}
+        rightContent={
+           <div className="w-8 h-8 rounded-full bg-orange-400 flex items-center justify-center">
+            🌸
           </div>
-
-          {/* Avatar placeholder */}
-          <div
-            className="w-[34px] h-[34px] rounded-[50%] bg-[linear-gradient(135deg,#C4622D,#F5A623)] flex items-center justify-center"
-          >
-            <span className="text-[14px]">🌸</span>
-          </div>
-        </div>
-      </div>
+        }
+      />
+      
+      
+      
+     
 
       {/* Main content */}
-      <div className="max-w-[680px] mx-auto p-[40px_20px_80px]">
+      <div className="max-w-[680px] mx-auto mt-10 p-[40px_20px_80px]">
         {submitted ? (
           <SuccessState
             entries={entries}
@@ -140,7 +98,7 @@ export default function DailyEntryPage() {
                 <h1
                   className="font-['Playfair_Display',serif] text-[clamp(22px,4vw,32px)] text-[#3D2314] tracking-[-1px] leading-[1.2]"
                 >
-                  {getToday()}
+                 {formatDate(today)}
                 </h1>
               </div>
               <ProgressRing count={filledCount} />
@@ -260,5 +218,6 @@ export default function DailyEntryPage() {
         )}
       </div>
     </div>
+    </>
   );
 }
