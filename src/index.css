@@ -16,7 +16,8 @@
     --color-footer-text: #6B4A35;
     --color-borderline: rgba(196,98,45,0.12);
 
-    --font-fontSize: "clamp(16px, 2vw, 18px)";
+    --font-fontSize: clamp(16px, 2vw, 18px);
+    --font-fontSize-h: clamp(22px,4vw,32px) ;
 
     --font-heading: "'Playfair Display', serif";
     --font-parag: "'Lora', serif";
@@ -25,8 +26,11 @@
      /* Scroll indicator animation (HeroSection) */
     --animate-float: float 2s ease-in-out infinite;
 
-    /* Page entry animation (LoginPage / SignupPage) */
-    --animate-fade-slide-up: fadeSlideUp 0.45s ease forwards;
+    /* Page entry animation*/
+    --animate-fade-slide-up: fadeSlideUp 0.5s ease forwards;
+
+    /* Text entry animation */
+    --animate-fade-slide-up-text: fadeSlideUp 0.5s ease forwards 0.45s;
 }
 
 @keyframes float {

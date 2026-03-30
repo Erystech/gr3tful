@@ -1,4 +1,5 @@
 import { useState } from "react";
+import clsx from "clsx";
 import Navbar from "../Navbar";
 import PROMPTS from "../utils/prompts";
 import ProgressRing from "../ProgressRing";
@@ -78,7 +79,7 @@ export default function DailyEntryPage() {
      
 
       {/* Main content */}
-      <div className="max-w-[680px] mx-auto mt-10 p-[40px_20px_80px]">
+      <div className="max-w-170 mx-auto mt-10 pt-10 px-5 pb-20">
         {submitted ? (
           <SuccessState
             entries={entries}
@@ -89,14 +90,14 @@ export default function DailyEntryPage() {
           <>
             {/* Date + Progress header */}
             <div
-              className="flex items-start justify-between mb-[36px] opacity-0 [animation:fadeSlideUp_0.5s_ease_forwards]"
+              className="flex items-start justify-between mb-9 opacity-0 animate-fade-slide-up"
             >
               <div>
-                <p className="font-['Lora',serif] text-[13px] text-[#C4622D] uppercase tracking-[2px] mb-[6px]">
+                <p className="font-oarag text-[13px] text-secondary uppercase tracking-[2px] mb-1.5">
                   Today's entry
                 </p>
                 <h1
-                  className="font-['Playfair_Display',serif] text-[clamp(22px,4vw,32px)] text-[#3D2314] tracking-[-1px] leading-[1.2]"
+                  className="font-heading text-[clamp(22px,4vw,32px)]  text-darkb tracking-[-1px] leading-[1.2]"
                 >
                  {formatDate(today)}
                 </h1>
@@ -105,16 +106,16 @@ export default function DailyEntryPage() {
             </div>
 
             {/* Intro line */}
-            <div className="opacity-0 [animation:fadeSlideUp_0.5s_ease_forwards_0.1s] mb-[28px]">
+            <div className="opacity-0 animate-fade-slide-up-text mb-7">
               <p
-                className="font-['Lora',serif] text-[15px] text-[#9B6A45] leading-[1.7] italic border-l-2 border-l-[rgba(196,98,45,0.3)] pl-[16px]"
+                className="font-parag text-[15px] text-secondary-text leading-4 italic border-l-2 border-l-borderline pl-4"
               >
                 Take a breath. What three things — big or tiny — are you grateful for today?
               </p>
             </div>
 
             {/* Gratitude inputs */}
-            <div className="flex flex-col gap-[16px] mb-[32px]">
+            <div className="flex flex-col gap-4 mb-8">
               {entries.map((entry, i) => (
                 <div key={i} className="relative">
                   <GratitudeInput
@@ -135,7 +136,7 @@ export default function DailyEntryPage() {
                     <button
                       onClick={() => handleRefreshPrompt(i)}
                       title="New prompt"
-                      className="absolute bottom-[14px] right-[14px] bg-none border-none cursor-pointer font-['Lora',serif] text-[11px] text-[rgba(155,106,69,0.5)] flex items-center gap-[4px] p-0"
+                      className="absolute bottom-3.5 right-3.5 bg-none border-none cursor-pointer font-parag text-[11px] text-gray-t flex items-center gap-1 p-0"
                     >
                       ↻ new prompt
                     </button>
@@ -145,11 +146,11 @@ export default function DailyEntryPage() {
             </div>
 
             {/* Mood tags */}
-            <div className="opacity-0 [animation:fadeSlideUp_0.5s_ease_forwards_0.45s] mb-[36px]">
-              <p className="font-['Lora',serif] text-[12px] text-[#9B6A45] uppercase tracking-[1.5px] mb-[12px]">
+            <div className="opacity-0 animate-fade-slide-up-text mb-9">
+              <p className="font-parag text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-3">
                 Tag today's theme <span className="opacity-50">(optional)</span>
               </p>
-              <div className="flex flex-wrap gap-[8px]">
+              <div className="flex flex-wrap gap-2">
                 {MOOD_TAGS.map((tag) => {
                   const active = selectedTags.find((t) => t.label === tag.label);
                   return (
@@ -157,20 +158,12 @@ export default function DailyEntryPage() {
                     <button
                       key={tag.label}
                       onClick={() => handleTagToggle(tag)}
-                      style={{
-                        background: active ? "#C4622D" : "rgba(196,98,45,0.07)",
-                        border: `1px solid ${active ? "#C4622D" : "rgba(196,98,45,0.15)"}`,
-                        color: active ? "#FFF8F0" : "#7A4A2A",
-                        borderRadius: 100,
-                        padding: "8px 16px",
-                        fontFamily: "'Lora', serif",
-                        fontSize: 13,
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                      }}
+                      className={clsx(
+                        "rounded-full py-2 px-4  font-parag text-[13px] cursor-pointer flex items-center gap-1.5 transition-all duration-200 ease-in",
+                        active 
+                        ?"bg-darkb border-borderline text-secondary-text"
+                        :"bg-secondary border border-secondary text-fwhite"
+                      )}
                     >
                       <span>{tag.emoji}</span>
                       {tag.label}
@@ -181,11 +174,16 @@ export default function DailyEntryPage() {
             </div>
 
             {/* Submit */}
-            <div className="opacity-0 [animation:fadeSlideUp_0.5s_ease_forwards_0.55s]">
+            <div className="opacity-0 animate-fade-slide-up">
               <button
                 onClick={handleSubmit}
                 disabled={!allFilled}
-                className={`w-full p-[18px_24px] ${allFilled ? 'bg-[linear-gradient(135deg,#C4622D,#E07B3A)] shadow-[0_8px_32px_rgba(196,98,45,0.25)]' : 'bg-[rgba(196,98,45,0.12)]'} border-none rounded-[18px] font-['Playfair_Display',serif] text-[17px] italic font-bold ${allFilled ? 'text-[#FFF8F0] cursor-pointer' : 'text-[rgba(196,98,45,0.4)] cursor-not-allowed'} transition-all duration-300`}
+                className={clsx(
+                  "w-full py-4 px-6 border-none rounded-2xl font-heading text-[17px] italic font-bold transition-all duration-300",
+                    allFilled
+                      ? "bg-secondary  text-fwhite cursor-pointer"
+                      : "bg-borderline text-darkb cursor-not-allowed"
+                  )}
                 onMouseEnter={(e) => {
                   if (allFilled) {
                     e.currentTarget.style.transform = "translateY(-2px)";
@@ -202,15 +200,15 @@ export default function DailyEntryPage() {
 
               {/* Motivational nudge */}
               {!allFilled && filledCount > 0 && (
-                <p className="text-center font-['Lora',serif] text-[13px] text-[#C4622D] italic mt-[12px]">
+                <p className="text-center font-parag text-[13px] text-secondary italic mt-3">
                   You're doing great — just {3 - filledCount} more ✦
                 </p>
               )}
             </div>
 
             {/* Bottom quote */}
-            <div className="mt-[48px] text-center opacity-0 [animation:fadeSlideUp_0.5s_ease_forwards_0.65s]">
-              <p className="font-['Lora',serif] text-[13px] text-[rgba(155,106,69,0.55)] italic">
+            <div className="mt-12 text-center opacity-0 animate-fade-slide-up-text">
+              <p className="font-parag text-[13px] text-secondary-text italic">
                 "Gratitude turns what we have into enough."
               </p>
             </div>

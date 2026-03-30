@@ -44,7 +44,7 @@ function NavBar({
         <div className="flex items-center gap-4">
           {showStreak && (
             <div className="font-parag">
-              🔥 <strong>{streak}</strong> day streak
+              🔥 <strong>{streak}</strong> 
             </div>
           )}
           {rightContent}
