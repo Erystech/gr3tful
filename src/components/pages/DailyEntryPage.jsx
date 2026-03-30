@@ -1,29 +1,13 @@
 import { useState } from "react";
-import clsx from "clsx";
 import Navbar from "../Navbar";
-import PROMPTS from "../utils/prompts";
+import {getRandomPrompt} from "../utils/prompts";
 import ProgressRing from "../ProgressRing";
 import GratitudeInput from "../GratitudeInput";
 import SuccessState from "../SuccessState";
+import SubmitButton from "../SubmitButton"
+import MoodTagPicker from "../MoodTagPicker";
 import { formatDate } from "../utils/NewDateUtil";
-import { Link } from "react-router-dom";
 
-
-const MOOD_TAGS = [
-  { label: "Family", emoji: "👨‍👩‍👧" },
-  { label: "Health", emoji: "🌿" },
-  { label: "Work", emoji: "💼" },
-  { label: "Nature", emoji: "🌤️" },
-  { label: "Friends", emoji: "🤝" },
-  { label: "Growth", emoji: "🌱" },
-  { label: "Joy", emoji: "✨" },
-  { label: "Rest", emoji: "🌙" },
-];
-
-function getRandomPrompt(exclude = "") {
-  const options = PROMPTS.filter((p) => p !== exclude);
-  return options[Math.floor(Math.random() * options.length)];
-}
 
 
 export default function DailyEntryPage() {
@@ -93,7 +77,7 @@ export default function DailyEntryPage() {
               className="flex items-start justify-between mb-9 opacity-0 animate-fade-slide-up"
             >
               <div>
-                <p className="font-oarag text-[13px] text-secondary uppercase tracking-[2px] mb-1.5">
+                <p className="font-parag text-[13px] text-secondary uppercase tracking-[2px] mb-1.5">
                   Today's entry
                 </p>
                 <h1
@@ -144,67 +128,17 @@ export default function DailyEntryPage() {
                 </div>
               ))}
             </div>
+            {/* MOOD TAGS */}
+           <MoodTagPicker 
+              selected={selectedTags} 
+              onToggle={handleTagToggle} />
 
-            {/* Mood tags */}
-            <div className="opacity-0 animate-fade-slide-up-text mb-9">
-              <p className="font-parag text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-3">
-                Tag today's theme <span className="opacity-50">(optional)</span>
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {MOOD_TAGS.map((tag) => {
-                  const active = selectedTags.find((t) => t.label === tag.label);
-                  return (
-                   
-                    <button
-                      key={tag.label}
-                      onClick={() => handleTagToggle(tag)}
-                      className={clsx(
-                        "rounded-full py-2 px-4  font-parag text-[13px] cursor-pointer flex items-center gap-1.5 transition-all duration-200 ease-in",
-                        active 
-                        ?"bg-darkb border-borderline text-secondary-text"
-                        :"bg-secondary border border-secondary text-fwhite"
-                      )}
-                    >
-                      <span>{tag.emoji}</span>
-                      {tag.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Submit */}
-            <div className="opacity-0 animate-fade-slide-up">
-              <button
-                onClick={handleSubmit}
-                disabled={!allFilled}
-                className={clsx(
-                  "w-full py-4 px-6 border-none rounded-2xl font-heading text-[17px] italic font-bold transition-all duration-300",
-                    allFilled
-                      ? "bg-secondary  text-fwhite cursor-pointer"
-                      : "bg-borderline text-darkb cursor-not-allowed"
-                  )}
-                onMouseEnter={(e) => {
-                  if (allFilled) {
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow = "0 12px 40px rgba(196,98,45,0.35)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = allFilled ? "0 8px 32px rgba(196,98,45,0.25)" : "none";
-                }}
-              >
-                {allFilled ? "Save today's gratitudes →" : `${3 - filledCount} more to go…`}
-              </button>
-
-              {/* Motivational nudge */}
-              {!allFilled && filledCount > 0 && (
-                <p className="text-center font-parag text-[13px] text-secondary italic mt-3">
-                  You're doing great — just {3 - filledCount} more ✦
-                </p>
-              )}
-            </div>
+            {/* Submit */ }
+           <SubmitButton 
+              allFilled={allFilled} 
+              filledCount={filledCount} 
+              onSubmit={() => allFilled && setSubmitted(true)} />  
+            
 
             {/* Bottom quote */}
             <div className="mt-12 text-center opacity-0 animate-fade-slide-up-text">

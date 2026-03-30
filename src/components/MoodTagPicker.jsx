@@ -9,11 +9,11 @@ const MoodTagPicker = ({ selected, onToggle }) => {
             </p>
               <div className="flex flex-wrap gap-2">
                 {MOOD_TAGS.map((tag) => {
-                  const active = selectedTags.find((t) => t.label === tag.label);
+                  const active = selected.find((t) => t.label === tag.label);
                     return (           
                         <button
                           key={tag.label}
-                          onClick={() => handleTagToggle(tag)}
+                          onClick={() => onToggle(tag)}
                           className={clsx(
                             "rounded-full py-2 px-4  font-parag text-[13px] cursor-pointer flex items-center gap-1.5 transition-all duration-200 ease-in",
                             active 

@@ -7,4 +7,9 @@ const PROMPTS = [
   "Something that surprised you…",
 ];
 
+export function getRandomPrompt(exclude = "") {
+  const options = PROMPTS.filter((p) => p !== exclude);
+  return options[Math.floor(Math.random() * options.length)];
+}
+
 export default PROMPTS;
