@@ -6,15 +6,12 @@ import useWindowWidth from "../hooks/useWindowWidth";
 import EntryCard from "../Journal/EntryCard";
 import StatsBar from "../Journal/StatsBar";
 import Sidebar from "../Journal/SideBar";
+import useJournalFilters from "../hooks/useJournalFilters";
 
 // ── Main Page ─────────────────────────────────────────────────────────────
 export default function JournalPage() {
-  const [search, setSearch]           = useState("");
-  const [activeTag, setActiveTag]     = useState(null);
   const [expandedId, setExpandedId]   = useState(null);
-  const [calDate, setCalDate]         = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const width = useWindowWidth();
   const isMobile = width < 768;
   const showInlineSidebar = width >= 1024;
@@ -25,41 +22,15 @@ export default function JournalPage() {
     return Object.entries(freq).sort((a,b) => b[1]-a[1])[0]?.[0] ?? "—";
   }, []);
 
-  const filtered = useMemo(() => {
-    return RAW_ENTRIES.filter(e => {
-      if (calDate && e.date !== calDate) return false;
-      if (activeTag && !e.tags.includes(activeTag)) return false;
-      if (search) {
-        const q = search.toLowerCase();
-        return e.entries.some(t => t.toLowerCase().includes(q)) ||
-               e.tags.some(t => t.toLowerCase().includes(q)) ||
-               formatDate(e.date).toLowerCase().includes(q);
-      }
-      return true;
-    });
-  }, [search, activeTag, calDate]);
+  const {search, setSearch, activeTag, setActiveTag, calDate, setCalDate, filtered, grouped} = useJournalFilters();
 
-  const grouped = useMemo(() => {
-    const map = {};
-    filtered.forEach(e => {
-      const m = getMonth(e.date);
-      if (!map[m]) map[m] = [];
-      map[m].push(e);
-    });
-    return map;
-  }, [filtered]);
+ 
 
   return (
     <div className="min-h-screen bg-secondary-bg">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
-        @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-        input::placeholder { color:rgba(155,106,69,0.5); font-style:italic; }
-        input:focus { outline:none; }
         .tag-scroll::-webkit-scrollbar { display:none; }
         .tag-scroll { -ms-overflow-style:none; scrollbar-width:none; }
-        ::-webkit-scrollbar { width:5px; }
-        ::-webkit-scrollbar-thumb { background:rgba(196,98,45,0.2); border-radius:10px; }
       `}</style>
 
       {/* ── Top bar ── */}
@@ -229,7 +200,7 @@ export default function JournalPage() {
 
         {/* ── Inline sidebar (desktop ≥1024px only) ── */}
         {showInlineSidebar && (
-          <div className="animate-fade-slide-up-text opacity-0">
+          <div className="animate-fade-slide-up-text ">
             <Sidebar calDate={calDate} setCalDate={setCalDate} setSearch={setSearch} />
           </div>
         )}

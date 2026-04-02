@@ -17,8 +17,8 @@ const MoodTagPicker = ({ selected, onToggle }) => {
                           className={clsx(
                             "rounded-full py-2 px-4  font-parag text-[13px] cursor-pointer flex items-center gap-1.5 transition-all duration-200 ease-in",
                             active 
-                                ?"bg-darkb border-borderline text-secondary-text"
-                                :"bg-secondary border border-secondary text-fwhite"
+                                ?"bg-secondary border border-secondary text-fwhite"
+                                :"bg-darkb border-borderline text-secondary-text"
                               )}
                             >
                           <span>{tag.emoji}</span>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Navbar from "../Navbar";
-import {getRandomPrompt} from "../utils/prompts";
+import {getRandomPrompt} from "../utils/Prompts";
 import ProgressRing from "../ProgressRing";
 import GratitudeInput from "../GratitudeInput";
 import SuccessState from "../SuccessState";
