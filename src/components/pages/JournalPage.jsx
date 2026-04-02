@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import clsx from "clsx";
 import { TAGS, TAG_EMOJIS, RAW_ENTRIES } from "../data/JournalData";
 import { formatDate,  formatShort, getMonth }  from "../utils/NewDateUtil";
 import useWindowWidth from "../hooks/useWindowWidth";
@@ -49,7 +50,7 @@ export default function JournalPage() {
   }, [filtered]);
 
   return (
-    <div style={{ minHeight:"100vh", background:"#FEF3E2" }}>
+    <div className="min-h-screen bg-secondary-bg">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
         @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
@@ -62,29 +63,32 @@ export default function JournalPage() {
       `}</style>
 
       {/* ── Top bar ── */}
-      <div style={{
-        position:"sticky", top:0, zIndex:40,
-        background:"rgba(254,243,226,0.92)", backdropFilter:"blur(12px)",
-        borderBottom:"1px solid rgba(196,98,45,0.1)",
-        padding: isMobile ? "12px 16px" : "14px 28px",
-        display:"flex", alignItems:"center", justifyContent:"space-between",
-      }}>
-        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-          <span style={{ fontSize:18 }}>✦</span>
-          <span style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:18, color:"#3D2314" }}>gr3tful</span>
+      <div className={clsx(
+        "sticky top-0 z-40 bg-secondary-bg border-b border-borderline flex items-center justify-between ",
+        isMobile 
+          ? "py-3 px-4"
+          : "py-3.5 px-7"
+      )}>
+        <div className="flex items-center gap-2">
+          <span className="text-[18px]">✦</span>
+          <span className="font-heading font-bold text-[18px] text-primary-text-dark">gr3tful</span>
         </div>
-        <div style={{ display:"flex", alignItems:"center", gap: isMobile ? 10 : 20 }}>
+        <div className={clsx(
+          "flex items-center",
+          isMobile 
+            ? "gap-2.5"
+            : "gap-5"
+        )}>
           {!isMobile && ["Today","Journal","Settings"].map(n => (
-            <a key={n} href="#" style={{ fontFamily:"'Lora',serif", fontSize:13, color: n==="Journal" ? "#C4622D" : "#9B6A45", textDecoration:"none", fontWeight: n==="Journal" ? 600 : 400 }}>{n}</a>
+            <a key={n} href="#" className="font-parag text-[13px] no-underline "
+            style={{  color: n==="Journal" ? "#C4622D" : "#9B6A45", fontWeight: n==="Journal" ? 600 : 400 }}>{n}</a>
           ))}
           {/* Tools button on mobile/tablet */}
           {!showInlineSidebar && (
-            <button onClick={() => setSidebarOpen(true)} style={{
-              background:"rgba(196,98,45,0.08)", border:"1px solid rgba(196,98,45,0.15)",
-              borderRadius:10, padding:"7px 12px",
-              fontFamily:"'Lora',serif", fontSize:12, color:"#C4622D",
-              cursor:"pointer", display:"flex", alignItems:"center", gap:5,
-            }}>
+            <button 
+              onClick={() => setSidebarOpen(true)} 
+              className="bg-secondary-bg border border-borderline rounded-[10px] py-1.5 px-3 font-parag text-xs text-secondary cursor-pointer flex items-center gap-1.5"
+            >
               📅 Tools
             </button>
           )}
@@ -95,23 +99,20 @@ export default function JournalPage() {
       {!showInlineSidebar && (
         <>
           {sidebarOpen && (
-            <div onClick={() => setSidebarOpen(false)} style={{
-              position:"fixed", inset:0, zIndex:49,
-              background:"rgba(61,35,20,0.4)", backdropFilter:"blur(2px)",
-            }} />
+            <div 
+              onClick={() => setSidebarOpen(false)} 
+              className="fixed bg-darkb/40 backdrop-blur-[2px] inset-0 -z-50 " />
           )}
-          <div style={{
-            position:"fixed", top:0, right:0, bottom:0, zIndex:50,
-            width: isMobile ? "88vw" : 360,
-            background:"#FEF3E2",
-            boxShadow:"-8px 0 32px rgba(61,35,20,0.12)",
-            overflowY:"auto", padding:"24px 20px",
-            transform: sidebarOpen ? "translateX(0)" : "translateX(110%)",
-            transition:"transform 0.35s cubic-bezier(0.4,0,0.2,1)",
-          }}>
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
-              <span style={{ fontFamily:"'Playfair Display',serif", fontSize:16, color:"#3D2314", fontWeight:700 }}>Tools</span>
-              <button onClick={() => setSidebarOpen(false)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:20, color:"#9B6A45" }}>✕</button>
+          <div 
+            className= {clsx(
+              "fixed top-0 right-0 bottom-0 z-50 bg-secondary-bg py-6 px-5 transition-transform duration-300 ease-in-out overflow-y-auto w-[88vw] md:w-90 ",
+              sidebarOpen ? "translate-x-0" : "translate-x-[110%]"
+            )}>
+            <div
+              className="flex justify-between items-center mb-6">
+              <span className="font-heading text-[16px] text-darkb font-bold">Tools</span>
+              <button onClick={() => setSidebarOpen(false)} 
+                className="bg-transparent border-none cursor-pointer text-xl text-darkerb">✕</button>
             </div>
             <Sidebar
               calDate={calDate}
@@ -123,71 +124,64 @@ export default function JournalPage() {
       )}
 
       {/* ── Page body ── */}
-      <div style={{
-        maxWidth:1100, margin:"0 auto",
-        padding: isMobile ? "28px 16px 80px" : "40px 24px 80px",
-        display:"grid",
-        gridTemplateColumns: showInlineSidebar ? "1fr 300px" : "1fr",
-        gap:28, alignItems:"start",
-      }}>
+      <div 
+        className={clsx(
+          "max-w-275 mx-auto grid gap-7 items-start ",
+          showInlineSidebar ? "grid-cols-[1fr_300px]" : "grid-cols-1",
+          isMobile 
+            ? "pt-7 px-4 pb-20"
+            : "pt-10 px-6 pb-20"
+
+        )}>
 
         {/* ── Main column ── */}
-        <div style={{ animation:"fadeUp 0.5s ease forwards", minWidth:0 }}>
+        <div className="animate-fade-slide-up min-w-0">
 
           {/* Title */}
-          <div style={{ marginBottom:24 }}>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:"#C4622D", textTransform:"uppercase", letterSpacing:2, marginBottom:6 }}>Your journal</p>
-            <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(26px,5vw,44px)", color:"#3D2314", letterSpacing:"-1.5px", lineHeight:1.1 }}>
+          <div className="mb-6">
+            <p className="font-parag text-xs text-secondary uppercase tracking-[2px] mb-1.5">Your journal</p>
+            <h1 className="font-heading text-[clamp(26px,5vw,44px)] text-darkb tracking-[-1.5px] leading-10">
               A record of your<br/>
-              <span style={{ fontStyle:"italic", color:"#C4622D" }}>good things.</span>
+              <span className="italic text-secondary">good things.</span>
             </h1>
           </div>
 
           {/* Stats */}
-          <StatsBar total={RAW_ENTRIES.length} streak={7} topTag={topTag} isMobile={isMobile} />
+          <StatsBar total={RAW_ENTRIES.length} streak={20} topTag={topTag} isMobile={isMobile} />
 
           {/* Search */}
-          <div style={{ position:"relative", marginBottom:14 }}>
-            <span style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", fontSize:14, opacity:0.4 }}>🔍</span>
+          <div className="relative mb-3.5">
+            <span className="absolute left-3.5 top-1/2 text-[16px] opacity-[0.4] -translate-y-1/2">🔍</span>
             <input
               value={search}
               onChange={e => { setSearch(e.target.value); setCalDate(null); }}
               placeholder="Search your entries…"
-              style={{
-                width:"100%", boxSizing:"border-box",
-                background:"#FFF8F0", border:"1px solid rgba(196,98,45,0.15)",
-                borderRadius:14, padding:"12px 40px 12px 42px",
-                fontFamily:"'Lora',serif", fontSize:14, color:"#3D2314",
-              }}
+              className="w-full box-border bg-fwhite border border-borderline rounded-xl py-3 px-10 font-parag text-[14px] text-darkb"
             />
             {search && (
-              <button onClick={() => setSearch("")} style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", cursor:"pointer", fontSize:15, color:"#C4A882" }}>✕</button>
+              <button onClick={() => setSearch("")} 
+                className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[14px] text-gray-t">✕</button>
             )}
           </div>
 
-          {/* Tag pills — horizontally scrollable, no scrollbar visible */}
-          <div className="tag-scroll" style={{ overflowX:"auto", paddingBottom:4, marginBottom:24, WebkitOverflowScrolling:"touch" }}>
-            <div style={{ display:"flex", gap:7, width:"max-content" }}>
-              <button onClick={() => setActiveTag(null)} style={{
-                background: !activeTag ? "#C4622D" : "rgba(196,98,45,0.07)",
-                border: !activeTag ? "none" : "1px solid rgba(196,98,45,0.15)",
-                borderRadius:100, padding:"7px 16px",
-                fontFamily:"'Lora',serif", fontSize:12,
-                color: !activeTag ? "#FFF8F0" : "#7A4A2A",
-                cursor:"pointer", transition:"all 0.2s", whiteSpace:"nowrap",
-              }}>All</button>
+          {/* Mood tags — horizontally scrollable, no scrollbar visible */}
+          <div className="tag-scroll overflow-x-auto pb-1 mb-6 ">
+            <div className="flex gap-2 w-max">
+              <button onClick={() => setActiveTag(null)} 
+                className={clsx(
+                  "cursor-pointer font-parag text-xs rounded-full py-1.5 px-4 whitespace-nowrap transition-all duration-200",
+                  !activeTag ? "bg-secondary border-none text-fwhite" : "bg-borderline-light border-borderline text-secondary-text" 
+                )}>All</button>
               {TAGS.map(tag => {
                 const on = activeTag === tag;
                 return (
-                  <button key={tag} onClick={() => setActiveTag(on ? null : tag)} style={{
-                    background: on ? "#C4622D" : "rgba(196,98,45,0.07)",
-                    border: on ? "none" : "1px solid rgba(196,98,45,0.15)",
-                    borderRadius:100, padding:"7px 14px",
-                    fontFamily:"'Lora',serif", fontSize:12,
-                    color: on ? "#FFF8F0" : "#7A4A2A",
-                    cursor:"pointer", transition:"all 0.2s",
-                    display:"flex", alignItems:"center", gap:5, whiteSpace:"nowrap",
-                  }}>
+                  <button key={tag} onClick={() => setActiveTag(on ? null : tag)}
+                    className={clsx(
+                      "flex items-center cursor-pointer gap-1.5 font-parag whitespace-nowrap text-xs py-1.5 px-3.5 rounded-full transition-all duration-200",
+                      on 
+                         ? "bg-secondary border-none text-fwhite" 
+                         : "bg-borderline-light border border-borderline text-secondary-text"
+                    )}>
                     <span>{TAG_EMOJIS[tag]}</span>{tag}
                   </button>
                 );
@@ -197,28 +191,30 @@ export default function JournalPage() {
 
           {/* Active date chip */}
           {calDate && (
-            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:14 }}>
-              <span style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#C4622D" }}>📅 Showing: {formatShort(calDate)}</span>
-              <button onClick={() => setCalDate(null)} style={{ background:"none", border:"none", cursor:"pointer", color:"#C4A882", fontSize:14 }}>✕</button>
+            <div className="flex items-center gap-2 mb-3.5">
+              <span className="font-parag text-xs text-secondary">📅 Showing: {formatShort(calDate)}</span>
+              <button onClick={() => setCalDate(null)} 
+                className="bg-transparent border-none cursor-pointer text-gray-t text-[14px]">✕</button>
             </div>
           )}
 
           {/* Entry groups */}
           {Object.keys(grouped).length === 0 ? (
-            <div style={{ textAlign:"center", padding:"60px 20px" }}>
-              <p style={{ fontSize:36, marginBottom:12 }}>🌿</p>
-              <p style={{ fontFamily:"'Playfair Display',serif", fontSize:20, color:"#3D2314", marginBottom:8 }}>Nothing found</p>
-              <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:"#9B6A45" }}>Try a different search or filter.</p>
+            <div className="text-center py-15 px-5">
+              <p className="text-5xl mb-3">🌿</p>
+              <p className="font-heading text-xl text-darkb mb-2">Nothing found</p>
+              <p className="font-parag text-[14px] text-secondary"
+              style={{  fontSize:14, color:"#9B6A45" }}>Try a different search or filter.</p>
             </div>
           ) : (
             Object.entries(grouped).map(([month, monthEntries]) => (
-              <div key={month} style={{ marginBottom:32 }}>
-                <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
-                  <span style={{ fontFamily:"'Playfair Display',serif", fontSize:12, color:"#9B6A45", fontWeight:700, textTransform:"uppercase", letterSpacing:1, whiteSpace:"nowrap" }}>{month}</span>
-                  <div style={{ flex:1, height:1, background:"rgba(196,98,45,0.1)" }} />
-                  <span style={{ fontFamily:"'Lora',serif", fontSize:12, color:"#C4A882", whiteSpace:"nowrap" }}>{monthEntries.length} {monthEntries.length===1?"entry":"entries"}</span>
+              <div key={month} className="mb-8">
+                <div className="flex items-center gap-2.5 mb-3 ">
+                  <span className="font-heading text-xs text-secondary font-bold uppercase tracking-[1] whitespace-nowrap">{month}</span>
+                  <div className="flex-1 h-0.5 bg-borderline-light"/>
+                  <span className="font-parag text-xs text-gray-t whitespace-nowrap">{monthEntries.length} {monthEntries.length===1?"entry":"entries"}</span>
                 </div>
-                <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                <div className="flex flex-col gap-2.5">
                   {monthEntries.map(entry => (
                     <EntryCard key={entry.date} entry={entry}
                       isExpanded={expandedId === entry.date}
@@ -233,7 +229,7 @@ export default function JournalPage() {
 
         {/* ── Inline sidebar (desktop ≥1024px only) ── */}
         {showInlineSidebar && (
-          <div style={{ animation:"fadeUp 0.5s ease 0.15s forwards", opacity:0 }}>
+          <div className="animate-fade-slide-up-text opacity-0">
             <Sidebar calDate={calDate} setCalDate={setCalDate} setSearch={setSearch} />
           </div>
         )}
