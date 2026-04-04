@@ -33,41 +33,43 @@ function NavBar({
         </div>
 
         {/* Desktop Links */}
-        {showLinks && (
-          <div className="hidden md:flex items-center gap-8">
+        <div className="flex items-center gap-6">
+          {showLinks && (
+            <div className="hidden md:flex items-center gap-8">
+              {navLinks.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  className={clsx(
+                    "font-parag text-[14px] no-underline",
+                    item.active
+                      ? "text-secondary font-semibold"
+                      : "text-secondary-text font-normal"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
 
-            {navLinks.map((item) => (
-              <Link
-                key={item.label}
-                to= {item.to}
-                className={clsx(
-                  "font-parag text-[14px] text-secondary-text no-underline",
-                  item.active ? "text-secondary font-semibold" : "text-secondary-text font-normal"
-                )}
-              >
-                {item.label}
-              </Link>
-          ))}
-          {showCTA && (
-              <Link
-                to="/signup"
-                className="bg-secondary text-fwhite rounded-full py-2.5 px-6 font-parag text-[14px] cursor-pointer italic"
-              >
-                Begin today →
-              </Link>
-            )}
-          </div>
-        )}
-
-        {/* Right side */}
-        <div className="flex items-center gap-4">
-          {showStreak && (
-            <div className="font-parag">
-              🔥 <strong>{streak}</strong> 
+              {showCTA && (
+                <Link
+                  to="/signup"
+                  className="bg-secondary text-fwhite rounded-full py-2.5 px-6 font-parag text-[14px] italic"
+                >
+                  Begin today →
+                </Link>
+              )}
             </div>
           )}
+
+          {showStreak && (
+            <div className="font-parag">
+              🔥 <strong>{streak}</strong>
+            </div>
+          )}
+
           {rightContent}
-          {mobileMenu?.trigger}  
+          {mobileMenu?.trigger}
         </div>
       </nav>
       {mobileMenu?.dropdown}

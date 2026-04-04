@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import clsx from "clsx";
+import Navbar from "../Navbar";
 import { TAGS, TAG_EMOJIS, RAW_ENTRIES } from "../data/JournalData";
 import { formatDate,  formatShort, getMonth }  from "../utils/NewDateUtil";
 import useWindowWidth from "../hooks/useWindowWidth";
@@ -24,7 +25,11 @@ export default function JournalPage() {
 
   const {search, setSearch, activeTag, setActiveTag, calDate, setCalDate, filtered, grouped} = useJournalFilters();
 
- 
+ const journalLinks = [
+  { label: "Today",    href: "/entry"   },
+  { label: "Journal",  href: "#",        active: true },
+  { label: "Settings", href: "#"        },
+];
 
   return (
     <div className="min-h-screen bg-secondary-bg">
@@ -32,39 +37,20 @@ export default function JournalPage() {
         .tag-scroll::-webkit-scrollbar { display:none; }
         .tag-scroll { -ms-overflow-style:none; scrollbar-width:none; }
       `}</style>
-
-      {/* ── Top bar ── */}
-      <div className={clsx(
-        "sticky top-0 z-40 bg-secondary-bg border-b border-borderline flex items-center justify-between ",
-        isMobile 
-          ? "py-3 px-4"
-          : "py-3.5 px-7"
-      )}>
-        <div className="flex items-center gap-2">
-          <span className="text-[18px]">✦</span>
-          <span className="font-heading font-bold text-[18px] text-primary-text-dark">gr3tful</span>
-        </div>
-        <div className={clsx(
-          "flex items-center",
-          isMobile 
-            ? "gap-2.5"
-            : "gap-5"
-        )}>
-          {!isMobile && ["Today","Journal","Settings"].map(n => (
-            <a key={n} href="#" className="font-parag text-[13px] no-underline "
-            style={{  color: n==="Journal" ? "#C4622D" : "#9B6A45", fontWeight: n==="Journal" ? 600 : 400 }}>{n}</a>
-          ))}
-          {/* Tools button on mobile/tablet */}
-          {!showInlineSidebar && (
+      <Navbar 
+        showLinks
+        links={journalLinks}
+        rightContent={
+          !showInlineSidebar && (
             <button 
-              onClick={() => setSidebarOpen(true)} 
-              className="bg-secondary-bg border border-borderline rounded-[10px] py-1.5 px-3 font-parag text-xs text-secondary cursor-pointer flex items-center gap-1.5"
+              onClick={() => setSidebarOpen(true)}
+              className="bg-fwhite border border-borderline rounded-[10px] py-1.5 px-3 font-parag text-xs text-secondary cursor-pointer flex items-center gap-1.5"
             >
               📅 Tools
-            </button>
-          )}
-        </div>
-      </div>
+            </button>  
+          )
+        }/>
+     
 
       {/* ── Slide-over drawer (mobile + tablet) ── */}
       {!showInlineSidebar && (
