@@ -12,7 +12,8 @@ function LandingPage () {
     return (
         <>
             <MobileNavbar 
-              showLinks={true}/>
+              showLinks={true}
+              showCTA = {true}/>
             <HeroSection />
             <HowItWorksSection />
             <FeaturesSection />
