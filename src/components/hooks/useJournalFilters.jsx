@@ -1,15 +1,14 @@
 import { useState, useMemo } from "react";
-import { RAW_ENTRIES } from "../data/JournalData";
 import {formatDate, getMonth } from "../utils/NewDateUtil";
 
-const useJournalFilters = () => {
+const useJournalFilters = (entries = []) => {
     const [calDate, setCalDate]         = useState(null);
     const [activeTag, setActiveTag]     = useState(null);
     const [search, setSearch]           = useState("");
 
 
      const filtered = useMemo(() => {
-        return RAW_ENTRIES.filter(e => {
+        return entries.filter(e => {
           if (calDate && e.date !== calDate) return false;
           if (activeTag && !e.tags.includes(activeTag)) return false;
           if (search) {

@@ -1,13 +1,12 @@
 import React from "react";
 import { MiniCalendar } from "./MiniCalendar";
-import { RAW_ENTRIES } from "../data/JournalData";
 // ── Sidebar content ───────────────────────────────────────────────────────
-function Sidebar({ calDate, setCalDate, setSearch }) {
+function Sidebar({ entries, calDate, setCalDate, setSearch }) {
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
       <div>
         <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:"#C4622D", textTransform:"uppercase", letterSpacing:2, marginBottom:10 }}>Browse by date</p>
-        <MiniCalendar entries={RAW_ENTRIES} selectedDate={calDate} onSelect={d => { setCalDate(d); setSearch(""); }} />
+        <MiniCalendar entries={entries} selectedDate={calDate} onSelect={d => { setCalDate(d); setSearch(""); }} />
       </div>
       <div style={{ background:"#3D2314", borderRadius:20, padding:22, position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", top:-20, right:-20, width:100, height:100, borderRadius:"50%", background:"rgba(245,166,35,0.08)" }} />

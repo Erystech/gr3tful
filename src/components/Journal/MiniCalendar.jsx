@@ -8,8 +8,8 @@ const arrowBtn = {
   padding:"2px 8px", borderRadius:6,
 };
 
-function MiniCalendar({ entries, selectedDate, onSelect }) {
-  const [viewDate, setViewDate] = useState(new Date("2026-03-01"));
+function MiniCalendar({ entries=[], selectedDate, onSelect }) {
+  const [viewDate, setViewDate] = useState(new Date());
   const entryDates = new Set(entries.map(e => e.date));
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
@@ -39,7 +39,7 @@ function MiniCalendar({ entries, selectedDate, onSelect }) {
           const dateStr = pad(day);
           const hasEntry = entryDates.has(dateStr);
           const isSelected = selectedDate === dateStr;
-          const isToday = dateStr === "2026-03-07";
+          const isToday = dateStr === new Date().toISOString().split("T")[0];
           return (
             <button key={i} onClick={() => hasEntry && onSelect(isSelected ? null : dateStr)} style={{
               width:"100%", aspectRatio:"1", borderRadius:8,

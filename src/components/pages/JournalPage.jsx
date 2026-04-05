@@ -1,4 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
+import { supabase } from "../../Supabaseclient";
+import { useAuth } from  "../context/AuthContext"
 import clsx from "clsx";
 import Navbar from "../Navbar";
 import { TAGS, TAG_EMOJIS, RAW_ENTRIES } from "../data/JournalData";
@@ -11,25 +13,52 @@ import useJournalFilters from "../hooks/useJournalFilters";
 
 // ── Main Page ─────────────────────────────────────────────────────────────
 export default function JournalPage() {
+  const {user} = useAuth();
+  const [entries, setEntries] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId]   = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const {search, setSearch, activeTag, setActiveTag, calDate, setCalDate, filtered, grouped} = useJournalFilters(entries);
   const width = useWindowWidth();
   const isMobile = width < 768;
   const showInlineSidebar = width >= 1024;
 
   const topTag = useMemo(() => {
     const freq = {};
-    RAW_ENTRIES.forEach(e => e.tags.forEach(t => { freq[t] = (freq[t]||0)+1; }));
+    entries.forEach(e => e.tags.forEach(t => { freq[t] = (freq[t]||0)+1; }));
     return Object.entries(freq).sort((a,b) => b[1]-a[1])[0]?.[0] ?? "—";
   }, []);
 
-  const {search, setSearch, activeTag, setActiveTag, calDate, setCalDate, filtered, grouped} = useJournalFilters();
+useEffect(() => {
+  async function fetchEntries() {
+    const { data, error } = await supabase
+    .from("entries")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false});
+
+    if(!error) {
+      // Transform supabase shape -> component shape
+      const transformed = data.map((row) => ({
+        date: row.created_at.split("T")[0],
+        entries: [row.item_1, row.item_2, row.item_3],
+        tags: row.tags ?? [],
+      }));
+      setEntries(transformed);
+    }
+    setLoading(false);
+  }
+  if (user) fetchEntries();
+}, [user]);
+ 
 
  const journalLinks = [
   { label: "Today",    href: "/entry"   },
   { label: "Journal",  href: "#",        active: true },
   { label: "Settings", href: "#"        },
 ];
+if (loading) 
+      return <div className="text-center pt-40 font-parag text-secondary-text">Loading your entries…</div>;
 
   return (
     <div className="min-h-screen bg-secondary-bg">
@@ -37,6 +66,7 @@ export default function JournalPage() {
         .tag-scroll::-webkit-scrollbar { display:none; }
         .tag-scroll { -ms-overflow-style:none; scrollbar-width:none; }
       `}</style>
+      
       <Navbar 
         showLinks
         links={journalLinks}
@@ -72,6 +102,7 @@ export default function JournalPage() {
                 className="bg-transparent border-none cursor-pointer text-xl text-darkerb">✕</button>
             </div>
             <Sidebar
+              entries={entries}
               calDate={calDate}
               setCalDate={d => { setCalDate(d); setSidebarOpen(false); }}
               setSearch={setSearch}
@@ -104,7 +135,7 @@ export default function JournalPage() {
           </div>
 
           {/* Stats */}
-          <StatsBar total={RAW_ENTRIES.length} streak={20} topTag={topTag} isMobile={isMobile} />
+          <StatsBar total={entries.length} streak={20} topTag={topTag} isMobile={isMobile} />
 
           {/* Search */}
           <div className="relative mb-3.5">
