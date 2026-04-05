@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import {getRandomPrompt} from "../utils/Prompts";
 import ProgressRing from "../ProgressRing";
@@ -12,6 +14,8 @@ import { supabase } from "../../Supabaseclient";
 
 
 export default function DailyEntryPage() {
+  const navigate = useNavigate();
+
   const [entries, setEntries] = useState(["", "", ""]);
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [placeholders, setPlaceholders] = useState([0, 1, 2].map(() => getRandomPrompt()));
@@ -60,12 +64,16 @@ export default function DailyEntryPage() {
     return;
   }
 
+  toast.success("Gratitudes saved! ");
+  setTimeout(() => navigate("/journal"), 2000);
+
   setSubmitted(true);
 };
 
   return (
     <>
     <div className="min-h-screen bg-fwhite">
+      <Toaster position="top-center" />
       <Navbar 
         showLinks={false}
         showStreak

@@ -32,6 +32,9 @@
 
     /* Text entry animation */
     --animate-fade-slide-up-text: fadeSlideUp 0.5s ease forwards 0.45s;
+
+    /* pop-in animation */
+    --animate-pop-in: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
 }
 
 @keyframes float {
@@ -55,3 +58,15 @@
         font-style: italic;
     }
 }
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
