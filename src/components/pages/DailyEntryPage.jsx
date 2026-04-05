@@ -7,6 +7,7 @@ import SuccessState from "../SuccessState";
 import SubmitButton from "../SubmitButton"
 import MoodTagPicker from "../MoodTagPicker";
 import { formatDate } from "../utils/NewDateUtil";
+import { supabase } from "../../Supabaseclient";
 
 
 
@@ -39,10 +40,28 @@ export default function DailyEntryPage() {
     });
   };
 
-  const handleSubmit = () => {
-    if (!allFilled) return;
-    setSubmitted(true);
-  };
+  const handleSubmit = async () => {
+  if (!allFilled) return;
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const { error } = await supabase
+    .from("entries")
+    .insert({
+      user_id: user.id,
+      item_1: entries[0],
+      item_2: entries[1],
+      item_3: entries[2],
+      tags: selectedTags.map((t) => t.label),
+    });
+
+  if (error) {
+    console.error(error.message);
+    return;
+  }
+
+  setSubmitted(true);
+};
 
   return (
     <>
@@ -137,7 +156,7 @@ export default function DailyEntryPage() {
            <SubmitButton 
               allFilled={allFilled} 
               filledCount={filledCount} 
-              onSubmit={() => allFilled && setSubmitted(true)} />  
+              onSubmit={() => allFilled && handleSubmit()} />  
             
 
             {/* Bottom quote */}
