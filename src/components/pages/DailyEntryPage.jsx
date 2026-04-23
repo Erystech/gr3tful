@@ -49,6 +49,8 @@ export default function DailyEntryPage() {
 
   const { data: { user } } = await supabase.auth.getUser();
 
+  
+
   const { error } = await supabase
     .from("entries")
     .insert({
@@ -59,15 +61,17 @@ export default function DailyEntryPage() {
       tags: selectedTags.map((t) => t.label),
     });
 
-  if (error) {
-    console.error(error.message);
+ if(error) {
+    toast.error("Couldn't save. Please try again");
     return;
   }
 
-  toast.success("Gratitudes saved! ");
-  setTimeout(() => navigate("/journal"), 2000);
-
   setSubmitted(true);
+  toast.success("Gratitudes saved! ");
+  const timer = setTimeout(() => navigate("/journal"), 2000);
+  return () => clearTimeout(timer);
+
+  
 };
 
   return (

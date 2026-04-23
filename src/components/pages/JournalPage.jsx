@@ -27,7 +27,7 @@ export default function JournalPage() {
     const freq = {};
     entries.forEach(e => e.tags.forEach(t => { freq[t] = (freq[t]||0)+1; }));
     return Object.entries(freq).sort((a,b) => b[1]-a[1])[0]?.[0] ?? "—";
-  }, []);
+  }, [entries]);
 
 useEffect(() => {
   async function fetchEntries() {
@@ -101,11 +101,8 @@ if (loading)
               <button onClick={() => setSidebarOpen(false)} 
                 className="bg-transparent border-none cursor-pointer text-xl text-darkerb">✕</button>
             </div>
-            <Sidebar
-              entries={entries}
-              calDate={calDate}
-              setCalDate={d => { setCalDate(d); setSidebarOpen(false); }}
-              setSearch={setSearch}
+            <Sidebar 
+              entries={entries} calDate={calDate} setCalDate={setCalDate} setSearch={setSearch}
             />
           </div>
         </>

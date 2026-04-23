@@ -19,7 +19,7 @@ const useJournalFilters = (entries = []) => {
           }
           return true;
         });
-      }, [search, activeTag, calDate]);
+      }, [entries, search, activeTag, calDate]);
     
       
 
