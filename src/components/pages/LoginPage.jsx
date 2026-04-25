@@ -28,7 +28,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-fwhite flex items-center justify-center p-6 font-parag">
       
 
-      <div className="w-full max-w-[420px] animate-fade-slide-up">
+      <div className="w-full max-w-105 animate-fade-slide-up">
         {/* Logo */}
         <div className="text-center mb-10">
           <div className="text-3xl mb-2">✦</div>

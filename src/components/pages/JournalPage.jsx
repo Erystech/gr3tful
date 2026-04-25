@@ -234,7 +234,7 @@ if (loading)
         {/* ── Inline sidebar (desktop ≥1024px only) ── */}
         {showInlineSidebar && (
           <div className="animate-fade-slide-up-text ">
-            <Sidebar calDate={calDate} setCalDate={setCalDate} setSearch={setSearch} />
+            <Sidebar entries={entries} calDate={calDate} setCalDate={setCalDate} setSearch={setSearch} />
           </div>
         )}
       </div>
