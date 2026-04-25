@@ -155,7 +155,7 @@ if (loading)
           </div>
 
           {/* Stats */}
-          <StatsBar total={entries.length} streak={20} topTag={topTag} isMobile={isMobile} />
+          <StatsBar total={entries.length} streak={streak} topTag={topTag} isMobile={isMobile} />
 
           {/* Search */}
           <div className="relative mb-3.5">
@@ -180,7 +180,7 @@ if (loading)
                   "cursor-pointer font-parag text-xs rounded-full py-1.5 px-4 whitespace-nowrap transition-all duration-200",
                   !activeTag ? "bg-secondary border-none text-fwhite" : "bg-borderline-light border-borderline text-secondary-text" 
                 )}>All</button>
-              {TAGS.map(tag => {
+              {availableTags.map(tag => {
                 const on = activeTag === tag;
                 return (
                   <button key={tag} onClick={() => setActiveTag(on ? null : tag)}
