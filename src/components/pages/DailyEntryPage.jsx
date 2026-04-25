@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
@@ -44,12 +44,32 @@ export default function DailyEntryPage() {
       return next;
     });
   };
-
+const timerRef = useRef(null);
+useEffect(() => {
+  return () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  };
+}, []);
   const handleSubmit = async () => {
   if (!allFilled) return;
 
   const { data: { user } } = await supabase.auth.getUser();
 
+  const todayStr = new Date().toISOString().split("T")[0];
+    const { data: existing } = await supabase
+      .from("entries")
+      .select("id")
+      .eq("user_id", user.id)
+      .gte("created_at", `${todayStr}T00:00:00`)
+      .lte("created_at", `${todayStr}T23:59:59`)
+      .maybeSingle();
+
+    if (existing) {
+      toast.error("You've already journaled today. Come back tomorrow!");
+      return;
+    }
   
 
   const { error } = await supabase
@@ -69,10 +89,11 @@ export default function DailyEntryPage() {
 
   setSubmitted(true);
   toast.success("Gratitudes saved! ");
-  const timer = setTimeout(() => navigate("/journal"), 2000);
-  return () => clearTimeout(timer);
-
   
+
+  timerRef.current = setTimeout(() => {
+    navigate("/journal");
+  }, 2000);
 };
 
   return (

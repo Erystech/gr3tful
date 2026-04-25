@@ -1,9 +1,11 @@
 import { useState, useMemo, useEffect } from "react";
 import { supabase } from "../../supabaseClient";
 import { useAuth } from  "../context/AuthContext"
+import { Link } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import clsx from "clsx";
 import Navbar from "../Navbar";
-import { TAGS, TAG_EMOJIS, RAW_ENTRIES } from "../data/JournalData";
+import { TAGS, TAG_EMOJIS } from "../data/JournalData";
 import { formatDate,  formatShort, getMonth }  from "../utils/NewDateUtil";
 import { calcStreak } from "../utils/streakUtil";
 import useWindowWidth from "../hooks/useWindowWidth";
@@ -34,6 +36,8 @@ export default function JournalPage() {
   [...new Set(entries.flatMap(e => e.tags))],
   [entries]
 );
+
+const streak = useMemo(() => calcStreak(entries), [entries]);
 
 useEffect(() => {
   async function fetchEntries() {
@@ -72,7 +76,7 @@ if (loading)
         .tag-scroll::-webkit-scrollbar { display:none; }
         .tag-scroll { -ms-overflow-style:none; scrollbar-width:none; }
       `}</style>
-      
+      <Toaster position="top-center" />
       <Navbar 
         showLinks
         links={journalLinks}
