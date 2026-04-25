@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../../Supabaseclient";
+import { supabase } from "../../supabaseClient";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -80,18 +80,19 @@ export default function LoginPage() {
           <button
             onClick={handleLogin}
             disabled={loading || !email || !password}
-            className="w-full p-3.5 rounded-2xl font-heading text-[16px] italic font-bold "
-            style={{
-              background: loading || !email || !password
-                ? "rgba(196,98,45,0.2)"
-                : "linear-gradient(135deg, #C4622D, #E07B3A)",
-              color: loading || !email || !password ? "rgba(196,98,45,0.5)" : "#FFF8F0",
-              cursor: loading || !email || !password ? "not-allowed" : "pointer",
-              transition: "all 0.2s",
-            }}
+            className="w-full p-3.5 rounded-2xl font-heading text-[16px] italic font-bold
+              [background:linear-gradient(135deg,#C4622D,#E07B3A)]
+              text-fwhite
+              cursor-pointer
+              transition-all
+              duration-200
+              disabled:[background:rgba(196,98,45,0.2)]
+              disabled:text-secondary/50
+              disabled:cursor-not-allowed"
           >
             {loading ? "Signing in…" : "Sign in →"}
           </button>
+
         </div>
 
         {/* Footer */}

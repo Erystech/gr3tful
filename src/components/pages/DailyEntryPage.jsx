@@ -3,13 +3,14 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import {getRandomPrompt} from "../utils/Prompts";
+import { calcStreak } from "../utils/streakUtil";
 import ProgressRing from "../ProgressRing";
 import GratitudeInput from "../GratitudeInput";
 import SuccessState from "../SuccessState";
 import SubmitButton from "../SubmitButton"
 import MoodTagPicker from "../MoodTagPicker";
 import { formatDate } from "../utils/NewDateUtil";
-import { supabase } from "../../Supabaseclient";
+import { supabase } from "../../supabaseClient";
 
 
 
@@ -21,7 +22,7 @@ export default function DailyEntryPage() {
   const [placeholders, setPlaceholders] = useState([0, 1, 2].map(() => getRandomPrompt()));
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitted, setSubmitted] = useState(false);
-  const [streak] = useState(20);
+  const [streak] = useState();
 
   const today = new Date().toISOString().split("T")[0];
 

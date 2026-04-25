@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 import { useState } from "react";
 
@@ -22,18 +23,18 @@ function MiniCalendar({ entries=[], selectedDate, onSelect }) {
   const pad = n => `${year}-${String(month+1).padStart(2,"0")}-${String(n).padStart(2,"0")}`;
 
   return (
-    <div style={{ background:"#FFF8F0", borderRadius:20, padding:20, border:"1px solid rgba(196,98,45,0.12)" }}>
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16 }}>
+    <div className="bg-fwhite rounded-3xl p-5 border border-borderline">
+      <div className="flex items-center justify-between mb-4">
         <button onClick={() => setViewDate(new Date(year, month-1, 1))} style={arrowBtn}>‹</button>
-        <span style={{ fontFamily:"'Playfair Display',serif", fontSize:14, color:"#3D2314", fontWeight:700 }}>{monthLabel}</span>
+        <span className="font-heading text-[14px] text-darkb font-bold">{monthLabel}</span>
         <button onClick={() => setViewDate(new Date(year, month+1, 1))} style={arrowBtn}>›</button>
       </div>
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", marginBottom:6 }}>
+      <div  className="grid grid-cols-7 mb-1.5">
         {["S","M","T","W","T","F","S"].map((d,i) => (
-          <div key={i} style={{ textAlign:"center", fontFamily:"'Lora',serif", fontSize:10, color:"#C4A882", padding:"2px 0" }}>{d}</div>
+          <div key={i} className="text-center font-parag text-xs text-gray-t py-0.5 px-0">{d}</div>
         ))}
       </div>
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2 }}>
+      <div className="grid grid-cols-7 gap-0.5">
         {cells.map((day, i) => {
           if (!day) return <div key={i} />;
           const dateStr = pad(day);
@@ -41,19 +42,17 @@ function MiniCalendar({ entries=[], selectedDate, onSelect }) {
           const isSelected = selectedDate === dateStr;
           const isToday = dateStr === new Date().toISOString().split("T")[0];
           return (
-            <button key={i} onClick={() => hasEntry && onSelect(isSelected ? null : dateStr)} style={{
-              width:"100%", aspectRatio:"1", borderRadius:8,
-              border: isToday ? "1.5px solid #C4622D" : "none",
-              background: isSelected ? "#C4622D" : hasEntry ? "rgba(196,98,45,0.1)" : "transparent",
-              fontFamily:"'Lora',serif", fontSize:12,
-              color: isSelected ? "#FFF8F0" : hasEntry ? "#C4622D" : "#C4A882",
-              cursor: hasEntry ? "pointer" : "default",
-              fontWeight: hasEntry ? 600 : 400,
-              transition:"all 0.2s", position:"relative",
-            }}>
+            <button key={i} onClick={() => hasEntry && onSelect(isSelected ? null : dateStr)}
+              className= {clsx(
+                "w-full aspect-square rounded-lg font-parag text-xs transition-all duration-200 relative",
+                isToday ? "border border-secondary" : "border-none",
+                isSelected ? "bg-secondary text-fwhite" : hasEntry ? "bg-secondary/10 text-secondary" : "bg-transparent text-gray-t",
+                hasEntry ? "cursor-pointer font-semibold" : "cursor-default font-normal"
+                
+              )}>
               {day}
               {hasEntry && !isSelected && (
-                <span style={{ position:"absolute", bottom:2, left:"50%", transform:"translateX(-50%)", width:4, height:4, borderRadius:"50%", background:"#C4622D", display:"block" }} />
+                <span className="absolute bottom-2 left-1/2 w-1 h-1 rounded-full bg-secondary block -translate-x-1/2"/>
               )}
             </button>
           );

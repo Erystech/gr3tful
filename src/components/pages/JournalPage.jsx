@@ -1,10 +1,11 @@
 import { useState, useMemo, useEffect } from "react";
-import { supabase } from "../../Supabaseclient";
+import { supabase } from "../../supabaseClient";
 import { useAuth } from  "../context/AuthContext"
 import clsx from "clsx";
 import Navbar from "../Navbar";
 import { TAGS, TAG_EMOJIS, RAW_ENTRIES } from "../data/JournalData";
 import { formatDate,  formatShort, getMonth }  from "../utils/NewDateUtil";
+import { calcStreak } from "../utils/streakUtil";
 import useWindowWidth from "../hooks/useWindowWidth";
 import EntryCard from "../Journal/EntryCard";
 import StatsBar from "../Journal/StatsBar";
@@ -28,6 +29,11 @@ export default function JournalPage() {
     entries.forEach(e => e.tags.forEach(t => { freq[t] = (freq[t]||0)+1; }));
     return Object.entries(freq).sort((a,b) => b[1]-a[1])[0]?.[0] ?? "—";
   }, [entries]);
+
+  const availableTags = useMemo(() =>
+  [...new Set(entries.flatMap(e => e.tags))],
+  [entries]
+);
 
 useEffect(() => {
   async function fetchEntries() {
@@ -80,6 +86,19 @@ if (loading)
             </button>  
           )
         }/>
+
+        {!loading && entries.length === 0 && (
+          <div className="text-center py-24">
+            <p className="text-5xl mb-4">✦</p>
+            <h2 className="font-heading text-2xl text-darkb mb-2">Your story starts today.</h2>
+            <p className="font-parag text-sm text-secondary-text italic mb-6">
+              You haven't written any entries yet.
+            </p>
+            <Link to="/entry" className="bg-secondary text-fwhite rounded-full py-3 px-8 font-parag italic text-sm">
+              Write your first entry →
+            </Link>
+          </div>
+        )}
      
 
       {/* ── Slide-over drawer (mobile + tablet) ── */}

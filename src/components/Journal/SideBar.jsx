@@ -3,26 +3,26 @@ import { MiniCalendar } from "./MiniCalendar";
 // ── Sidebar content ───────────────────────────────────────────────────────
 function Sidebar({ entries, calDate, setCalDate, setSearch }) {
   return (
-    <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
+    <div className="flex flex-col gap-5">
       <div>
-        <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:"#C4622D", textTransform:"uppercase", letterSpacing:2, marginBottom:10 }}>Browse by date</p>
+        <p className="font-parag text-xs text-secondary uppercase tracking-[2px] mb-2.5">Browse by date</p>
         <MiniCalendar entries={entries} selectedDate={calDate} onSelect={d => { setCalDate(d); setSearch(""); }} />
       </div>
-      <div style={{ background:"#3D2314", borderRadius:20, padding:22, position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", top:-20, right:-20, width:100, height:100, borderRadius:"50%", background:"rgba(245,166,35,0.08)" }} />
-        <span style={{ fontSize:22, display:"block", marginBottom:10 }}>💌</span>
-        <p style={{ fontFamily:"'Playfair Display',serif", fontSize:16, color:"#FFF8F0", marginBottom:6, letterSpacing:"-0.3px" }}>One year ago…</p>
-        <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#C4A882", lineHeight:1.6, fontStyle:"italic", marginBottom:16 }}>"The way the sunset turned everything gold"</p>
-        <button style={{ background:"rgba(245,166,35,0.15)", border:"1px solid rgba(245,166,35,0.25)", borderRadius:100, padding:"8px 16px", fontFamily:"'Lora',serif", fontSize:12, color:"#F5A623", cursor:"pointer" }}>
+      <div className="bg-darkb rounded-3xl p-6 relative overflow-hidden">
+        <div className="absolute top-5 -right-5 w-full h-full rounded-full bg-borderline-light"/>
+        <span className="text-2xl block mb-2.5">💌</span>
+        <p className="font-heading text-xl text-fwhite mb-1.5 -tracking-[-0.3px]">One year ago…</p>
+        <p className="font-parag text-[13px] text-gray-t leading-1.5 italic mb-4">"The way the sunset turned everything gold"</p>
+        <button className="bg-borderline-light border border-borderline rounded-full py-2 px-4 font-parag text-xs text-gold cursor-pointer">
           See more ↗
         </button>
       </div>
-      <div style={{ background:"#FFF8F0", border:"1px solid rgba(196,98,45,0.12)", borderRadius:20, padding:20 }}>
-        <p style={{ fontFamily:"'Playfair Display',serif", fontSize:15, color:"#3D2314", marginBottom:6 }}>Export your journal</p>
-        <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#9B6A45", lineHeight:1.6, marginBottom:16 }}>Download all your entries as a PDF or CSV file.</p>
-        <div style={{ display:"flex", gap:8 }}>
+      <div className="bg-fwhite border border-borderline rounded-3xl p-5 ">
+        <p className="font-heading text-[15px] text-darkb mb-1.5 ">Export your journal</p>
+        <p className="font-parag text-xs text-borderline-light leading-1.5 mb-4">Download all your entries as a PDF or CSV file.</p>
+        <div className="flex gap-2">
           {["PDF","CSV"].map(fmt => (
-            <button key={fmt} style={{ flex:1, background:"rgba(196,98,45,0.07)", border:"1px solid rgba(196,98,45,0.15)", borderRadius:10, padding:10, fontFamily:"'Lora',serif", fontSize:13, color:"#7A4A2A", cursor:"pointer", transition:"all 0.2s" }}
+            <button key={fmt} className="flex-1 bg-borderline-light border border-borderline rounded-2xl p-2.5 font-parag text-xs text-secondary-text cursor-pointer transition-all duration-200"
               onMouseEnter={e => { e.currentTarget.style.background="#C4622D"; e.currentTarget.style.color="#FFF8F0"; }}
               onMouseLeave={e => { e.currentTarget.style.background="rgba(196,98,45,0.07)"; e.currentTarget.style.color="#7A4A2A"; }}
             >↓ {fmt}</button>
