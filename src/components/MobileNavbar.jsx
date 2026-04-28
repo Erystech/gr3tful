@@ -14,9 +14,9 @@ function MobileNavbar(props) {
             className="bg-transparent cursor-pointer flex md:hidden flex-col gap-1.5 p-2"
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            <span className={`block w-[22px] h-[2px] bg-[#3D2314] transition-all ${menuOpen ? "rotate-45 translate-y-[4px]" : ""}`} />
-            <span className={`block w-[22px] h-[2px] bg-[#3D2314] transition-all ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`block w-[22px] h-[2px] bg-[#3D2314] transition-all ${menuOpen ? "-rotate-45 -translate-y-[4px]" : ""}`} />
+            <span className={`block w-5.5 h-0.5 bg-darkb transition-all ${menuOpen ? "rotate-45 translate-y-[4px]" : ""}`} />
+            <span className={`block w-5.5 h-0.5 bg-darkb transition-all ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-5.5 h-0.5 bg-darkb transition-all ${menuOpen ? "-rotate-45 -translate-y-[4px]" : ""}`} />
           </button>
         ),
         dropdown: (
@@ -33,10 +33,10 @@ function MobileNavbar(props) {
               </a>
             ))}
             <Link
-              to="/signup"
+              to="/login"
               className="bg-secondary text-fwhite rounded-full py-3.5 px-6 cursor-pointer italic"
             >
-              Begin today →
+              Login
             </Link>
           </div>
         ),

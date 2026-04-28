@@ -53,10 +53,10 @@ function NavBar({
 
               {showCTA && (
                 <Link
-                  to="/signup"
+                  to="/login"
                   className="bg-secondary text-fwhite rounded-full py-2.5 px-6 font-parag text-[14px] italic"
                 >
-                  Begin today →
+                  Login
                 </Link>
               )}
             </div>

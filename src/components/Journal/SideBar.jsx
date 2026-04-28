@@ -1,5 +1,5 @@
 import React from "react";
-import { MiniCalendar } from "./MiniCalendar";
+import  MiniCalendar  from "./MiniCalendar";
 
 // ── Sidebar content ───────────────────────────────────────────────────────
 function Sidebar({ entries, calDate, setCalDate, setSearch }) {

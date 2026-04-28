@@ -1,4 +1,6 @@
 import React from "react";
+import MiniCalendar from "./MiniCalendar";
+import clsx from "clsx";
 
 // ── Stats Bar ─────────────────────────────────────────────────────────────
 function StatsBar({ total, streak, topTag, isMobile }) {
@@ -8,12 +10,23 @@ function StatsBar({ total, streak, topTag, isMobile }) {
     { label:"Top theme", value:topTag, icon:"🏷️" },
   ];
   return (
-    <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap: isMobile ? 8 : 12, marginBottom:24 }}>
+    <div className={clsx(
+      "grid grid-rows-3 mb-6",
+      isMobile ? "gap-2" : "gap-3"
+    )}>
       {stats.map(s => (
-        <div key={s.label} style={{ background:"#FFF8F0", border:"1px solid rgba(196,98,45,0.12)", borderRadius:16, padding: isMobile ? "10px 10px" : "16px 18px" }}>
-          <span style={{ fontSize: isMobile ? 16 : 20 }}>{s.icon}</span>
-          <p style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(14px,3vw,22px)", color:"#3D2314", fontWeight:700, margin:"4px 0 2px", letterSpacing:"-0.5px" }}>{s.value}</p>
-          <p style={{ fontFamily:"'Lora',serif", fontSize: isMobile ? 10 : 12, color:"#9B6A45" }}>{s.label}</p>
+        <div key={s.label} className={clsx(
+          "bg-fwhite border border-borderline rounded-2xl",
+          isMobile ? "px-2.5 py-2.5" : "px-4 py-5"
+        )}>
+          <span className={clsx(
+            isMobile ? "text-[16px]" :"text-xl"
+          )}>{s.icon}</span>
+          <p className="font-heading text-darkb font-bold my-1 mx-0.5 -tracking-tighter">{s.value}</p>
+          <p className={clsx(
+            "font-parag text-footer-text",
+            isMobile ? "text-[10px]" : "text-xs"
+          )}>{s.label}</p>
         </div>
       ))}
     </div>
