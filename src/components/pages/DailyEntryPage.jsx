@@ -10,7 +10,7 @@ import SuccessState from "../SuccessState";
 import SubmitButton from "../SubmitButton"
 import MoodTagPicker from "../MoodTagPicker";
 import { formatDate } from "../utils/NewDateUtil";
-import { supabase } from "../../supabaseClient";
+import { supabase } from "../../supabaseClient.js"
 
 
 
