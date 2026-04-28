@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 
 export default function LoginPage() {
@@ -8,6 +9,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+  const justConfirmed = searchParams.get("confirmed") === "true";
 
   async function handleLogin() {
     setError(null);
@@ -42,6 +45,11 @@ export default function LoginPage() {
 
         {/* Card */}
         <div className="bg-fwhite border border-borderline rounded-3xl py-9 px-8">
+          {justConfirmed && (
+            <div className="bg-secondary/10 border border-borderline rounded-xl py-3 px-4 mb-5 text-[13px] text-secondary font-parag italic">
+              ✦ Check your inbox and confirm your email before signing in.
+            </div>
+          )}
           {/* Email */}
           <div className="mb-4">
             <label className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
