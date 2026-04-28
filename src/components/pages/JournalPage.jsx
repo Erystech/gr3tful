@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { supabase } from "../../supabaseClient";
+import { supabase } from "../../../supabaseClient"
 import { useAuth } from  "../context/AuthContext"
 import { Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
