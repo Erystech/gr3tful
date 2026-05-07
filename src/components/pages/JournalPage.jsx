@@ -7,7 +7,7 @@ import clsx from "clsx";
 import Navbar from "../Navbar";
 import { TAGS, TAG_EMOJIS } from "../data/JournalData";
 import { formatDate,  formatShort, getMonth }  from "../utils/NewDateUtil";
-import { calcStreak } from "../utils/streakUtil";
+import { useStreak } from "../hooks/useStreak";
 import useWindowWidth from "../hooks/useWindowWidth";
 import EntryCard from "../Journal/EntryCard";
 import StatsBar from "../Journal/StatsBar";
@@ -37,7 +37,7 @@ export default function JournalPage() {
   [entries]
 );
 
-const streak = useMemo(() => calcStreak(entries), [entries]);
+const streak = useStreak();
 
 useEffect(() => {
   async function fetchEntries() {
@@ -71,7 +71,7 @@ if (loading)
       return <div className="text-center pt-40 font-parag text-secondary-text">Loading your entries…</div>;
 
   return (
-    <div className="min-h-screen bg-secondary-bg">
+    <div className=" min-h-screen bg-secondary-bg">
       <style>{`
         .tag-scroll::-webkit-scrollbar { display:none; }
         .tag-scroll { -ms-overflow-style:none; scrollbar-width:none; }
@@ -134,7 +134,7 @@ if (loading)
       {/* ── Page body ── */}
       <div 
         className={clsx(
-          "max-w-275 mx-auto grid gap-7 items-start ",
+          "mt-12 max-w-275 mx-auto grid gap-7 items-start ",
           showInlineSidebar ? "grid-cols-[1fr_300px]" : "grid-cols-1",
           isMobile 
             ? "pt-7 px-4 pb-20"

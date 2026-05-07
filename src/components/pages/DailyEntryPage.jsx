@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import {getRandomPrompt} from "../utils/Prompts";
-import { calcStreak } from "../utils/streakUtil";
+import { useStreak } from "../hooks/useStreak.jsx";
 import ProgressRing from "../ProgressRing";
 import GratitudeInput from "../GratitudeInput";
 import SuccessState from "../SuccessState";
@@ -22,9 +22,12 @@ export default function DailyEntryPage() {
   const [placeholders, setPlaceholders] = useState([0, 1, 2].map(() => getRandomPrompt()));
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitted, setSubmitted] = useState(false);
-  const [streak] = useState();
 
   const today = new Date().toISOString().split("T")[0];
+
+  const streak = useStreak();
+
+  
 
   const filledCount = entries.filter((e) => e.trim().length > 0).length;
   const allFilled = filledCount === 3;
