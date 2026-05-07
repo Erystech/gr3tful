@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -7,17 +8,16 @@ function Footer() {
       
     >
       {/* Logo */}
-      <div className="flex items-center gap-2">
+      <Link to="/" className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
         <span className="text-2xl">✦</span>
         <span className="font-heading text-gray-t" 
         style={{fontSize: 16}}>
           gr3tful
         </span>
-      </div>
+      </Link>
 
       <p
-        className="font-parag text-footer-text text-center order-last md:order-none"
-        style={{fontSize: 13}}
+        className="font-parag text-footer-text text-center text-[13px] order-last md:order-0"
       >
         © 2026 Gr3tful · All rights reserved
       </p>
@@ -28,8 +28,7 @@ function Footer() {
           <a
             key={link}
             href="#"
-            className="font-parag text-footer-text"
-            style={{fontSize: 13}}
+            className="font-parag text-footer-text text-[13px]"
           >
             {link}
           </a>

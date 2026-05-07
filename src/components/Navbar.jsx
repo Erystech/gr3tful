@@ -25,12 +25,12 @@ function NavBar({
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-fwhite flex items-center justify-between px-6 md:px-10 py-4 md:py-5 backdrop-blur-md">
         {/* Logo */}
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <span className="text-2xl">✦</span>
           <span className="font-heading font-bold text-[20px] text-darkb tracking-tight">
             gr3tful
           </span>
-        </div>
+        </Link>
 
         {/* Desktop Links */}
         <div className="flex items-center gap-6">
