@@ -104,11 +104,6 @@ useEffect(() => {
         showLinks={false}
         showStreak
         streak={streak}
-        rightContent={
-           <div className="w-8 h-8 rounded-full bg-orange-400 flex items-center justify-center">
-            🌸
-          </div>
-        }
       />
       
       
