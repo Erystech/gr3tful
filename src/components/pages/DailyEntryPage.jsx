@@ -9,6 +9,7 @@ import GratitudeInput from "../GratitudeInput";
 import SuccessState from "../SuccessState";
 import SubmitButton from "../SubmitButton"
 import MoodTagPicker from "../MoodTagPicker";
+import { getJournalDayWindow } from "../utils/dayWindow.js";
 import { formatDate } from "../utils/NewDateUtil";
 import { supabase } from "../../supabaseClient.js"
 
@@ -58,14 +59,14 @@ useEffect(() => {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  const todayStr = new Date().toISOString().split("T")[0];
-    const { data: existing } = await supabase
-      .from("entries")
-      .select("id")
-      .eq("user_id", user.id)
-      .gte("created_at", `${todayStr}T00:00:00`)
-      .lte("created_at", `${todayStr}T23:59:59`)
-      .maybeSingle();
+  const { start, end } = getJournalDayWindow();
+  const { data: existing } = await supabase
+    .from("entries")
+    .select("id")
+    .eq("user_id", user.id)
+    .gte("created_at", start)
+    .lte("created_at", end)
+    .maybeSingle();
 
     if (existing) {
       toast.error("You've already journaled today. Come back tomorrow!");
