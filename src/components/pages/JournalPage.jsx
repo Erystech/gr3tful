@@ -50,6 +50,7 @@ useEffect(() => {
     if(!error) {
       // Transform supabase shape -> component shape
       const transformed = data.map((row) => ({
+        id: row.id,
         date: row.created_at.split("T")[0],
         entries: [row.item_1, row.item_2, row.item_3],
         tags: row.tags ?? [],
@@ -67,6 +68,25 @@ useEffect(() => {
   { label: "Journal",  href: "#",        active: true },
   { label: "Settings", href: "#"        },
 ];
+const handleDelete = async (id) => {
+  const confirmed = window.confirm("Delete this entry? This can't be undone.");
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("entries")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id); // safety: only delete own rows
+
+  if (error) {
+    toast.error("Couldn't delete entry. Try again.");
+    return;
+  }
+
+  setEntries((prev) => prev.filter((e) => e.id !== id));
+  setExpandedId(null);
+  toast.success("Entry deleted.");
+};
 if (loading) 
       return <div className="text-center pt-40 font-parag text-secondary-text">Loading your entries…</div>;
 
@@ -224,9 +244,12 @@ if (loading)
                 </div>
                 <div className="flex flex-col gap-2.5">
                   {monthEntries.map(entry => (
-                    <EntryCard key={entry.date} entry={entry}
-                      isExpanded={expandedId === entry.date}
-                      onToggle={() => setExpandedId(expandedId === entry.date ? null : entry.date)}
+                    <EntryCard 
+                      key={entry.date} 
+                      entry={entry}
+                      isExpanded={expandedId === entry.id}
+                      onToggle={() => setExpandedId(expandedId === entry.id ? null : entry.id)}
+                      onDelete={handleDelete}
                     />
                   ))}
                 </div>
