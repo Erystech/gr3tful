@@ -19,4 +19,4 @@ export const MOOD_TAGS = [
   { label: "Fun", emoji: "🔥"},
 ];
 
-export { TAGS, TAG_EMOJIS, RAW_ENTRIES }
+export { TAGS, TAG_EMOJIS}
