@@ -1,6 +1,6 @@
 // ── Mock Data ─────────────────────────────────────────────────────────────
-const TAGS = ["Family","Health","Work","Nature","Friends","Growth","Joy","Rest"];
-const TAG_EMOJIS = { Family:"👨‍👩‍👧",Health:"🌿",Work:"💼",Nature:"🌤️",Friends:"🤝",Growth:"🌱",Joy:"✨",Rest:"🌙" };
+const TAGS = ["Family","Health","Work","Nature","Friends","Growth","Joy","Rest", "Thoughts", "Activity", "Hobby", "Fun"];
+const TAG_EMOJIS = { Family:"👨‍👩‍👧",Health:"🌿",Work:"💼",Nature:"🌤️",Friends:"🤝",Growth:"🌱",Joy:"✨",Rest:"🌙", Thoughts: "💭", Activity: "✈️", Hobby:"🎨", Fun:"🔥"  };
 
 
 
@@ -13,6 +13,10 @@ export const MOOD_TAGS = [
   { label: "Growth", emoji: "🌱" },
   { label: "Joy", emoji: "✨" },
   { label: "Rest", emoji: "🌙" },
+  { label: "Thoughts", emoji: "💭" },
+  { label: "Activity", emoji: "✈️" },
+  { label: "Hobby", emoji: "🎨" },
+  { label: "Fun", emoji: "🔥"},
 ];
 
 export { TAGS, TAG_EMOJIS, RAW_ENTRIES }
