@@ -27,8 +27,6 @@ export default function DailyEntryPage() {
 
   const streak = useStreak();
 
-  
-
   const filledCount = entries.filter((e) => e.trim().length > 0).length;
   const allFilled = filledCount === 3;
 
