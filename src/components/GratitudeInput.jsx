@@ -19,28 +19,28 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
       }}
     >
       <div
-        className={`rounded-[20px] p-[1px] transition-all duration-300 ${gradient} ${
+        className={`rounded-[20px] p-px transition-all duration-300 ${gradient} ${
           isFocused ? "shadow-[0_8px_32px_rgba(196,98,45,0.2)]" : ""
         }`}
       >
-        <div className="rounded-[19px] bg-[#FFF8F0] px-6 py-5">
+        <div className="rounded-[19px] bg-fwhite px-6 py-5">
 
           {/* Label Row */}
-          <div className="flex items-center justify-between mb-[10px]">
-            <div className="flex items-center gap-[10px]">
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center gap-2.5">
               
               {/* Circle */}
               <span
                 className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors ${
-                  filled || isFocused ? "bg-[#C4622D]" : "bg-[rgba(196,98,45,0.1)]"
+                  filled || isFocused ? "bg-secondary" : "bg-[rgba(196,98,45,0.1)]"
                 }`}
               >
                 {filled ? (
-                  <span className="text-[#FFF8F0] text-[13px]">✓</span>
+                  <span className="text-fwhite text-[13px]">✓</span>
                 ) : (
                   <span
                     className={`font-bold text-[12px] ${
-                      isFocused ? "text-[#C4622D]" : "text-[#9B6A45]"
+                      isFocused ? "text-secondary" : "text-[#9B6A45]"
                     }`}
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
@@ -52,7 +52,7 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
               {/* Label */}
               <span
                 className={`uppercase tracking-[1.5px] text-[12px] transition-colors ${
-                  isFocused ? "text-[#C4622D]" : "text-[#9B6A45]"
+                  isFocused ? "text-secondary" : "text-[#9B6A45]"
                 }`}
                 style={{ fontFamily: "'Lora', serif" }}
               >
@@ -65,14 +65,14 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
               className="text-[11px] text-[rgba(155,106,69,0.5)]"
               style={{ fontFamily: "'Lora', serif" }}
             >
-              {value.length}/200
+              {value.length}/500
             </span>
           </div>
 
           {/* Textarea */}
           <textarea
             value={value}
-            onChange={(e) => onChange(e.target.value.slice(0, 200))}
+            onChange={(e) => onChange(e.target.value.slice(0, 500))}
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder={placeholder}
