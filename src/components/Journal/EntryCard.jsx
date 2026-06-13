@@ -9,9 +9,9 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
   const [draftEntries, setDraftEntries] = useState(entry.entries);
   const [saving, setSaving] = useState(false);
 
-  // // Check if within 24 hours of created_at
-  // const isEditable = entry.created_at &&
-  //   (Date.now() - new Date(entry.created_at).getTime()) < 24 * 60 * 60 * 1000;
+   // Check if within 24 hours of created_at
+    const isEditable = entry.created_at &&
+    (Date.now() - new Date(entry.created_at).getTime()) < 24 * 60 * 60 * 1000;
 
   const handleDelete = (e) => {
     e.stopPropagation();
@@ -82,8 +82,7 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          {isExpanded && !isEditing && (
-            // && isEditable
+          {isExpanded && !isEditing && isEditable && (
             <button
               onClick={handleEditClick}
               title="Edit this entry"
@@ -93,7 +92,7 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
             </button>
           )}
 
-          {isExpanded && !isEditing && (
+          {isExpanded && !isEditing &&  (
             <button
               onClick={handleDelete}
               title="Delete this entry"
@@ -174,11 +173,11 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
               ))}
 
               {/* Subtle hint if edit window has passed */}
-              {/* {!isEditable && (
+              {!isEditable && (
                 <p className="font-parag text-[11px] text-gray-t italic mt-1 text-right">
                   Editing closed after 24 hours
                 </p>
-              )} */}
+              )}
             </div>
           )}
         </div>
