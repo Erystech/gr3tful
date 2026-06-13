@@ -52,6 +52,7 @@ useEffect(() => {
       const transformed = data.map((row) => ({
         id: row.id,
         date: row.created_at.split("T")[0],
+        created_at: row.created_at,
         entries: [row.item_1, row.item_2, row.item_3],
         tags: row.tags ?? [],
       }));
@@ -68,6 +69,30 @@ useEffect(() => {
   { label: "Journal",  href: "#",        active: true },
   { label: "Settings", href: "#"        },
 ];
+
+const handleEdit = async (id, updatedEntries) => {
+  const { error } = await supabase
+    .from("entries")
+    .update({
+      item_1: updatedEntries[0],
+      item_2: updatedEntries[1],
+      item_3: updatedEntries[2],
+    })
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    toast.error("Couldn't save changes. Try again.");
+    return false;
+  }
+
+  setEntries((prev) =>
+    prev.map((e) =>
+      e.id === id ? { ...e, entries: updatedEntries } : e
+    )
+  );
+  return true;
+};
 const handleDelete = async (id) => {
   const confirmed = window.confirm("Delete this entry? This can't be undone.");
   if (!confirmed) return;
@@ -250,6 +275,7 @@ if (loading)
                       isExpanded={expandedId === entry.id}
                       onToggle={() => setExpandedId(expandedId === entry.id ? null : entry.id)}
                       onDelete={handleDelete}
+                      onEdit={handleEdit}  
                     />
                   ))}
                 </div>
