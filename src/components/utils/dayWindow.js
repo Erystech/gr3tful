@@ -46,3 +46,17 @@ export function getCurrentJournalDate() {
 export function isInGracePeriod(referenceDate = new Date()) {
   return referenceDate.getHours() < GRACE_CUTOFF_HOUR;
 }
+
+/**
+ * TEMP — "catch up on a missed day" feature.
+ * Returns the journal-date string for the day before `dateStr`.
+ * Safe to delete once the catch-up feature is removed.
+ */
+export function getPreviousJournalDate(dateStr) {
+  const d = new Date(dateStr + "T12:00:00");
+  d.setDate(d.getDate() - 1);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}

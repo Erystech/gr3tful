@@ -9,11 +9,20 @@ import GratitudeInput from "../GratitudeInput";
 import SuccessState from "../SuccessState";
 import SubmitButton from "../SubmitButton"
 import MoodTagPicker from "../MoodTagPicker";
-import { getJournalDayWindow, getCurrentJournalDate, isInGracePeriod } from "../utils/dayWindow.js";
+import {
+  getJournalDayWindow,
+  getCurrentJournalDate,
+  isInGracePeriod,
+  getPreviousJournalDate, // TEMP: catch-up feature
+} from "../utils/dayWindow.js";
 import { formatDate } from "../utils/NewDateUtil";
 import { supabase } from "../../supabaseClient.js"
 
-
+// ── TEMP FEATURE FLAG ───────────────────────────────────────────────────
+// Lets users back-fill yesterday's entry if they missed it due to the
+// recent bug. Flip to `false` (or delete every block tagged "CATCH-UP")
+// once everyone's had a chance to catch up.
+const ENABLE_YESTERDAY_CATCHUP = true;
 
 export default function DailyEntryPage() {
   const navigate = useNavigate();
@@ -24,13 +33,41 @@ export default function DailyEntryPage() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
+  // CATCH-UP: state for the optional "fill in yesterday" mode
+  const [catchUpMode, setCatchUpMode] = useState(false);
+  const [yesterdayMissing, setYesterdayMissing] = useState(false);
+
   const today = getCurrentJournalDate();
+  const yesterday = useMemo(() => getPreviousJournalDate(today), [today]);
+  const activeDate = catchUpMode ? yesterday : today;
   const inGracePeriod = isInGracePeriod();
 
   const streak = useStreak();
 
   const filledCount = entries.filter((e) => e.trim().length > 0).length;
   const allFilled = filledCount === 3;
+
+  // CATCH-UP: only offer this if there's actually a gap to fill
+  useEffect(() => {
+    if (!ENABLE_YESTERDAY_CATCHUP) return;
+    let cancelled = false;
+
+    async function checkYesterday() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { start, end } = getJournalDayWindow(new Date(`${yesterday}T12:00:00`));
+      const { data } = await supabase
+        .from("entries")
+        .select("id")
+        .eq("user_id", user.id)
+        .gte("created_at", start)
+        .lte("created_at", end)
+        .maybeSingle();
+      if (!cancelled) setYesterdayMissing(!data);
+    }
+    checkYesterday();
+    return () => { cancelled = true; };
+  }, [yesterday]);
 
   const handleTagToggle = (tag) => {
     setSelectedTags((prev) =>
@@ -47,57 +84,72 @@ export default function DailyEntryPage() {
       return next;
     });
   };
-const timerRef = useRef(null);
-useEffect(() => {
-  return () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-  };
-}, []);
+  const timerRef = useRef(null);
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
   const handleSubmit = async () => {
-  if (!allFilled) return;
+    if (!allFilled) return;
 
-  const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
 
-  const { start, end } = getJournalDayWindow();
-  const { data: existing } = await supabase
-    .from("entries")
-    .select("id")
-    .eq("user_id", user.id)
-    .gte("created_at", start)
-    .lte("created_at", end)
-    .maybeSingle();
+    // CATCH-UP: check/insert against yesterday's window instead of today's
+    const windowReference = catchUpMode
+      ? new Date(`${yesterday}T12:00:00`)
+      : new Date();
+
+    const { start, end } = getJournalDayWindow(windowReference);
+    const { data: existing } = await supabase
+      .from("entries")
+      .select("id")
+      .eq("user_id", user.id)
+      .gte("created_at", start)
+      .lte("created_at", end)
+      .maybeSingle();
 
     if (existing) {
-      toast.error("You've already journaled today. Come back tomorrow!");
+      toast.error(
+        catchUpMode
+          ? "Looks like yesterday's already filled in."
+          : "You've already journaled today. Come back tomorrow!"
+      );
       return;
     }
-  
 
-  const { error } = await supabase
-    .from("entries")
-    .insert({
+    const insertPayload = {
       user_id: user.id,
       item_1: entries[0],
       item_2: entries[1],
       item_3: entries[2],
       tags: selectedTags.map((t) => t.label),
-    });
+    };
 
- if(error) {
-    toast.error("Couldn't save. Please try again");
-    return;
-  }
+    // CATCH-UP: backdate so it files under the right journal day
+    if (catchUpMode) {
+      insertPayload.created_at = windowReference.toISOString();
+    }
 
-  setSubmitted(true);
-  toast.success("Gratitudes saved! ");
-  
+    const { error } = await supabase
+      .from("entries")
+      .insert(insertPayload);
 
-  timerRef.current = setTimeout(() => {
-    navigate("/journal");
-  }, 2000);
-};
+    if (error) {
+      toast.error("Couldn't save. Please try again");
+      return;
+    }
+
+    setSubmitted(true);
+    toast.success(catchUpMode ? "Got it — yesterday's entry is saved!" : "Gratitudes saved! ");
+
+    timerRef.current = setTimeout(() => {
+      navigate("/journal");
+    }, 2000);
+  };
 
   return (
     <>
@@ -108,12 +160,7 @@ useEffect(() => {
         showStreak
         streak={streak}
       />
-      
-      
-      
-     
 
-      {/* Main content */}
       <div className="max-w-170 mx-auto mt-10 pt-10 px-5 pb-20">
         {submitted ? (
           <SuccessState
@@ -123,20 +170,37 @@ useEffect(() => {
           />
         ) : (
           <>
+            {/* CATCH-UP: banner offering to fill in yesterday */}
+            {ENABLE_YESTERDAY_CATCHUP && yesterdayMissing && (
+              <div className="mb-5 flex flex-wrap items-center justify-between gap-3 bg-secondary/10 border border-borderline rounded-2xl py-3 px-4 opacity-0 animate-fade-slide-up">
+                <p className="font-parag text-[13px] text-secondary-text">
+                  {catchUpMode
+                    ? `Filling in your missed entry for ${formatDate(yesterday)}.`
+                    : "Missed yesterday because of a hiccup on our end? You can still add it."}
+                </p>
+                <button
+                  onClick={() => setCatchUpMode((v) => !v)}
+                  className="shrink-0 font-parag text-[13px] text-secondary underline cursor-pointer bg-transparent border-none"
+                >
+                  {catchUpMode ? "Back to today" : "Add yesterday's entry"}
+                </button>
+              </div>
+            )}
+
             {/* Date + Progress header */}
             <div
               className="flex items-start justify-between mb-9 opacity-0 animate-fade-slide-up"
             >
               <div>
                 <p className="font-parag text-[13px] text-secondary uppercase tracking-[2px] mb-1.5">
-                  Today's entry
+                  {catchUpMode ? "Catching up" : "Today's entry"}
                 </p>
                 <h1
                   className="font-heading text-[clamp(22px,4vw,32px)]  text-darkb tracking-[-1px] leading-[1.2]"
                 >
-                 {formatDate(today)}
+                 {formatDate(activeDate)}
                 </h1>
-                {inGracePeriod && (
+                {!catchUpMode && inGracePeriod && (
                   <p className="font-parag text-[11px] text-secondary italic mt-1">
                     Before 9am, this still counts as yesterday.
                   </p>
@@ -150,7 +214,7 @@ useEffect(() => {
               <p
                 className="font-parag text-[15px] text-secondary-text leading-4 italic border-l-2 border-l-borderline pl-4"
               >
-                Take a breath. What three things — big or tiny — are you grateful for today?
+                Take a breath. What three things — big or tiny — are you grateful for {catchUpMode ? "that day" : "today"}?
               </p>
             </div>
 
@@ -171,7 +235,6 @@ useEffect(() => {
                     onFocus={() => setFocusedIndex(i)}
                     onBlur={() => setFocusedIndex(null)}
                   />
-                  {/* Refresh prompt button */}
                   {!entry && (
                     <button
                       onClick={() => handleRefreshPrompt(i)}
@@ -184,19 +247,16 @@ useEffect(() => {
                 </div>
               ))}
             </div>
-            {/* MOOD TAGS */}
-           <MoodTagPicker 
+
+            <MoodTagPicker 
               selected={selectedTags} 
               onToggle={handleTagToggle} />
 
-            {/* Submit */ }
-           <SubmitButton 
+            <SubmitButton 
               allFilled={allFilled} 
               filledCount={filledCount} 
               onSubmit={() => allFilled && handleSubmit()} />  
-            
 
-            {/* Bottom quote */}
             <div className="mt-12 text-center opacity-0 animate-fade-slide-up-text">
               <p className="font-parag text-[13px] text-secondary-text italic">
                 "Gratitude turns what we have into enough."
