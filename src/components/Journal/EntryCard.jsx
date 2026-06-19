@@ -150,11 +150,14 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
                   Cancel
                 </button>
                 <button
-                  onClick={handleSave}
-                  disabled={saving || draftEntries.some((d) => !d.trim())}
-                  className="font-parag text-[13px] text-fwhite bg-secondary rounded-xl py-2 px-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+                    onClick={handleSave}
+                    disabled={saving || draftEntries.some((d) => !d.trim())}
+                    className="font-parag text-[13px] text-fwhite bg-secondary rounded-xl py-2 px-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-opacity flex items-center gap-2"
                 >
-                  {saving ? "Saving…" : "Save changes"}
+                    {saving && (
+                      <span className="w-3 h-3 rounded-full border-2 border-fwhite/40 border-t-fwhite animate-spin" />
+                    )}
+                    {saving ? "Saving…" : "Save changes"}
                 </button>
               </div>
             </div>

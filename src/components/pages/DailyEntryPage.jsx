@@ -32,6 +32,7 @@ export default function DailyEntryPage() {
   const [placeholders, setPlaceholders] = useState([0, 1, 2].map(() => getRandomPrompt()));
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // CATCH-UP: state for the optional "fill in yesterday" mode
   const [catchUpMode, setCatchUpMode] = useState(false);
@@ -94,11 +95,12 @@ export default function DailyEntryPage() {
   }, []);
 
   const handleSubmit = async () => {
-    if (!allFilled) return;
+  if (!allFilled || isSubmitting) return;   // ← blocks double taps immediately
+  setIsSubmitting(true);
 
+  try {
     const { data: { user } } = await supabase.auth.getUser();
 
-    // CATCH-UP: check/insert against yesterday's window instead of today's
     const windowReference = catchUpMode
       ? new Date(`${yesterday}T12:00:00`)
       : new Date();
@@ -129,14 +131,11 @@ export default function DailyEntryPage() {
       tags: selectedTags.map((t) => t.label),
     };
 
-    // CATCH-UP: backdate so it files under the right journal day
     if (catchUpMode) {
       insertPayload.created_at = windowReference.toISOString();
     }
 
-    const { error } = await supabase
-      .from("entries")
-      .insert(insertPayload);
+    const { error } = await supabase.from("entries").insert(insertPayload);
 
     if (error) {
       toast.error("Couldn't save. Please try again");
@@ -149,7 +148,10 @@ export default function DailyEntryPage() {
     timerRef.current = setTimeout(() => {
       navigate("/journal");
     }, 2000);
-  };
+  } finally {
+    setIsSubmitting(false);   // ← always re-enables, even on error/early return
+  }
+};
 
   return (
     <>
@@ -255,7 +257,8 @@ export default function DailyEntryPage() {
             <SubmitButton 
               allFilled={allFilled} 
               filledCount={filledCount} 
-              onSubmit={() => allFilled && handleSubmit()} />  
+              isSubmitting={isSubmitting}
+              onSubmit={() => allFilled && !isSubmitting && handleSubmit()}/>  
 
             <div className="mt-12 text-center opacity-0 animate-fade-slide-up-text">
               <p className="font-parag text-[13px] text-secondary-text italic">
