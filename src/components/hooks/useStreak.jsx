@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { supabase } from "../../supabaseClient";
 import { calcStreak } from "../utils/streakUtil";
 import { useAuth } from "../context/AuthContext";
+import { toJournalDate } from "../utils/dayWindow";
 
 export function useStreak() {
   const { user } = useAuth();
@@ -17,7 +18,7 @@ export function useStreak() {
         .order("created_at", { ascending: false });
 
       if (!error) {
-        setEntries(data.map((row) => ({ date: row.created_at.split("T")[0] })));
+        setEntries(data.map((row) => ({ date: toJournalDate(row.created_at) })));
       }
     }
     fetchDates();

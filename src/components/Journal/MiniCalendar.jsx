@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import React, { useState } from "react";
+import { getCurrentJournalDate } from "../utils/dayWindow";
 
 // ── Mini Calendar ─────────────────────────────────────────────────────────
 function MiniCalendar({ entries = [], selectedDate, onSelect }) {
@@ -69,7 +70,7 @@ function MiniCalendar({ entries = [], selectedDate, onSelect }) {
           const hasEntry = entryDates.has(dateStr);
           const isSelected = selectedDate === dateStr;
           const isToday =
-            dateStr === new Date().toISOString().split("T")[0];
+            dateStr === getCurrentJournalDate();
 
           return (
             <button

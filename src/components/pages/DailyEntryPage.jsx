@@ -9,7 +9,7 @@ import GratitudeInput from "../GratitudeInput";
 import SuccessState from "../SuccessState";
 import SubmitButton from "../SubmitButton"
 import MoodTagPicker from "../MoodTagPicker";
-import { getJournalDayWindow } from "../utils/dayWindow.js";
+import { getJournalDayWindow, getCurrentJournalDate, isInGracePeriod } from "../utils/dayWindow.js";
 import { formatDate } from "../utils/NewDateUtil";
 import { supabase } from "../../supabaseClient.js"
 
@@ -24,7 +24,8 @@ export default function DailyEntryPage() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = getCurrentJournalDate();
+  const inGracePeriod = isInGracePeriod();
 
   const streak = useStreak();
 
@@ -135,6 +136,11 @@ useEffect(() => {
                 >
                  {formatDate(today)}
                 </h1>
+                {inGracePeriod && (
+                  <p className="font-parag text-[11px] text-secondary italic mt-1">
+                    Before 9am, this still counts as yesterday.
+                  </p>
+                )}
               </div>
               <ProgressRing count={filledCount} />
             </div>

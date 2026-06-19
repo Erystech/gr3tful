@@ -13,6 +13,7 @@ import EntryCard from "../Journal/EntryCard";
 import StatsBar from "../Journal/StatsBar";
 import Sidebar from "../Journal/SideBar";
 import useJournalFilters from "../hooks/useJournalFilters";
+import { toJournalDate } from "../utils/dayWindow.js";
 
 // ── Main Page ─────────────────────────────────────────────────────────────
 export default function JournalPage() {
@@ -51,7 +52,7 @@ useEffect(() => {
       // Transform supabase shape -> component shape
       const transformed = data.map((row) => ({
         id: row.id,
-        date: row.created_at.split("T")[0],
+        date: toJournalDate(row.created_at),
         created_at: row.created_at,
         entries: [row.item_1, row.item_2, row.item_3],
         tags: row.tags ?? [],
