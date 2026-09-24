@@ -63,12 +63,6 @@ function HeroSection() {
           </a>
         </div>
 
-        {/* Social proof */}
-        <div className="flex items-center justify-center gap-3 mt-8">
-          <span className="font-parag text-secondary-text text-[13px]">
-            <strong className="text-darkerb">4,200+</strong> gratitudes written this week
-          </span>
-        </div>
       </div>
 
       {/* Scroll indicator — uses animate-float defined in index.css @theme */}

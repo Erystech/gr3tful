@@ -3,10 +3,9 @@ import React from "react";
 const features = [
   { icon: "🔥", title: "Streak Tracking", desc: "Stay motivated with daily streaks that celebrate your consistency." },
   { icon: "📅", title: "Calendar View", desc: "A visual overview of every day you've shown up for yourself." },
-  { icon: "💌", title: "Look Back Feature", desc: "Resurface a random past entry — a little gift from your past self." },
+  { icon: "💌", title: "Look Back Feature", desc: "Resurface a random past entry — a little gift from your past self.", status: "Coming soon" },
   { icon: "🏷️", title: "Mood Tags", desc: "Tag entries by theme: family, health, work, nature, and more." },
   { icon: "🌙", title: "Dark Mode", desc: "Beautiful for evening reflection under soft, warm lighting." },
-  { icon: "📄", title: "Export Journal", desc: "Download your entries as a PDF or CSV — your story, forever yours." },
 ];
 
 function FeaturesSection() {
@@ -31,7 +30,14 @@ function FeaturesSection() {
                 transition-[transform,box-shadow] duration-200
                 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(196,98,45,0.12)]"
             >
-              <div className="text-4xl mb-3">{f.icon}</div>
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <div className="text-4xl">{f.icon}</div>
+                {f.status && (
+                  <span className="rounded-full border border-borderline bg-secondary/10 px-3 py-1 font-parag text-[10px] uppercase tracking-[1px] text-secondary">
+                    {f.status}
+                  </span>
+                )}
+              </div>
               <h3 className="font-heading text-primary-text-dark mb-2 text-[clamp(16px,2vw,18px)]">
                 {f.title}
               </h3>
