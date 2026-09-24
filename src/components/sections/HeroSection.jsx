@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useGratitudeCount from "../hooks/useGratitudeCount";
 
 function HeroSection() {
+  const gratitudeCount = useGratitudeCount();
+
   return (
     <section className="bg-surface relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 transition-colors duration-300">
 
@@ -62,6 +65,18 @@ function HeroSection() {
             See how it works
           </a>
         </div>
+
+        {gratitudeCount !== null && (
+          <p
+            className="mt-8 font-parag text-[13px] text-secondary-text"
+            aria-live="polite"
+          >
+            <strong className="text-darkb">
+              {new Intl.NumberFormat().format(gratitudeCount)}
+            </strong>{" "}
+            real gratitudes written
+          </p>
+        )}
 
       </div>
 
