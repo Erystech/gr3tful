@@ -2,11 +2,11 @@ import { useState, useMemo, useEffect } from "react";
 import { supabase } from "../../supabaseClient.js"
 import { useAuth } from  "../context/AuthContext"
 import { Link } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import clsx from "clsx";
 import Navbar from "../Navbar";
 import { TAGS, TAG_EMOJIS } from "../data/JournalData";
-import { formatDate,  formatShort, getMonth }  from "../utils/NewDateUtil";
+import { formatShort } from "../utils/NewDateUtil";
 import { useStreak } from "../hooks/useStreak";
 import useWindowWidth from "../hooks/useWindowWidth";
 import EntryCard from "../Journal/EntryCard";
@@ -22,7 +22,7 @@ export default function JournalPage() {
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId]   = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const {search, setSearch, activeTag, setActiveTag, calDate, setCalDate, filtered, grouped} = useJournalFilters(entries);
+  const {search, setSearch, activeTag, setActiveTag, calDate, setCalDate, grouped} = useJournalFilters(entries);
   const width = useWindowWidth();
   const isMobile = width < 768;
   const showInlineSidebar = width >= 1024;

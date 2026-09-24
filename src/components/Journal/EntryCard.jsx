@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import toast from "react-hot-toast";
 import { formatDate } from "../utils/NewDateUtil";
@@ -8,10 +8,33 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
   const [draftEntries, setDraftEntries] = useState(entry.entries);
   const [saving, setSaving] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
 
-   // Check if within 24 hours of created_at
-    const isEditable = entry.created_at &&
-    (Date.now() - new Date(entry.created_at).getTime()) < 24 * 60 * 60 * 1000;
+  useEffect(() => {
+    let timeoutId;
+
+    const updateEditability = () => {
+      if (!entry.created_at) {
+        setIsEditable(false);
+        return;
+      }
+
+      const editWindowEndsAt = new Date(entry.created_at).getTime() + 24 * 60 * 60 * 1000;
+      const remainingTime = editWindowEndsAt - Date.now();
+      setIsEditable(remainingTime > 0);
+
+      if (remainingTime > 0) {
+        timeoutId = window.setTimeout(
+          updateEditability,
+          Math.min(remainingTime, 2_147_483_647)
+        );
+      }
+    };
+
+    timeoutId = window.setTimeout(updateEditability, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [entry.created_at]);
 
   const handleDelete = (e) => {
     e.stopPropagation();

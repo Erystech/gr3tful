@@ -168,7 +168,6 @@ export default function DailyEntryPage() {
           <SuccessState
             entries={entries}
             selectedTags={selectedTags}
-            onReset={() => setSubmitted(false)}
           />
         ) : (
           <>

@@ -1,6 +1,6 @@
 import React from "react";
 
-function SuccessState({ entries, selectedTags, onReset }) {
+function SuccessState({ entries, selectedTags }) {
   return (
     <div className="text-center opacity-0 animate-fade-slide-up">
 
