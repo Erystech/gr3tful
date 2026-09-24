@@ -23,7 +23,7 @@ function Sidebar({ entries, calDate, setCalDate, setSearch }) {
       </div>
 
       {/* Memory Card */}
-      <div className="bg-darkb rounded-3xl p-6 relative overflow-hidden">
+      <div className="bg-deep rounded-3xl p-6 relative overflow-hidden">
         <div className="absolute top-5 -right-5 w-full h-full rounded-full bg-borderline-light" />
 
         <div className="relative flex items-start justify-between gap-3 mb-2.5">

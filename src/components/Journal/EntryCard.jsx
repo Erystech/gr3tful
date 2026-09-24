@@ -68,7 +68,7 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
     <div
       onClick={isEditing ? undefined : onToggle} // disable toggle while editing
       className={clsx(
-        "bg-fwhite border border-borderline rounded-3xl overflow-hidden transition-all duration-200",
+        "bg-surface border border-borderline rounded-3xl overflow-hidden transition-all duration-200",
         !isEditing && !isExpanded &&
           "cursor-pointer hover:shadow-[0_4px_20px_rgba(196,98,45,0.1)] hover:-translate-y-[1px]",
         isExpanded && "shadow-[0_8px_32px_rgba(196,98,45,0.15)]",

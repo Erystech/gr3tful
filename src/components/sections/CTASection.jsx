@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function CTASection() {
   return (
-    <section className="bg-darkb py-20 md:py-28 px-6 md:px-10">
+    <section className="bg-deep py-20 md:py-28 px-6 md:px-10">
       <div className="m-auto max-w-[700px] text-center">
         <div className="text-4xl mb-5">✦</div>
 

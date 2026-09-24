@@ -6,7 +6,7 @@ export default function ProtectedRoute({ children }) {
 
   // Still loading session — render nothing to avoid flash
   if (session === undefined) return (
-     <div className="min-h-screen bg-fwhite flex items-center justify-center">
+     <div className="min-h-screen bg-surface flex items-center justify-center">
         <span className="font-parag text-secondary-text text-sm italic animate-pulse">
           Loading…
         </span>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function HeroSection() {
   return (
-    <section className="bg-fwhite relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16">
+    <section className="bg-surface relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 transition-colors duration-300">
 
       {/* Background rings — hidden on small screens for perf */}
       <div className="absolute top-1/2 left-1/2 hidden sm:block w-[700px] h-[700px] rounded-full border border-[#C4622D1A] -translate-x-1/2 -translate-y-1/2" />

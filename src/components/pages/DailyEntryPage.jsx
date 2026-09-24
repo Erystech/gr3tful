@@ -151,7 +151,7 @@ export default function DailyEntryPage() {
 
   return (
     <>
-    <div className="min-h-screen bg-fwhite">
+    <div className="min-h-screen bg-surface transition-colors duration-300">
       <Toaster position="top-center" />
       <Navbar 
         showLinks={false}

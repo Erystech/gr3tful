@@ -5,6 +5,8 @@
     --color-secondary: #C4622D;
     --color-darkb: #3D2314;
     --color-darkerb: #2A1A0E;
+    --color-surface: #FFF8F0;
+    --color-deep: #3D2314;
     --color-primary-text-dark: #3D2314;
     --color-secondary-text: #7A4A2A;
     --color-secondary-bg: #FEF3E2;
@@ -38,6 +40,35 @@
     --transition-gentle: box-shadow 0.2s, transform 0.2s;
 }
 
+:root[data-theme="dark"] {
+    --color-secondary: #E58A55;
+    --color-darkb: #F7E8D8;
+    --color-darkerb: #F7E8D8;
+    --color-primary-text-dark: #F7E8D8;
+    --color-secondary-text: #D6AE8E;
+    --color-secondary-bg: #211713;
+    --color-surface: #17100D;
+    --color-deep: #100B09;
+    --color-gold: #F7B84B;
+    --color-gray-t: #B99478;
+    --color-footer-text: #B99478;
+    --color-borderline: rgba(229, 138, 85, 0.24);
+    --color-borderline-light: rgba(229, 138, 85, 0.12);
+}
+
+html,
+body,
+#root {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--color-surface);
+    color: var(--color-darkb);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 @keyframes float {
     0%, 100% { transform: translate(-50%, 0); }
     50%       { transform: translate(-50%, -10px); }
@@ -55,8 +86,14 @@
     }
  
     input::placeholder {
-        color: rgba(155, 106, 69, 0.5);
+        color: var(--color-gray-t);
         font-style: italic;
+    }
+
+    button,
+    input,
+    textarea {
+        color-scheme: inherit;
     }
 }
 

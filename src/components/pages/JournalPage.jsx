@@ -130,7 +130,7 @@ if (loading)
           !showInlineSidebar && (
             <button 
               onClick={() => setSidebarOpen(true)}
-              className="bg-fwhite border border-borderline rounded-[10px] py-1.5 px-3 font-parag text-xs text-secondary cursor-pointer flex items-center gap-1.5"
+              className="bg-surface border border-borderline rounded-[10px] py-1.5 px-3 font-parag text-xs text-secondary cursor-pointer flex items-center gap-1.5"
             >
               📅 Tools
             </button>  
@@ -157,7 +157,7 @@ if (loading)
           {sidebarOpen && (
             <div 
               onClick={() => setSidebarOpen(false)} 
-              className="fixed bg-darkb/40 backdrop-blur-[2px] inset-0 -z-50 " />
+              className="fixed bg-deep/60 backdrop-blur-[2px] inset-0 -z-50 " />
           )}
           <div 
             className= {clsx(
@@ -210,7 +210,7 @@ if (loading)
               value={search}
               onChange={e => { setSearch(e.target.value); setCalDate(null); }}
               placeholder="Search your entries…"
-              className="w-full box-border bg-fwhite border border-borderline rounded-xl py-3 px-10 font-parag text-[14px] text-darkb"
+              className="w-full box-border bg-surface border border-borderline rounded-xl py-3 px-10 font-parag text-[14px] text-darkb"
             />
             {search && (
               <button onClick={() => setSearch("")} 
@@ -258,7 +258,7 @@ if (loading)
               <p className="text-5xl mb-3">🌿</p>
               <p className="font-heading text-xl text-darkb mb-2">Nothing found</p>
               <p className="font-parag text-[14px] text-secondary"
-              style={{  fontSize:14, color:"#9B6A45" }}>Try a different search or filter.</p>
+              >Try a different search or filter.</p>
             </div>
           ) : (
             Object.entries(grouped).map(([month, monthEntries]) => (

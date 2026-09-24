@@ -20,7 +20,7 @@ const steps = [
 
 function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="bg-fwhite w-full py-20 md:py-32 px-6 md:px-10">
+    <section id="how-it-works" className="bg-surface w-full py-20 md:py-32 px-6 md:px-10 transition-colors duration-300">
 
       {/* Content container */}
       <div className="mx-auto w-full max-w-6xl">
@@ -47,7 +47,7 @@ function HowItWorksSection() {
               key={i}
               className={`relative rounded-3xl p-8 overflow-hidden ${
                 i === 1
-                  ? "bg-darkb"
+                  ? "bg-deep"
                   : "bg-secondary/[.06] border border-borderline"
               }`}
             >

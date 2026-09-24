@@ -23,7 +23,7 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
           isFocused ? "shadow-[0_8px_32px_rgba(196,98,45,0.2)]" : ""
         }`}
       >
-        <div className="rounded-[19px] bg-fwhite px-6 py-5">
+        <div className="rounded-[19px] bg-surface px-6 py-5">
 
           {/* Label Row */}
           <div className="flex items-center justify-between mb-2.5">
@@ -40,7 +40,7 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
                 ) : (
                   <span
                     className={`font-bold text-[12px] ${
-                      isFocused ? "text-secondary" : "text-[#9B6A45]"
+                      isFocused ? "text-secondary" : "text-secondary-text"
                     }`}
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
@@ -52,7 +52,7 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
               {/* Label */}
               <span
                 className={`uppercase tracking-[1.5px] text-[12px] transition-colors ${
-                  isFocused ? "text-secondary" : "text-[#9B6A45]"
+                  isFocused ? "text-secondary" : "text-secondary-text"
                 }`}
                 style={{ fontFamily: "'Lora', serif" }}
               >
@@ -62,7 +62,7 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
 
             {/* Character count */}
             <span
-              className="text-[11px] text-[rgba(155,106,69,0.5)]"
+              className="text-[11px] text-gray-t"
               style={{ fontFamily: "'Lora', serif" }}
             >
               {value.length}/500
@@ -77,7 +77,7 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
             onBlur={onBlur}
             placeholder={placeholder}
             rows={3}
-            className={`w-full bg-transparent border-none outline-none resize-none text-[16px] leading-[1.7] text-[#3D2314] ${
+            className={`w-full bg-transparent border-none outline-none resize-none text-[16px] leading-[1.7] text-darkb ${
               value ? "not-italic" : "italic"
             }`}
             style={{ fontFamily: "'Lora', serif" }}

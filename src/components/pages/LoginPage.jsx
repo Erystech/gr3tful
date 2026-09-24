@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
+import ThemeToggle from "../ThemeToggle";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -28,7 +29,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-fwhite flex items-center justify-center p-6 font-parag">
+    <div className="min-h-screen bg-surface flex items-center justify-center p-6 font-parag transition-colors duration-300">
+      <ThemeToggle className="fixed right-5 top-5" />
       
 
       <div className="w-full max-w-105 animate-fade-slide-up">
@@ -44,7 +46,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-fwhite border border-borderline rounded-3xl py-9 px-8">
+        <div className="bg-surface border border-borderline rounded-3xl py-9 px-8">
           {justConfirmed && (
             <div className="bg-secondary/10 border border-borderline rounded-xl py-3 px-4 mb-5 text-[13px] text-secondary font-parag italic">
               ✦ Check your inbox and confirm your email before signing in.
@@ -60,7 +62,7 @@ export default function LoginPage() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full box-border bg-fwhite border border-borderline rounded-xl py-3.5 px-5 font-parag text-[14px] text-darkb"/>
+              className="w-full box-border bg-surface border border-borderline rounded-xl py-3.5 px-5 font-parag text-[14px] text-darkb"/>
           </div>
 
           {/* Password */}
@@ -74,7 +76,7 @@ export default function LoginPage() {
               onChange={e => setPassword(e.target.value)}
               placeholder="••••••••"
               onKeyDown={e => e.key === "Enter" && handleLogin()}
-              className="w-full box-border bg-fwhite border border-borderline rounded-xl py-3.5 px-5 font-parag text-[14px] text-darkb"/>
+              className="w-full box-border bg-surface border border-borderline rounded-xl py-3.5 px-5 font-parag text-[14px] text-darkb"/>
           </div>
 
           {/* Error */}

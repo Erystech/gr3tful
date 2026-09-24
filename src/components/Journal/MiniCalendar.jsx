@@ -26,7 +26,7 @@ function MiniCalendar({ entries = [], selectedDate, onSelect }) {
     `${year}-${String(month + 1).padStart(2, "0")}-${String(n).padStart(2, "0")}`;
 
   return (
-    <div className="bg-fwhite rounded-3xl p-5 border border-borderline">
+    <div className="bg-surface rounded-3xl p-5 border border-borderline">
       
       {/* Header */}
       <div className="flex items-center justify-between mb-4">

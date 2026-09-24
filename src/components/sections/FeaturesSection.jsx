@@ -26,7 +26,7 @@ function FeaturesSection() {
           {features.map((f, i) => (
             <div
               key={i}
-              className="bg-fwhite rounded-2xl border border-borderline cursor-default p-6 md:p-7
+              className="bg-surface rounded-2xl border border-borderline cursor-default p-6 md:p-7
                 transition-[transform,box-shadow] duration-200
                 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(196,98,45,0.12)]"
             >

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <footer
-      className="bg-darkerb border-t-borderline py-8 px-6 md:px-10 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0"
+      className="bg-deep border-t-borderline py-8 px-6 md:px-10 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0"
       
     >
       {/* Logo */}

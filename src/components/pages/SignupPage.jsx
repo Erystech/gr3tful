@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
+import ThemeToggle from "../ThemeToggle";
  
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -39,7 +40,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-fwhite flex items-center justify-center p-6 font-parag">
+    <div className="min-h-screen bg-surface flex items-center justify-center p-6 font-parag transition-colors duration-300">
+      <ThemeToggle className="fixed right-5 top-5" />
       
 
       <div className="w-full max-w-105 animate-fade-slide-up">
@@ -55,7 +57,7 @@ export default function SignupPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-fwhite  border border-borderline rounded-3xl py-9 px-8">
+        <div className="bg-surface border border-borderline rounded-3xl py-9 px-8">
           {/* Email */}
           <div className="mb-4">
             <label className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
@@ -66,7 +68,7 @@ export default function SignupPage() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full box-border bg-fwhite border border-borderline rounded-xl py-3 px-3.5 font-parag text-[14px] text-darkb"
+              className="w-full box-border bg-surface border border-borderline rounded-xl py-3 px-3.5 font-parag text-[14px] text-darkb"
             />
           </div>
 
@@ -80,7 +82,7 @@ export default function SignupPage() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="Min. 6 characters"
-              className="w-full box-border bg-fwhite border border-borderline rounded-xl py-3 px-3.5 font-parag text-[14px] text-darkb"
+              className="w-full box-border bg-surface border border-borderline rounded-xl py-3 px-3.5 font-parag text-[14px] text-darkb"
             />
           </div>
 
@@ -95,7 +97,7 @@ export default function SignupPage() {
               onChange={e => setConfirm(e.target.value)}
               placeholder="••••••••"
               onKeyDown={e => e.key === "Enter" && handleSignup()}
-              className="w-full box-border bg-fwhite border border-borderline rounded-xl py-3 px-3.5 font-parag text-[14px] text-darkb"
+              className="w-full box-border bg-surface border border-borderline rounded-xl py-3 px-3.5 font-parag text-[14px] text-darkb"
             />
           </div>
 

@@ -8,12 +8,14 @@ import LoginPage from './components/pages/LoginPage'
 import SignupPage from './components/pages/SignupPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './components/context/AuthContext'
+import { ThemeProvider } from './components/context/ThemeContext'
 
 export default function App() {
   return (
     <>
     
-    <AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
           <Routes>
           <Route path='/' element={<LandingPage />} />
           <Route path='/login' element={<LoginPage />} />
@@ -29,7 +31,8 @@ export default function App() {
             </ProtectedRoute>
           } />
         </Routes>
-    </AuthProvider>
+      </AuthProvider>
+    </ThemeProvider>
     
     </>
   )

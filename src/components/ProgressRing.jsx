@@ -32,11 +32,11 @@ function ProgressRing({ count, total = 3 }) {
       </svg>
 
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[18px] font-bold text-[#3D2314] leading-none font-serifDisplay">
+        <span className="text-[18px] font-bold text-darkb leading-none font-serifDisplay">
           {count}
         </span>
 
-        <span className="text-[10px] text-[#9B6A45] font-journal">
+        <span className="text-[10px] text-secondary-text font-journal">
           of {total}
         </span>
       </div>

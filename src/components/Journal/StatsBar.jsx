@@ -16,7 +16,7 @@ function StatsBar({ total, streak, topTag, isMobile }) {
     )}>
       {stats.map(s => (
         <div key={s.label} className={clsx(
-          "bg-fwhite border border-borderline rounded-2xl",
+          "bg-surface border border-borderline rounded-2xl",
           isMobile ? "px-2.5 py-2.5" : "px-4 py-5"
         )}>
           <span className={clsx(

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
+import ThemeToggle from "./ThemeToggle";
 
 function NavBar({
   showLinks = true,
@@ -23,7 +24,7 @@ function NavBar({
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-fwhite flex items-center justify-between px-6 md:px-10 py-4 md:py-5 backdrop-blur-md">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-surface/95 flex items-center justify-between px-6 md:px-10 py-4 md:py-5 backdrop-blur-md border-b border-borderline transition-colors duration-300">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="text-2xl">✦</span>
@@ -63,10 +64,12 @@ function NavBar({
           )}
 
           {showStreak && (
-            <div className="font-parag">
+            <div className="font-parag text-darkb">
               🔥 <strong>{streak}</strong>
             </div>
           )}
+
+          <ThemeToggle />
 
           {rightContent}
           {mobileMenu?.trigger}

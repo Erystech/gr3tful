@@ -20,7 +20,7 @@ function MobileNavbar(props) {
           </button>
         ),
         dropdown: (
-          <div className={`bg-fwhite backdrop-blur-md shadow fixed top-0 left-0 right-0 z-40 flex flex-col pt-20 pb-8 px-6 gap-6 md:hidden [transition:transform_0.35s_ease] ${menuOpen ? "translate-y-0" : "-translate-y-[110%]"}`}>
+          <div className={`bg-surface backdrop-blur-md shadow fixed top-0 left-0 right-0 z-40 flex flex-col pt-20 pb-8 px-6 gap-6 md:hidden [transition:transform_0.35s_ease] ${menuOpen ? "translate-y-0" : "-translate-y-[110%]"}`}>
              {
                 ["Features", "Journal", "About"].map((item) => (
               <a
