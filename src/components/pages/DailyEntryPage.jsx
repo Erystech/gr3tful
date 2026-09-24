@@ -10,7 +10,6 @@ import SuccessState from "../SuccessState";
 import SubmitButton from "../SubmitButton"
 import MoodTagPicker from "../MoodTagPicker";
 import {
-  getJournalDayWindow,
   getCurrentJournalDate,
   isInGracePeriod,
   getPreviousJournalDate, // TEMP: catch-up feature
@@ -56,13 +55,11 @@ export default function DailyEntryPage() {
     async function checkYesterday() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      const { start, end } = getJournalDayWindow(new Date(`${yesterday}T12:00:00`));
       const { data } = await supabase
         .from("entries")
         .select("id")
         .eq("user_id", user.id)
-        .gte("created_at", start)
-        .lte("created_at", end)
+        .eq("journal_date", yesterday)
         .maybeSingle();
       if (!cancelled) setYesterdayMissing(!data);
     }
@@ -105,13 +102,11 @@ export default function DailyEntryPage() {
       ? new Date(`${yesterday}T12:00:00`)
       : new Date();
 
-    const { start, end } = getJournalDayWindow(windowReference);
     const { data: existing } = await supabase
       .from("entries")
       .select("id")
       .eq("user_id", user.id)
-      .gte("created_at", start)
-      .lte("created_at", end)
+      .eq("journal_date", activeDate)
       .maybeSingle();
 
     if (existing) {
@@ -129,6 +124,7 @@ export default function DailyEntryPage() {
       item_2: entries[1],
       item_3: entries[2],
       tags: selectedTags.map((t) => t.label),
+      journal_date: activeDate,
     };
 
     if (catchUpMode) {

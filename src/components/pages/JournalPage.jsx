@@ -52,7 +52,7 @@ useEffect(() => {
       // Transform supabase shape -> component shape
       const transformed = data.map((row) => ({
         id: row.id,
-        date: toJournalDate(row.created_at),
+        date: row.journal_date ?? toJournalDate(row.created_at),
         created_at: row.created_at,
         entries: [row.item_1, row.item_2, row.item_3],
         tags: row.tags ?? [],
