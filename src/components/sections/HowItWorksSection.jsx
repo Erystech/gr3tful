@@ -20,7 +20,7 @@ const steps = [
 
 function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="bg-surface w-full py-20 md:py-32 px-6 md:px-10 transition-colors duration-300">
+    <section id="how-it-works" className="bg-surface scroll-mt-20 w-full py-20 md:py-32 px-6 md:px-10 transition-colors duration-300">
 
       {/* Content container */}
       <div className="mx-auto w-full max-w-6xl">

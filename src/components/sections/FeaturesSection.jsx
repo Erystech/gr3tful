@@ -10,7 +10,7 @@ const features = [
 
 function FeaturesSection() {
   return (
-    <section className="bg-secondary-bg py-20 md:py-28 px-6 md:px-10">
+    <section id="features" className="bg-secondary-bg scroll-mt-20 py-20 md:py-28 px-6 md:px-10">
       <div className="m-auto max-w-[1100px]">
 
         {/* Heading */}

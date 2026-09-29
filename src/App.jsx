@@ -11,6 +11,7 @@ import ResetPasswordPage from './components/pages/ResetPasswordPage'
 import PrivacyPage from './components/pages/PrivacyPage'
 import TermsPage from './components/pages/TermsPage'
 import ContactPage from './components/pages/ContactPage'
+import NotFoundPage from './components/pages/NotFoundPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './components/context/AuthContext'
 import { ThemeProvider } from './components/context/ThemeContext'
@@ -40,6 +41,7 @@ export default function App() {
               <JournalPage />
             </ProtectedRoute>
           } />
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>
     </ThemeProvider>

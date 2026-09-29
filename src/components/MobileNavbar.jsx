@@ -7,6 +7,11 @@ function MobileNavbar(props) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const menuLinks = [
+    { label: "How it works", href: "/#how-it-works" },
+    { label: "Features", href: "/#features" },
+    { label: "Journal", to: "/journal" },
+  ];
 
   async function handleSignOut() {
     const { error } = await signOut();
@@ -22,6 +27,9 @@ function MobileNavbar(props) {
       mobileMenu={{
         trigger: (
           <button
+            type="button"
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menuOpen}
             className="bg-transparent cursor-pointer flex md:hidden flex-col gap-1.5 p-2"
             onClick={() => setMenuOpen(!menuOpen)}
           >
@@ -32,16 +40,24 @@ function MobileNavbar(props) {
         ),
         dropdown: (
           <div className={`bg-surface backdrop-blur-md shadow fixed top-0 left-0 right-0 z-40 flex flex-col pt-20 pb-8 px-6 gap-6 md:hidden [transition:transform_0.35s_ease] ${menuOpen ? "translate-y-0" : "-translate-y-[110%]"}`}>
-             {
-                ["Features", "Journal", "About"].map((item) => (
+            {menuLinks.map((item) => item.href ? (
               <a
-                key={item}
-                href="#"
+                key={item.label}
+                href={item.href}
                 onClick={() => setMenuOpen(false)}
                 className="font-parag text-[18px] text-secondary-text border-b border-borderline pb-4"
               >
-                {item}
+                {item.label}
               </a>
+            ) : (
+              <Link
+                key={item.label}
+                to={item.to}
+                onClick={() => setMenuOpen(false)}
+                className="font-parag text-[18px] text-secondary-text border-b border-borderline pb-4"
+              >
+                {item.label}
+              </Link>
             ))}
             {user ? (
               <button
@@ -54,6 +70,7 @@ function MobileNavbar(props) {
             ) : (
               <Link
                 to="/login"
+                onClick={() => setMenuOpen(false)}
                 className="bg-secondary text-fwhite rounded-full py-3.5 px-6 cursor-pointer italic"
               >
                 Login

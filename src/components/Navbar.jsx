@@ -23,9 +23,9 @@ function NavBar({
   }
 
   const defaultLinks = [
-    {label: "Home", to:"/"},
-    { label: "Features", to: "/features" },
-    { label: "About",    to: "#" },
+    { label: "How it works", href: "/#how-it-works" },
+    { label: "Features", href: "/#features" },
+    { label: "Journal", to: "/journal" },
   ];
   const navLinks = links ?? defaultLinks;
   
@@ -46,20 +46,24 @@ function NavBar({
         <div className="flex items-center gap-6">
           {showLinks && (
             <div className="hidden md:flex items-center gap-8">
-              {navLinks.map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.to}
-                  className={clsx(
-                    "font-parag text-[14px] no-underline",
-                    item.active
-                      ? "text-secondary font-semibold"
-                      : "text-secondary-text font-normal"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navLinks.map((item) => {
+                const className = clsx(
+                  "font-parag text-[14px] no-underline",
+                  item.active
+                    ? "text-secondary font-semibold"
+                    : "text-secondary-text font-normal"
+                );
+
+                return item.href ? (
+                  <a key={item.label} href={item.href} className={className}>
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link key={item.label} to={item.to} className={className}>
+                    {item.label}
+                  </Link>
+                );
+              })}
 
               {showCTA && !user && (
                 <Link

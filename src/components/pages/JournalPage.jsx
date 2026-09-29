@@ -20,6 +20,8 @@ export default function JournalPage() {
   const {user} = useAuth();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+  const [reloadKey, setReloadKey] = useState(0);
   const [expandedId, setExpandedId]   = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {search, setSearch, activeTag, setActiveTag, calDate, setCalDate, grouped} = useJournalFilters(entries);
@@ -42,15 +44,19 @@ const streak = useStreak();
 
 useEffect(() => {
   async function fetchEntries() {
+    setLoading(true);
+    setLoadError(null);
     const { data, error } = await supabase
     .from("entries")
     .select("*")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false});
 
-    if(!error) {
+    if (error) {
+      setLoadError("We couldn't load your journal. Check your connection and try again.");
+    } else {
       // Transform supabase shape -> component shape
-      const transformed = data.map((row) => ({
+      const transformed = (data ?? []).map((row) => ({
         id: row.id,
         date: row.journal_date ?? toJournalDate(row.created_at),
         created_at: row.created_at,
@@ -62,13 +68,12 @@ useEffect(() => {
     setLoading(false);
   }
   if (user) fetchEntries();
-}, [user]);
+}, [user, reloadKey]);
  
 
  const journalLinks = [
-  { label: "Today",    href: "/entry"   },
-  { label: "Journal",  href: "#",        active: true },
-  { label: "Settings", href: "#"        },
+  { label: "Today", to: "/entry" },
+  { label: "Journal", to: "/journal", active: true },
 ];
 
 const handleEdit = async (id, updatedEntries) => {
@@ -113,8 +118,41 @@ const handleDelete = async (id) => {
   setExpandedId(null);
   toast.success("Entry deleted.");
 };
-if (loading) 
-      return <div className="text-center pt-40 font-parag text-secondary-text">Loading your entries…</div>;
+if (loading) {
+  return (
+    <div className="min-h-screen bg-secondary-bg">
+      <Navbar showLinks links={journalLinks} />
+      <div className="flex min-h-screen items-center justify-center px-6" role="status">
+        <div className="text-center">
+          <p className="mb-3 text-4xl animate-pulse" aria-hidden="true">✦</p>
+          <p className="font-parag text-sm italic text-secondary-text">Loading your journal…</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+if (loadError) {
+  return (
+    <div className="min-h-screen bg-secondary-bg">
+      <Navbar showLinks links={journalLinks} />
+      <div className="mx-auto flex min-h-screen max-w-lg items-center justify-center px-6 text-center">
+        <div>
+          <p className="mb-3 text-5xl" aria-hidden="true">🌧️</p>
+          <h1 className="mb-2 font-heading text-2xl text-darkb">Your journal didn&apos;t load.</h1>
+          <p role="alert" className="mb-6 font-parag text-sm leading-6 text-secondary-text">{loadError}</p>
+          <button
+            type="button"
+            onClick={() => setReloadKey((key) => key + 1)}
+            className="rounded-full bg-secondary px-7 py-3 font-parag text-sm italic text-fwhite"
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className=" min-h-screen bg-secondary-bg">
@@ -137,27 +175,14 @@ if (loading)
           )
         }/>
 
-        {!loading && entries.length === 0 && (
-          <div className="text-center py-24">
-            <p className="text-5xl mb-4">✦</p>
-            <h2 className="font-heading text-2xl text-darkb mb-2">Your story starts today.</h2>
-            <p className="font-parag text-sm text-secondary-text italic mb-6">
-              You haven't written any entries yet.
-            </p>
-            <Link to="/entry" className="bg-secondary text-fwhite rounded-full py-3 px-8 font-parag italic text-sm">
-              Write your first entry →
-            </Link>
-          </div>
-        )}
-     
-
       {/* ── Slide-over drawer (mobile + tablet) ── */}
       {!showInlineSidebar && (
         <>
           {sidebarOpen && (
-            <div 
+            <div
+              aria-hidden="true"
               onClick={() => setSidebarOpen(false)} 
-              className="fixed bg-deep/60 backdrop-blur-[2px] inset-0 -z-50 " />
+              className="fixed bg-deep/60 backdrop-blur-[2px] inset-0 z-40" />
           )}
           <div 
             className= {clsx(
@@ -203,6 +228,7 @@ if (loading)
           {/* Stats */}
           <StatsBar total={entries.length} streak={streak} topTag={topTag} isMobile={isMobile} />
 
+          {entries.length > 0 && <>
           {/* Search */}
           <div className="relative mb-3.5">
             <span className="absolute left-3.5 top-1/2 text-[16px] opacity-[0.4] -translate-y-1/2">🔍</span>
@@ -251,14 +277,32 @@ if (loading)
                 className="bg-transparent border-none cursor-pointer text-gray-t text-[14px]">✕</button>
             </div>
           )}
+          </>}
 
           {/* Entry groups */}
-          {Object.keys(grouped).length === 0 ? (
+          {entries.length === 0 ? (
+            <div className="text-center py-15 px-5">
+              <p className="text-5xl mb-4" aria-hidden="true">✦</p>
+              <h2 className="font-heading text-2xl text-darkb mb-2">Your story starts today.</h2>
+              <p className="font-parag text-sm text-secondary-text italic mb-6">
+                You haven&apos;t written any entries yet.
+              </p>
+              <Link to="/entry" className="inline-block bg-secondary text-fwhite rounded-full py-3 px-8 font-parag italic text-sm">
+                Write your first entry →
+              </Link>
+            </div>
+          ) : Object.keys(grouped).length === 0 ? (
             <div className="text-center py-15 px-5">
               <p className="text-5xl mb-3">🌿</p>
               <p className="font-heading text-xl text-darkb mb-2">Nothing found</p>
-              <p className="font-parag text-[14px] text-secondary"
-              >Try a different search or filter.</p>
+              <p className="font-parag text-[14px] text-secondary mb-5">Try a different search or filter.</p>
+              <button
+                type="button"
+                onClick={() => { setSearch(""); setActiveTag(null); setCalDate(null); }}
+                className="font-parag text-sm text-secondary underline"
+              >
+                Clear filters
+              </button>
             </div>
           ) : (
             Object.entries(grouped).map(([month, monthEntries]) => (
