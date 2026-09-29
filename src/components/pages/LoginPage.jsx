@@ -63,6 +63,11 @@ export default function LoginPage() {
               onChange={e => setEmail(e.target.value)}
               placeholder="you@example.com"
               className="w-full box-border bg-surface border border-borderline rounded-xl py-3.5 px-5 font-parag text-[14px] text-darkb"/>
+            <div className="mt-2 text-right">
+              <Link to="/forgot-password" className="text-[12px] text-secondary hover:underline">
+                Forgot password?
+              </Link>
+            </div>
           </div>
 
           {/* Password */}

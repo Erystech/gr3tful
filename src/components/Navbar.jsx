@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import ThemeToggle from "./ThemeToggle";
+import { useAuth } from "./context/AuthContext";
 
 function NavBar({
   showLinks = true,
@@ -13,6 +14,14 @@ function NavBar({
   showCTA = false, 
 
 }) {
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+
+  async function handleSignOut() {
+    const { error } = await signOut();
+    if (!error) navigate("/");
+  }
+
   const defaultLinks = [
     {label: "Home", to:"/"},
     { label: "Features", to: "/features" },
@@ -52,7 +61,7 @@ function NavBar({
                 </Link>
               ))}
 
-              {showCTA && (
+              {showCTA && !user && (
                 <Link
                   to="/login"
                   className="bg-secondary text-fwhite rounded-full py-2.5 px-6 font-parag text-[14px] italic"
@@ -70,6 +79,16 @@ function NavBar({
           )}
 
           <ThemeToggle />
+
+          {user && (
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="hidden md:block font-parag text-[13px] text-secondary-text hover:text-secondary"
+            >
+              Sign out
+            </button>
+          )}
 
           {rightContent}
           {mobileMenu?.trigger}

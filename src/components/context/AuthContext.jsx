@@ -6,6 +6,10 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(undefined); // undefined = loading
 
+  async function signOut() {
+    return supabase.auth.signOut();
+  }
+
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -21,7 +25,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, user: session?.user ?? null }}>
+    <AuthContext.Provider value={{ session, user: session?.user ?? null, signOut }}>
       {children}
     </AuthContext.Provider>
   );

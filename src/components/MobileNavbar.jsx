@@ -1,9 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import { useAuth } from "./context/AuthContext";
 
 function MobileNavbar(props) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+
+  async function handleSignOut() {
+    const { error } = await signOut();
+    if (!error) {
+      setMenuOpen(false);
+      navigate("/");
+    }
+  }
 
   return (
     <Navbar
@@ -32,12 +43,22 @@ function MobileNavbar(props) {
                 {item}
               </a>
             ))}
-            <Link
-              to="/login"
-              className="bg-secondary text-fwhite rounded-full py-3.5 px-6 cursor-pointer italic"
-            >
-              Login
-            </Link>
+            {user ? (
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="bg-secondary text-fwhite rounded-full py-3.5 px-6 cursor-pointer italic text-left"
+              >
+                Sign out
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="bg-secondary text-fwhite rounded-full py-3.5 px-6 cursor-pointer italic"
+              >
+                Login
+              </Link>
+            )}
           </div>
         ),
       }}

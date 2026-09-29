@@ -24,14 +24,18 @@ function Footer() {
 
       {/* Links */}
       <div className="flex gap-5 md:gap-6">
-        {["Privacy", "Terms", "Contact"].map((link) => (
-          <a
-            key={link}
-            href="#"
+        {[
+          { label: "Privacy", to: "/privacy" },
+          { label: "Terms", to: "/terms" },
+          { label: "Contact", to: "/contact" },
+        ].map((link) => (
+          <Link
+            key={link.label}
+            to={link.to}
             className="font-parag text-footer-text text-[13px]"
           >
-            {link}
-          </a>
+            {link.label}
+          </Link>
         ))}
       </div>
     </footer>
