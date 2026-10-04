@@ -75,9 +75,9 @@ function MiniCalendar({ entries = [], selectedDate, onSelect }) {
           return (
             <button
               key={i}
-              onClick={() =>
-                hasEntry && onSelect(isSelected ? null : dateStr)
-              }
+              type="button"
+              aria-label={hasEntry ? `Open gratitude entry for ${dateStr}` : dateStr}
+              onClick={() => hasEntry && onSelect(dateStr)}
               className={clsx(
                 "w-full aspect-square rounded-lg font-parag text-xs relative transition-all duration-200",
 

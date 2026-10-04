@@ -66,6 +66,7 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
 
   return (
     <div
+      id={`entry-${entry.id}`}
       onClick={isEditing ? undefined : onToggle} // disable toggle while editing
       className={clsx(
         "bg-surface border border-borderline rounded-3xl overflow-hidden transition-all duration-200",

@@ -42,6 +42,30 @@ export default function JournalPage() {
 
 const streak = useStreak();
 
+const handleCalendarDateSelect = (date) => {
+  const matchingEntry = entries.find((entry) => entry.date === date);
+  if (!matchingEntry) return;
+
+  setSearch("");
+  setActiveTag(null);
+  setCalDate(date);
+  setExpandedId(matchingEntry.id);
+  setSidebarOpen(false);
+};
+
+useEffect(() => {
+  if (!expandedId || !calDate) return;
+
+  const frameId = window.requestAnimationFrame(() => {
+    document.getElementById(`entry-${expandedId}`)?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  });
+
+  return () => window.cancelAnimationFrame(frameId);
+}, [expandedId, calDate]);
+
 useEffect(() => {
   async function fetchEntries() {
     setLoading(true);
@@ -196,7 +220,7 @@ if (loadError) {
                 className="bg-transparent border-none cursor-pointer text-xl text-darkerb">✕</button>
             </div>
             <Sidebar 
-              entries={entries} calDate={calDate} setCalDate={setCalDate} setSearch={setSearch}
+              entries={entries} calDate={calDate} onDateSelect={handleCalendarDateSelect} setSearch={setSearch}
             />
           </div>
         </>
@@ -332,7 +356,7 @@ if (loadError) {
         {/* ── Inline sidebar (desktop ≥1024px only) ── */}
         {showInlineSidebar && (
           <div className="animate-fade-slide-up-text ">
-            <Sidebar entries={entries} calDate={calDate} setCalDate={setCalDate} setSearch={setSearch} />
+            <Sidebar entries={entries} calDate={calDate} onDateSelect={handleCalendarDateSelect} setSearch={setSearch} />
           </div>
         )}
       </div>

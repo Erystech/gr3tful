@@ -2,7 +2,7 @@ import React from "react";
 import  MiniCalendar  from "./MiniCalendar";
 
 // ── Sidebar content ───────────────────────────────────────────────────────
-function Sidebar({ entries, calDate, setCalDate, setSearch }) {
+function Sidebar({ entries, calDate, onDateSelect, setSearch }) {
   return (
     <div className="flex flex-col gap-5">
       
@@ -16,8 +16,8 @@ function Sidebar({ entries, calDate, setCalDate, setSearch }) {
           entries={entries}
           selectedDate={calDate}
           onSelect={(d) => {
-            setCalDate(d);
             setSearch("");
+            onDateSelect(d);
           }}
         />
       </div>
