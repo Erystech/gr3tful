@@ -3,12 +3,55 @@ import clsx from "clsx";
 import toast from "react-hot-toast";
 import { formatDate } from "../utils/NewDateUtil";
 import { TAG_EMOJIS } from "../data/JournalData";
+import { supabase } from "../../supabaseClient";
 
 function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
   const [draftEntries, setDraftEntries] = useState(entry.entries);
   const [saving, setSaving] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const [signedImages, setSignedImages] = useState({});
+  const [imageLoadError, setImageLoadError] = useState(false);
+  const [viewingImage, setViewingImage] = useState(null);
+  const imagePaths = entry.imagePaths?.filter(Boolean) ?? [];
+  const imagesLoading = isExpanded
+    && imagePaths.length > 0
+    && !imageLoadError
+    && imagePaths.some((path) => !signedImages[path]);
+
+  useEffect(() => {
+    const paths = entry.imagePaths?.filter(Boolean) ?? [];
+    if (!isExpanded || paths.length === 0 || paths.every((path) => signedImages[path])) return;
+
+    let cancelled = false;
+
+    supabase.storage
+      .from("gratitude-images")
+      .createSignedUrls(paths, 60 * 60)
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error) {
+          setImageLoadError(true);
+        } else {
+          setImageLoadError(false);
+          setSignedImages(Object.fromEntries(
+            data.map((item) => [item.path, item.signedUrl])
+          ));
+        }
+      });
+
+    return () => { cancelled = true; };
+  }, [entry.imagePaths, isExpanded, signedImages]);
+
+  useEffect(() => {
+    if (!viewingImage) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setViewingImage(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [viewingImage]);
 
   useEffect(() => {
     let timeoutId;
@@ -193,11 +236,41 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-secondary to-gold flex items-center justify-center shrink-0 mt-0.5">
                     <span className="text-fwhite text-xs font-bold">{i + 1}</span>
                   </div>
-                  <p className="font-parag text-darkb leading-relaxed italic">
-                    "{text}"
-                  </p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-parag text-darkb leading-relaxed italic">
+                      &quot;{text}&quot;
+                    </p>
+                    {entry.imagePaths?.[i] && signedImages[entry.imagePaths[i]] && (
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setViewingImage({
+                            src: signedImages[entry.imagePaths[i]],
+                            alt: `Memory attached to gratitude ${i + 1}`,
+                          });
+                        }}
+                        aria-label={`View image for gratitude ${i + 1} full size`}
+                        className="mt-3 block w-full cursor-zoom-in overflow-hidden rounded-2xl border border-borderline"
+                      >
+                        <img
+                          src={signedImages[entry.imagePaths[i]]}
+                          alt={`Memory attached to gratitude ${i + 1}`}
+                          loading="lazy"
+                          className="max-h-96 w-full object-cover transition-transform duration-200 hover:scale-[1.01]"
+                        />
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
+
+              {imagesLoading && (
+                <p role="status" className="font-parag text-xs italic text-gray-t">Loading your images…</p>
+              )}
+              {imageLoadError && (
+                <p role="alert" className="font-parag text-xs text-red-600">Your images couldn&apos;t load. Close and reopen this entry to retry.</p>
+              )}
 
               {/* Subtle hint if edit window has passed */}
               {!isEditable && (
@@ -207,6 +280,37 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
               )}
             </div>
           )}
+        </div>
+      )}
+
+      {viewingImage && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Gratitude image viewer"
+          onClick={(event) => {
+            event.stopPropagation();
+            setViewingImage(null);
+          }}
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-deep/90 p-4 backdrop-blur-sm sm:p-8"
+        >
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              setViewingImage(null);
+            }}
+            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-surface/90 font-parag text-xl text-darkb shadow-lg sm:right-7 sm:top-7"
+            aria-label="Close image viewer"
+          >
+            ✕
+          </button>
+          <img
+            src={viewingImage.src}
+            alt={viewingImage.alt}
+            onClick={(event) => event.stopPropagation()}
+            className="max-h-full max-w-full rounded-2xl object-contain shadow-2xl"
+          />
         </div>
       )}
     </div>

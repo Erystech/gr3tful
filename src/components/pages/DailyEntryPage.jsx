@@ -27,6 +27,7 @@ export default function DailyEntryPage() {
   const navigate = useNavigate();
 
   const [entries, setEntries] = useState(["", "", ""]);
+  const [images, setImages] = useState([null, null, null]);
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [placeholders, setPlaceholders] = useState([0, 1, 2].map(() => getRandomPrompt()));
   const [selectedTags, setSelectedTags] = useState([]);
@@ -96,7 +97,11 @@ export default function DailyEntryPage() {
   setIsSubmitting(true);
 
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      toast.error("Your session expired. Please sign in again.");
+      return;
+    }
 
     const windowReference = catchUpMode
       ? new Date(`${yesterday}T12:00:00`)
@@ -118,13 +123,45 @@ export default function DailyEntryPage() {
       return;
     }
 
+    const entryId = crypto.randomUUID();
+    const imagePaths = images.map((image, index) =>
+      image ? `${user.id}/${entryId}/${index + 1}.webp` : null
+    );
+    const uploadedPaths = [];
+
+    for (let index = 0; index < images.length; index += 1) {
+      if (!images[index]) continue;
+
+      const path = imagePaths[index];
+      const { error: uploadError } = await supabase.storage
+        .from("gratitude-images")
+        .upload(path, images[index], {
+          contentType: "image/webp",
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (uploadError) {
+        if (uploadedPaths.length > 0) {
+          await supabase.storage.from("gratitude-images").remove(uploadedPaths);
+        }
+        toast.error("One of your images couldn't upload. Your entry has not been saved yet.");
+        return;
+      }
+      uploadedPaths.push(path);
+    }
+
     const insertPayload = {
+      id: entryId,
       user_id: user.id,
       item_1: entries[0],
       item_2: entries[1],
       item_3: entries[2],
       tags: selectedTags.map((t) => t.label),
       journal_date: activeDate,
+      image_1_path: imagePaths[0],
+      image_2_path: imagePaths[1],
+      image_3_path: imagePaths[2],
     };
 
     if (catchUpMode) {
@@ -134,6 +171,9 @@ export default function DailyEntryPage() {
     const { error } = await supabase.from("entries").insert(insertPayload);
 
     if (error) {
+      if (uploadedPaths.length > 0) {
+        await supabase.storage.from("gratitude-images").remove(uploadedPaths);
+      }
       toast.error("Couldn't save. Please try again");
       return;
     }
@@ -231,6 +271,14 @@ export default function DailyEntryPage() {
                     isFocused={focusedIndex === i}
                     onFocus={() => setFocusedIndex(i)}
                     onBlur={() => setFocusedIndex(null)}
+                    image={images[i]}
+                    onImageChange={(file) => {
+                      setImages((current) => {
+                        const next = [...current];
+                        next[i] = file;
+                        return next;
+                      });
+                    }}
                   />
                   {!entry && (
                     <button

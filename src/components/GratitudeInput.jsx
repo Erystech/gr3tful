@@ -1,8 +1,41 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { ImagePlus, X } from "lucide-react";
+import { prepareGratitudeImage } from "./utils/imageUpload";
 
-function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocus, onBlur }) {
+function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocus, onBlur, image, onImageChange }) {
   const labels = ["First", "Second", "Third"];
   const filled = value.trim().length > 0;
+  const inputRef = useRef(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [imageError, setImageError] = useState(null);
+  const [processing, setProcessing] = useState(false);
+
+  useEffect(() => {
+    if (!image) {
+      setPreviewUrl(null);
+      return undefined;
+    }
+
+    const url = URL.createObjectURL(image);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [image]);
+
+  const handleImageSelect = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setImageError(null);
+    setProcessing(true);
+    try {
+      onImageChange(await prepareGratitudeImage(file));
+    } catch (error) {
+      setImageError(error.message);
+    } finally {
+      setProcessing(false);
+    }
+  };
 
   const gradient = isFocused
     ? "bg-gradient-to-br from-[#C4622D] to-[#F5A623]"
@@ -82,6 +115,47 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
             }`}
             style={{ fontFamily: "'Lora', serif" }}
           />
+
+          <div className="mt-3 border-t border-borderline pt-3">
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleImageSelect}
+              className="sr-only"
+              aria-label={`Add an image to your ${labels[index].toLowerCase()} gratitude`}
+            />
+
+            {previewUrl ? (
+              <div className="relative overflow-hidden rounded-2xl border border-borderline bg-secondary-bg">
+                <img
+                  src={previewUrl}
+                  alt={`Preview for ${labels[index].toLowerCase()} gratitude`}
+                  className="h-44 w-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => onImageChange(null)}
+                  aria-label={`Remove image from ${labels[index].toLowerCase()} gratitude`}
+                  className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-deep/80 text-fwhite backdrop-blur"
+                >
+                  <X size={15} />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => inputRef.current?.click()}
+                disabled={processing}
+                className="flex items-center gap-2 font-parag text-xs text-secondary disabled:opacity-60"
+              >
+                <ImagePlus size={17} />
+                {processing ? "Preparing image…" : "Add an optional image"}
+              </button>
+            )}
+
+            {imageError && <p role="alert" className="mt-2 font-parag text-xs text-red-600">{imageError}</p>}
+          </div>
         </div>
       </div>
     </div>

@@ -85,6 +85,7 @@ useEffect(() => {
         date: row.journal_date ?? toJournalDate(row.created_at),
         created_at: row.created_at,
         entries: [row.item_1, row.item_2, row.item_3],
+        imagePaths: [row.image_1_path, row.image_2_path, row.image_3_path],
         tags: row.tags ?? [],
       }));
       setEntries(transformed);
@@ -127,6 +128,7 @@ const handleDelete = async (id) => {
   const confirmed = window.confirm("Delete this entry? This can't be undone.");
   if (!confirmed) return;
 
+  const entryToDelete = entries.find((entry) => entry.id === id);
   const { error } = await supabase
     .from("entries")
     .delete()
@@ -140,6 +142,17 @@ const handleDelete = async (id) => {
 
   setEntries((prev) => prev.filter((e) => e.id !== id));
   setExpandedId(null);
+
+  const imagePaths = entryToDelete?.imagePaths?.filter(Boolean) ?? [];
+  if (imagePaths.length > 0) {
+    const { error: storageError } = await supabase.storage
+      .from("gratitude-images")
+      .remove(imagePaths);
+    if (storageError) {
+      toast.error("Entry deleted, but its image cleanup needs another try.");
+      return;
+    }
+  }
   toast.success("Entry deleted.");
 };
 if (loading) {
