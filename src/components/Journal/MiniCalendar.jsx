@@ -7,6 +7,9 @@ function MiniCalendar({ entries = [], selectedDate, onSelect }) {
   const [viewDate, setViewDate] = useState(new Date());
 
   const entryDates = new Set(entries.map(e => e.date));
+  const favoriteDates = new Set(
+    entries.filter((entry) => entry.isFavorite).map((entry) => entry.date)
+  );
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
 
@@ -68,6 +71,7 @@ function MiniCalendar({ entries = [], selectedDate, onSelect }) {
 
           const dateStr = pad(day);
           const hasEntry = entryDates.has(dateStr);
+          const isFavorite = favoriteDates.has(dateStr);
           const isSelected = selectedDate === dateStr;
           const isToday =
             dateStr === getCurrentJournalDate();
@@ -76,7 +80,9 @@ function MiniCalendar({ entries = [], selectedDate, onSelect }) {
             <button
               key={i}
               type="button"
-              aria-label={hasEntry ? `Open gratitude entry for ${dateStr}` : dateStr}
+              aria-label={hasEntry
+                ? `Open ${isFavorite ? "favorite " : ""}gratitude entry for ${dateStr}`
+                : dateStr}
               onClick={() => hasEntry && onSelect(dateStr)}
               className={clsx(
                 "w-full aspect-square rounded-lg font-parag text-xs relative transition-all duration-200",
@@ -97,7 +103,11 @@ function MiniCalendar({ entries = [], selectedDate, onSelect }) {
               {day}
 
               {hasEntry && !isSelected && (
-                <span className="absolute bottom-2 left-1/2 w-1 h-1 rounded-full bg-secondary -translate-x-1/2" />
+                isFavorite ? (
+                  <span aria-hidden="true" className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-[9px] leading-none text-secondary">♥</span>
+                ) : (
+                  <span aria-hidden="true" className="absolute bottom-2 left-1/2 w-1 h-1 rounded-full bg-secondary -translate-x-1/2" />
+                )
               )}
             </button>
           );

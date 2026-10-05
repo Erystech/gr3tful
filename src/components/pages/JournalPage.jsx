@@ -86,6 +86,7 @@ useEffect(() => {
         created_at: row.created_at,
         entries: [row.item_1, row.item_2, row.item_3],
         imagePaths: [row.image_1_path, row.image_2_path, row.image_3_path],
+        isFavorite: row.is_favorite ?? false,
         tags: row.tags ?? [],
       }));
       setEntries(transformed);
@@ -154,6 +155,29 @@ const handleDelete = async (id) => {
     }
   }
   toast.success("Entry deleted.");
+};
+
+const handleFavorite = async (id, isFavorite) => {
+  setEntries((current) => current.map((entry) =>
+    entry.id === id ? { ...entry, isFavorite } : entry
+  ));
+
+  const { error } = await supabase
+    .from("entries")
+    .update({ is_favorite: isFavorite })
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    setEntries((current) => current.map((entry) =>
+      entry.id === id ? { ...entry, isFavorite: !isFavorite } : entry
+    ));
+    toast.error("Couldn't update this favorite. Try again.");
+    return false;
+  }
+
+  toast.success(isFavorite ? "Added to favorite days." : "Removed from favorite days.");
+  return true;
 };
 if (loading) {
   return (
@@ -358,6 +382,7 @@ if (loadError) {
                       onToggle={() => setExpandedId(expandedId === entry.id ? null : entry.id)}
                       onDelete={handleDelete}
                       onEdit={handleEdit}  
+                      onFavorite={handleFavorite}
                     />
                   ))}
                 </div>

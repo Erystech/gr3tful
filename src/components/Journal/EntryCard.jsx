@@ -4,8 +4,9 @@ import toast from "react-hot-toast";
 import { formatDate } from "../utils/NewDateUtil";
 import { TAG_EMOJIS } from "../data/JournalData";
 import { supabase } from "../../supabaseClient";
+import { Heart } from "lucide-react";
 
-function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
+function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit, onFavorite }) {
   const [isEditing, setIsEditing] = useState(false);
   const [draftEntries, setDraftEntries] = useState(entry.entries);
   const [saving, setSaving] = useState(false);
@@ -13,6 +14,7 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
   const [signedImages, setSignedImages] = useState({});
   const [imageLoadError, setImageLoadError] = useState(false);
   const [viewingImage, setViewingImage] = useState(null);
+  const [favoriteSaving, setFavoriteSaving] = useState(false);
   const imagePaths = entry.imagePaths?.filter(Boolean) ?? [];
   const imagesLoading = isExpanded
     && imagePaths.length > 0
@@ -84,6 +86,14 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
     onDelete(entry.id);
   };
 
+  const handleFavoriteClick = async (event) => {
+    event.stopPropagation();
+    if (favoriteSaving) return;
+    setFavoriteSaving(true);
+    await onFavorite(entry.id, !entry.isFavorite);
+    setFavoriteSaving(false);
+  };
+
   const handleEditClick = (e) => {
     e.stopPropagation();
     setDraftEntries([...entry.entries]); // reset draft to current saved values
@@ -149,6 +159,25 @@ function EntryCard({ entry, isExpanded, onToggle, onDelete, onEdit }) {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
+          {isExpanded && !isEditing && (
+            <button
+              type="button"
+              onClick={handleFavoriteClick}
+              disabled={favoriteSaving}
+              aria-label={entry.isFavorite ? "Remove this day from favorites" : "Add this day to favorites"}
+              aria-pressed={entry.isFavorite}
+              title={entry.isFavorite ? "Remove from favorite days" : "Add to favorite days"}
+              className={clsx(
+                "flex h-8 w-8 items-center justify-center rounded-xl border transition-colors duration-150 disabled:cursor-wait disabled:opacity-60",
+                entry.isFavorite
+                  ? "border-secondary/30 bg-secondary text-fwhite"
+                  : "border-secondary/20 bg-secondary/10 text-secondary hover:bg-secondary/20"
+              )}
+            >
+              <Heart size={15} fill={entry.isFavorite ? "currentColor" : "none"} />
+            </button>
+          )}
+
           {isExpanded && !isEditing && isEditable && (
             <button
               onClick={handleEditClick}
