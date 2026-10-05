@@ -2,12 +2,15 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import ThemeToggle from "../ThemeToggle";
+import { Eye, EyeOff } from "lucide-react";
  
 export default function SignupPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -77,13 +80,24 @@ export default function SignupPage() {
             <label className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
               Password
             </label>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="Min. 8 characters"
-              className="w-full box-border bg-surface border border-borderline rounded-xl py-3 px-3.5 font-parag text-[14px] text-darkb"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Min. 8 characters"
+                className="w-full box-border bg-surface border border-borderline rounded-xl py-3 pl-3.5 pr-12 font-parag text-[14px] text-darkb"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((visible) => !visible)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-secondary-text hover:text-secondary"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
           {/* Confirm Password */}
@@ -91,14 +105,25 @@ export default function SignupPage() {
             <label className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
               Confirm Password
             </label>
-            <input
-              type="password"
-              value={confirm}
-              onChange={e => setConfirm(e.target.value)}
-              placeholder="••••••••"
-              onKeyDown={e => e.key === "Enter" && handleSignup()}
-              className="w-full box-border bg-surface border border-borderline rounded-xl py-3 px-3.5 font-parag text-[14px] text-darkb"
-            />
+            <div className="relative">
+              <input
+                type={showConfirm ? "text" : "password"}
+                value={confirm}
+                onChange={e => setConfirm(e.target.value)}
+                placeholder="••••••••"
+                onKeyDown={e => e.key === "Enter" && handleSignup()}
+                className="w-full box-border bg-surface border border-borderline rounded-xl py-3 pl-3.5 pr-12 font-parag text-[14px] text-darkb"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm((visible) => !visible)}
+                aria-label={showConfirm ? "Hide confirmation password" : "Show confirmation password"}
+                aria-pressed={showConfirm}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-secondary-text hover:text-secondary"
+              >
+                {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
           {/* Error */}
