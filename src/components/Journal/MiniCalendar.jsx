@@ -100,14 +100,12 @@ function MiniCalendar({ entries = [], selectedDate, onSelect }) {
                   : "cursor-default font-normal"
               )}
             >
-              {day}
+              {isFavorite ? (
+                <span aria-hidden="true" className="text-lg leading-none">♥</span>
+              ) : day}
 
-              {hasEntry && !isSelected && (
-                isFavorite ? (
-                  <span aria-hidden="true" className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-[9px] leading-none text-secondary">♥</span>
-                ) : (
-                  <span aria-hidden="true" className="absolute bottom-2 left-1/2 w-1 h-1 rounded-full bg-secondary -translate-x-1/2" />
-                )
+              {hasEntry && !isFavorite && !isSelected && (
+                <span aria-hidden="true" className="absolute bottom-2 left-1/2 w-1 h-1 rounded-full bg-secondary -translate-x-1/2" />
               )}
             </button>
           );
