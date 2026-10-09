@@ -12,6 +12,7 @@ function NavBar({
   mobileMenu = null,  
   links = null,
   showCTA = false, 
+  showThemeToggle = true,
 
 }) {
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ function NavBar({
             </div>
           )}
 
-          <ThemeToggle />
+          {showThemeToggle && <ThemeToggle />}
 
           {user && (
             <button

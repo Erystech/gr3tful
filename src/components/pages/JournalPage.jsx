@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { supabase } from "../../supabaseClient.js"
 import { useAuth } from  "../context/AuthContext"
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import clsx from "clsx";
 import Navbar from "../Navbar";
@@ -18,6 +18,8 @@ import { toJournalDate } from "../utils/dayWindow.js";
 // ── Main Page ─────────────────────────────────────────────────────────────
 export default function JournalPage() {
   const {user} = useAuth();
+  const [searchParams] = useSearchParams();
+  const requestedDate = searchParams.get("date");
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
@@ -90,11 +92,20 @@ useEffect(() => {
         tags: row.tags ?? [],
       }));
       setEntries(transformed);
+      const requestedEntry = requestedDate
+        ? transformed.find((entry) => entry.date === requestedDate)
+        : null;
+      if (requestedEntry) {
+        setSearch("");
+        setActiveTag(null);
+        setCalDate(requestedDate);
+        setExpandedId(requestedEntry.id);
+      }
     }
     setLoading(false);
   }
   if (user) fetchEntries();
-}, [user, reloadKey]);
+}, [user, reloadKey, requestedDate, setActiveTag, setCalDate, setSearch]);
  
 
  const journalLinks = [

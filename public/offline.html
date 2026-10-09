@@ -31,7 +31,33 @@
         color: #fff8f0;
         font: inherit;
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-width: 126px;
+        transition: transform 160ms ease, opacity 160ms ease;
       }
+      button:hover { transform: translateY(-1px); }
+      button:disabled { cursor: wait; opacity: 0.8; }
+      .spinner {
+        display: none;
+        width: 15px;
+        height: 15px;
+        border: 2px solid rgba(255, 248, 240, 0.45);
+        border-top-color: #fff8f0;
+        border-radius: 50%;
+        animation: spin 700ms linear infinite;
+      }
+      button.checking .spinner { display: block; }
+      #status { min-height: 24px; margin-top: 12px; font-size: 14px; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes nudge {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+      }
+      button.failed { animation: nudge 280ms ease; }
     </style>
   </head>
   <body>
@@ -39,7 +65,42 @@
       <div class="mark" aria-hidden="true">✦</div>
       <h1>A quiet moment offline.</h1>
       <p>Reconnect to open your private journal and save new gratitudes safely.</p>
-      <button type="button" onclick="window.location.reload()">Try again</button>
+      <button id="retry" type="button">
+        <span class="spinner" aria-hidden="true"></span>
+        <span class="label">Try again</span>
+      </button>
+      <p id="status" role="status" aria-live="polite"></p>
     </main>
+    <script>
+      const retryButton = document.getElementById('retry');
+      const retryLabel = retryButton.querySelector('.label');
+      const status = document.getElementById('status');
+
+      retryButton.addEventListener('click', async () => {
+        retryButton.disabled = true;
+        retryButton.classList.remove('failed');
+        retryButton.classList.add('checking');
+        retryLabel.textContent = 'Checking…';
+        status.textContent = '';
+
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 5000);
+
+        try {
+          const response = await fetch('/', { cache: 'no-store', signal: controller.signal });
+          if (!response.ok) throw new Error('Connection unavailable');
+          retryLabel.textContent = 'Back online!';
+          window.location.replace('/');
+        } catch {
+          retryButton.disabled = false;
+          retryButton.classList.remove('checking');
+          retryButton.classList.add('failed');
+          retryLabel.textContent = 'Try again';
+          status.textContent = 'Still offline. Check your connection and try once more.';
+        } finally {
+          window.clearTimeout(timeout);
+        }
+      });
+    </script>
   </body>
 </html>

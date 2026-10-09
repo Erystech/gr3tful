@@ -1,7 +1,11 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { CalendarDays } from "lucide-react";
 import Navbar from "../Navbar";
+import ThemeToggle from "../ThemeToggle";
+import MiniCalendar from "../Journal/MiniCalendar";
+import { useAuth } from "../context/AuthContext";
 import {getRandomPrompt} from "../utils/Prompts";
 import { useStreak } from "../hooks/useStreak.jsx";
 import ProgressRing from "../ProgressRing";
@@ -13,6 +17,7 @@ import {
   getCurrentJournalDate,
   isInGracePeriod,
   getPreviousJournalDate, // TEMP: catch-up feature
+  toJournalDate,
 } from "../utils/dayWindow.js";
 import { formatDate } from "../utils/NewDateUtil";
 import { supabase } from "../../supabaseClient.js"
@@ -25,6 +30,7 @@ const ENABLE_YESTERDAY_CATCHUP = true;
 
 export default function DailyEntryPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [entries, setEntries] = useState(["", "", ""]);
   const [images, setImages] = useState([null, null, null]);
@@ -33,6 +39,10 @@ export default function DailyEntryPage() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [calendarEntries, setCalendarEntries] = useState([]);
+  const [calendarLoading, setCalendarLoading] = useState(true);
+  const [calendarError, setCalendarError] = useState(false);
 
   // CATCH-UP: state for the optional "fill in yesterday" mode
   const [catchUpMode, setCatchUpMode] = useState(false);
@@ -47,6 +57,36 @@ export default function DailyEntryPage() {
 
   const filledCount = entries.filter((e) => e.trim().length > 0).length;
   const allFilled = filledCount === 3;
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+
+    async function fetchCalendarEntries() {
+      setCalendarLoading(true);
+      setCalendarError(false);
+      const { data, error } = await supabase
+        .from("entries")
+        .select("id, journal_date, created_at, is_favorite")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (cancelled) return;
+      if (error) {
+        setCalendarError(true);
+      } else {
+        setCalendarEntries((data ?? []).map((row) => ({
+          id: row.id,
+          date: row.journal_date ?? toJournalDate(row.created_at),
+          isFavorite: row.is_favorite ?? false,
+        })));
+      }
+      setCalendarLoading(false);
+    }
+
+    fetchCalendarEntries();
+    return () => { cancelled = true; };
+  }, [user]);
 
   // CATCH-UP: only offer this if there's actually a gap to fill
   useEffect(() => {
@@ -197,7 +237,78 @@ export default function DailyEntryPage() {
         showLinks={false}
         showStreak
         streak={streak}
+        showThemeToggle={false}
+        rightContent={
+          <button
+            type="button"
+            onClick={() => setToolsOpen(true)}
+            aria-label="Open tools menu"
+            className="flex items-center gap-1.5 rounded-[10px] border border-borderline bg-surface px-3 py-1.5 font-parag text-xs text-secondary"
+          >
+            <CalendarDays size={15} /> Tools
+          </button>
+        }
       />
+
+      {toolsOpen && (
+        <button
+          type="button"
+          aria-label="Close tools menu"
+          onClick={() => setToolsOpen(false)}
+          className="fixed inset-0 z-50 bg-deep/60 backdrop-blur-[2px]"
+        />
+      )}
+
+      <aside
+        aria-label="Entry tools"
+        aria-hidden={!toolsOpen}
+        inert={!toolsOpen}
+        className={`fixed bottom-0 right-0 top-0 z-[60] w-[88vw] max-w-90 overflow-y-auto bg-secondary-bg px-5 py-6 shadow-2xl transition-transform duration-300 ease-in-out ${toolsOpen ? "translate-x-0" : "translate-x-[110%]"}`}
+      >
+        <div className="mb-6 flex items-center justify-between">
+          <span className="font-heading text-[16px] font-bold text-darkb">Tools</span>
+          <button
+            type="button"
+            onClick={() => setToolsOpen(false)}
+            aria-label="Close tools menu"
+            className="text-xl text-darkerb"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="mb-6 flex items-center justify-between rounded-2xl border border-borderline bg-surface px-4 py-3">
+          <div>
+            <p className="font-parag text-xs uppercase tracking-[1.5px] text-secondary">Appearance</p>
+            <p className="mt-1 font-parag text-xs italic text-secondary-text">Light or dark mode</p>
+          </div>
+          <ThemeToggle />
+        </div>
+
+        <p className="mb-2.5 font-parag text-xs uppercase tracking-[2px] text-secondary">Open a journal day</p>
+        {calendarLoading ? (
+          <p role="status" className="rounded-2xl border border-borderline bg-surface px-4 py-8 text-center font-parag text-xs italic text-secondary-text">Loading calendar…</p>
+        ) : calendarError ? (
+          <p role="alert" className="rounded-2xl border border-borderline bg-surface px-4 py-8 text-center font-parag text-xs text-red-600">The calendar couldn&apos;t load right now.</p>
+        ) : (
+          <MiniCalendar
+            entries={calendarEntries}
+            selectedDate={null}
+            onSelect={(date) => {
+              setToolsOpen(false);
+              navigate(`/journal?date=${date}`);
+            }}
+          />
+        )}
+
+        <button
+          type="button"
+          onClick={() => navigate("/journal")}
+          className="mt-5 w-full rounded-full border border-borderline bg-surface py-3 font-parag text-sm text-secondary"
+        >
+          View full journal
+        </button>
+      </aside>
 
       <div className="max-w-170 mx-auto mt-10 pt-10 px-5 pb-20">
         {submitted ? (
