@@ -12,14 +12,14 @@ The subscription database migration is installed. The app still needs one Web Pu
 
    `VITE_SUPABASE_URL` is already required by the app. Never put the service role key or private VAPID key in a `VITE_` variable. Add the public key to local `.env` to test a production build locally, and redeploy after adding Vercel variables.
 
-2. In the Supabase SQL editor, store the same `CRON_SECRET` and the deployed sender URL in Vault. Replace the example secret before running:
+2. The same `CRON_SECRET` and the production sender URL have already been saved in Supabase Vault. The SQL below records how to recreate them if needed; do not run it again while those entries exist:
 
    ```sql
    select vault.create_secret('https://gr3tful.vercel.app/api/send-reminders', 'gr3tful_reminder_url');
    select vault.create_secret('REPLACE_WITH_THE_SAME_CRON_SECRET', 'gr3tful_cron_secret');
    ```
 
-3. In Supabase Dashboard → Integrations → Cron, enable Cron and `pg_net` if needed. Then run this in the SQL editor:
+3. Cron and `pg_net` are enabled by a versioned migration. Run this in the Supabase SQL editor after the sender URL is deployed to production:
 
    ```sql
    select cron.schedule(
