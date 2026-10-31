@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import ThemeToggle from "../ThemeToggle";
 import { Eye, EyeOff } from "lucide-react";
+import BrandLogo from "../BrandLogo";
  
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function SignupPage() {
       <div className="w-full max-w-105 animate-fade-slide-up">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="text-3xl mb-2">✦</div>
+          <Link to="/" aria-label="Gr3tful home" className="mb-7 inline-block"><BrandLogo className="w-40" /></Link>
           <h1 className="font-heading text-4xl text-darkb tracking-[-1px] mb-2">
             Start your practice
           </h1>

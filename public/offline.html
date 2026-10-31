@@ -3,9 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#C4622D" />
+    <meta name="theme-color" content="#FFF8F0" />
+    <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
     <title>Gr3tful — You’re offline</title>
+    <script>
+      try {
+        const saved = localStorage.getItem('gr3tful-theme');
+        const theme = saved === 'dark' || saved === 'light' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#17100D' : '#FFF8F0';
+      } catch { /* Keep the default light palette if storage is unavailable. */ }
+    </script>
     <style>
+      :root { --surface:#FFF8F0; --ink:#3D2314; --muted:#7A4A2A; color-scheme:light; }
+      :root[data-theme="dark"] { --surface:#17100D; --ink:#F7E8D8; --muted:#D6AE8E; color-scheme:dark; }
       * { box-sizing: border-box; }
       body {
         margin: 0;
@@ -13,21 +24,25 @@
         display: grid;
         place-items: center;
         padding: 24px;
-        background: #fff8f0;
-        color: #3d2314;
+        background: var(--surface);
+        color: var(--ink);
         font-family: Georgia, serif;
         text-align: center;
       }
       main { max-width: 480px; }
-      .mark { color: #c4622d; font-size: 44px; }
+      .brand { display:inline-block; width:190px; margin-bottom:12px; }
+      .brand img { display:block; width:100%; height:auto; }
+      .brand .dark { display:none; }
+      :root[data-theme="dark"] .brand .light { display:none; }
+      :root[data-theme="dark"] .brand .dark { display:block; }
       h1 { margin: 14px 0 10px; font-size: clamp(30px, 8vw, 46px); }
-      p { color: #7a4a2a; line-height: 1.7; }
+      p { color: var(--muted); line-height: 1.7; }
       button {
         margin-top: 18px;
         border: 0;
         border-radius: 999px;
         padding: 12px 24px;
-        background: #c4622d;
+        background: #4A2329;
         color: #fff8f0;
         font: inherit;
         cursor: pointer;
@@ -62,7 +77,10 @@
   </head>
   <body>
     <main>
-      <div class="mark" aria-hidden="true">✦</div>
+      <a class="brand" href="/" aria-label="Gr3tful home">
+        <img class="light" src="/brand/logo-on-light.svg" alt="Gr3tful" />
+        <img class="dark" src="/brand/logo-on-dark.svg" alt="Gr3tful" />
+      </a>
       <h1>A quiet moment offline.</h1>
       <p>Reconnect to open your private journal and save new gratitudes safely.</p>
       <button id="retry" type="button">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import BrandLogo from "../BrandLogo";
 
 function Footer() {
   return (
@@ -8,12 +9,8 @@ function Footer() {
       
     >
       {/* Logo */}
-      <Link to="/" className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-        <span className="text-2xl">✦</span>
-        <span className="font-heading text-gray-t" 
-        style={{fontSize: 16}}>
-          gr3tful
-        </span>
+      <Link to="/" aria-label="Gr3tful home" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <BrandLogo inverse className="w-36" />
       </Link>
 
       <p

@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
 @import "tailwindcss";
 
+.brand-logo { display: inline-block; flex-shrink: 0; vertical-align: middle; }
+.brand-logo img { display: block; width: 100%; height: auto; }
+.brand-logo .brand-logo__dark { display: none; }
+:root[data-theme="dark"] .brand-logo .brand-logo__light,
+.brand-logo.brand-logo--inverse .brand-logo__light { display: none; }
+:root[data-theme="dark"] .brand-logo .brand-logo__dark,
+.brand-logo.brand-logo--inverse .brand-logo__dark { display: block; }
+
 @theme { 
     --color-secondary: #C4622D;
     --color-darkb: #3D2314;

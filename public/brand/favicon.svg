@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Gr3tful g3 mark with touching upper curves and a small peach heart">
+  <rect width="512" height="512" rx="118" fill="#4A2329"/>
+  <g transform="translate(-40 -65) scale(1.16)">
+    <path d="M243 226 C218 196 180 198 151 224 C120 251 132 294 163 314 C191 332 219 315 228 283 L228 371 C228 412 192 427 157 401" fill="none" stroke="#FFF4E7" stroke-width="51" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M246 226 C269 187 318 186 345 214 C374 245 354 280 319 289 C359 302 369 338 344 368 C330 388 312 390 300 375" fill="none" stroke="#FFF4E7" stroke-width="55" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <path d="M390 138 C383 127 368 130 368 144 C368 156 381 165 390 174 C399 165 412 156 412 144 C412 130 397 127 390 138Z" fill="#EFA879"/>
+</svg>

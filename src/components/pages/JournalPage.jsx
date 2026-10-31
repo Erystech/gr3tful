@@ -5,6 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import clsx from "clsx";
 import Navbar from "../Navbar";
+import { BrandMark } from "../BrandLogo";
 import { TAGS, TAG_EMOJIS } from "../data/JournalData";
 import { formatShort } from "../utils/NewDateUtil";
 import { useStreak } from "../hooks/useStreak";
@@ -196,7 +197,7 @@ if (loading) {
       <Navbar showLinks links={journalLinks} />
       <div className="flex min-h-screen items-center justify-center px-6" role="status">
         <div className="text-center">
-          <p className="mb-3 text-4xl animate-pulse" aria-hidden="true">✦</p>
+          <BrandMark decorative className="mx-auto mb-3 h-14 w-14 animate-pulse" />
           <p className="font-parag text-sm italic text-secondary-text">Loading your journal…</p>
         </div>
       </div>
@@ -354,7 +355,7 @@ if (loadError) {
           {/* Entry groups */}
           {entries.length === 0 ? (
             <div className="text-center py-15 px-5">
-              <p className="text-5xl mb-4" aria-hidden="true">✦</p>
+              <BrandMark decorative className="mx-auto mb-4 h-16 w-16" />
               <h2 className="font-heading text-2xl text-darkb mb-2">Your story starts today.</h2>
               <p className="font-parag text-sm text-secondary-text italic mb-6">
                 You haven&apos;t written any entries yet.

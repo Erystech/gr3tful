@@ -15,6 +15,7 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#17100D' : '#FFF8F0');
     window.localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
 

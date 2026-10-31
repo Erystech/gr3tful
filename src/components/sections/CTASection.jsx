@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { BrandMark } from "../BrandLogo";
 
 function CTASection() {
   return (
     <section className="bg-deep py-20 md:py-28 px-6 md:px-10">
       <div className="m-auto max-w-[700px] text-center">
-        <div className="text-4xl mb-5">✦</div>
+        <BrandMark decorative className="mx-auto mb-5 h-16 w-16" />
 
         <h2 className="font-heading text-fwhite mb-5 text-[clamp(32px,5vw,60px)] tracking-[-2px] leading-[1.1]">
           What are you grateful

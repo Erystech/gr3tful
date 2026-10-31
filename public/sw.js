@@ -1,11 +1,18 @@
-const CACHE_NAME = "gr3tful-static-v1";
+const CACHE_NAME = "gr3tful-static-v2-g3";
 const OFFLINE_URL = "/offline.html";
 const PRECACHE_URLS = [
   OFFLINE_URL,
   "/manifest.webmanifest",
-  "/pwa-192.png",
-  "/pwa-512.png",
-  "/pwa-maskable-512.png"
+  "/brand/icon-192.png",
+  "/brand/icon-512.png",
+  "/brand/icon-maskable-512.png",
+  "/brand/mark.svg",
+  "/brand/logo-on-light.svg",
+  "/brand/logo-on-dark.svg",
+  "/brand/wordmark-on-light.svg",
+  "/brand/wordmark-on-dark.svg",
+  "/brand/favicon.svg",
+  "/brand/notification-badge.png"
 ];
 
 self.addEventListener("install", (event) => {
@@ -60,8 +67,8 @@ self.addEventListener("push", (event) => {
     : "What are three things you're grateful for today?";
   event.waitUntil(self.registration.showNotification(title, {
     body,
-    icon: "/pwa-192.png",
-    badge: "/pwa-192.png",
+    icon: "/brand/icon-192.png",
+    badge: "/brand/notification-badge.png",
     tag: `gr3tful-${message.kind || "reminder"}-${message.date || "today"}`,
     data: { url: "/entry" },
   }));

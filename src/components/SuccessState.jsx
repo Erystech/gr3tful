@@ -1,4 +1,5 @@
 import React from "react";
+import { BrandMark } from "./BrandLogo";
 
 function SuccessState({ entries, selectedTags }) {
   return (
@@ -6,8 +7,8 @@ function SuccessState({ entries, selectedTags }) {
 
       {/* Celebration */}
       <div className="relative inline-block mb-7">
-        <div className="w-25 h-25 rounded-full bg-secondary flex items-center justify-center mx-auto shadow-[0_12px_40px_rgba(196,98,45,0.3)] animate-pop-in">
-          <span className="text-5xl">✦</span>
+        <div className="mx-auto h-25 w-25 animate-pop-in">
+          <BrandMark decorative className="h-full w-full" />
         </div>
 
         {/* Sparkles */}

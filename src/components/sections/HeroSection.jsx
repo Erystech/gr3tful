@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import useGratitudeCount from "../hooks/useGratitudeCount";
+import BrandLogo, { BrandMark } from "../BrandLogo";
 
 function HeroSection() {
   const gratitudeCount = useGratitudeCount();
 
   return (
-    <section className="bg-surface relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 transition-colors duration-300">
+    <section className="bg-surface relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-28 md:pt-32 pb-20 transition-colors duration-300">
 
       {/* Background rings — hidden on small screens for perf */}
       <div className="absolute top-1/2 left-1/2 hidden sm:block w-[700px] h-[700px] rounded-full border border-[#C4622D1A] -translate-x-1/2 -translate-y-1/2" />
@@ -19,13 +20,13 @@ function HeroSection() {
       {/* Main Content */}
       <div className="relative text-center px-6 w-full m-auto max-w-[720px]">
 
-        <div className="inline-block mb-5 px-5 py-2 rounded-full border border-borderline bg-secondary/10">
-          <span className="font-parag text-secondary italic text-[13px]">
-            A daily ritual for a happier mind
-          </span>
+        <div className="mb-7 flex flex-col items-center gap-4">
+          <BrandMark decorative className="h-20 w-20 rounded-[24%] shadow-lg sm:h-28 sm:w-28" />
+          <BrandLogo wordmarkOnly className="w-40 sm:w-48" />
+          <p className="font-parag text-xs tracking-wide text-secondary-text sm:text-sm">small moments. big gratitude.</p>
         </div>
 
-        <h1 className="font-heading text-primary-text-dark mb-5 text-[clamp(40px,8vw,80px)] leading-[1.1] tracking-[-2px]">
+        <h1 className="font-heading text-primary-text-dark mb-5 text-[clamp(38px,7vw,68px)] leading-[1.1] tracking-[-2px]">
           Three things.
           <br />
           <span className="italic text-secondary">Every day.</span>

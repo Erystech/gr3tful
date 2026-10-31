@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import ThemeToggle from "../ThemeToggle";
+import BrandLogo from "../BrandLogo";
 
 export default function PublicPageLayout({ eyebrow, title, children }) {
   return (
     <div className="min-h-screen bg-surface px-6 py-10 text-darkb transition-colors duration-300">
       <div className="mx-auto max-w-190">
         <div className="mb-12 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold text-darkb">
-            <span>✦</span> gr3tful
+          <Link to="/" aria-label="Gr3tful home">
+            <BrandLogo className="w-40" />
           </Link>
           <ThemeToggle />
         </div>

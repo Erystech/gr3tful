@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "./context/AuthContext";
+import BrandLogo from "./BrandLogo";
 
 function NavBar({
   showLinks = true,
@@ -36,15 +37,12 @@ function NavBar({
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-surface/95 flex items-center justify-between px-6 md:px-10 py-4 md:py-5 backdrop-blur-md border-b border-borderline transition-colors duration-300">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl">✦</span>
-          <span className="font-heading font-bold text-[20px] text-darkb tracking-tight">
-            gr3tful
-          </span>
+        <Link to="/" className="flex items-center" aria-label="Gr3tful home">
+          <BrandLogo className="w-32 sm:w-36" />
         </Link>
 
         {/* Desktop Links */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6">
           {showLinks && (
             <div className="hidden md:flex items-center gap-8">
               {navLinks.map((item) => {
