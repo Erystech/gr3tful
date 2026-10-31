@@ -50,3 +50,31 @@ self.addEventListener("fetch", (event) => {
     }))
   );
 });
+
+self.addEventListener("push", (event) => {
+  let message = {};
+  try { message = event.data?.json() ?? {}; } catch { /* Use generic text. */ }
+  const title = message.kind === "streak" ? "Keep your streak going ❤️" : "A moment to be Gr3tful ✨";
+  const body = message.kind === "streak"
+    ? "Today is almost over. Write your gratitudes to keep your streak."
+    : "What are three things you're grateful for today?";
+  event.waitUntil(self.registration.showNotification(title, {
+    body,
+    icon: "/pwa-192.png",
+    badge: "/pwa-192.png",
+    tag: `gr3tful-${message.kind || "reminder"}-${message.date || "today"}`,
+    data: { url: "/entry" },
+  }));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(async (windows) => {
+    const existing = windows.find((client) => new URL(client.url).origin === self.location.origin);
+    if (existing) {
+      await existing.focus();
+      return existing.navigate("/entry");
+    }
+    return self.clients.openWindow("/entry");
+  }));
+});

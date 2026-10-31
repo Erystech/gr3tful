@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { CalendarDays } from "lucide-react";
 import Navbar from "../Navbar";
 import ThemeToggle from "../ThemeToggle";
+import PushReminders from "../PushReminders";
 import MiniCalendar from "../Journal/MiniCalendar";
 import { useAuth } from "../context/AuthContext";
 import {getRandomPrompt} from "../utils/Prompts";
@@ -284,6 +285,8 @@ export default function DailyEntryPage() {
           </div>
           <ThemeToggle />
         </div>
+
+        <PushReminders />
 
         <p className="mb-2.5 font-parag text-xs uppercase tracking-[2px] text-secondary">Open a journal day</p>
         {calendarLoading ? (
