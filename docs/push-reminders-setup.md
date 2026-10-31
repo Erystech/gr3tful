@@ -2,7 +2,7 @@
 
 The subscription database migration is installed. The app still needs one Web Push key pair and a scheduled call to its sender. No separate paid notification service is required.
 
-1. The one-time keys and scheduler secret are in the ignored local file `.env.push.local`. Keep this file private and backed up. Add these Vercel environment variables for the deployment that will send notifications:
+1. The one-time keys and scheduler secret are in the ignored local file `.env.push.local`. Keep this file private and backed up. Add these Vercel environment variables to **both Preview and Production**; the `staging` branch uses Preview:
 
    - `VITE_VAPID_PUBLIC_KEY`: generated public key
    - `VAPID_PRIVATE_KEY`: generated private key
