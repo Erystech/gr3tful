@@ -8,6 +8,7 @@ function allowedPushEndpoint(value) {
     if (url.protocol !== 'https:' || url.port || url.username || url.password) return false;
     const host = url.hostname.toLowerCase();
     return host === 'fcm.googleapis.com'
+      || (host === 'jmt17.google.com' && url.pathname.startsWith('/fcm/send/'))
       || host === 'updates.push.services.mozilla.com'
       || host === 'push.services.mozilla.com'
       || host === 'push.apple.com'
