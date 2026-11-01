@@ -5,6 +5,7 @@ import { CalendarDays } from "lucide-react";
 import Navbar from "../Navbar";
 import ThemeToggle from "../ThemeToggle";
 import PushReminders from "../PushReminders";
+import NicknamePrompt from "../NicknamePrompt";
 import MiniCalendar from "../Journal/MiniCalendar";
 import { useAuth } from "../context/AuthContext";
 import {getRandomPrompt} from "../utils/Prompts";
@@ -314,6 +315,7 @@ export default function DailyEntryPage() {
       </aside>
 
       <div className="max-w-170 mx-auto mt-10 pt-10 px-5 pb-20">
+        <NicknamePrompt />
         {submitted ? (
           <SuccessState
             entries={entries}

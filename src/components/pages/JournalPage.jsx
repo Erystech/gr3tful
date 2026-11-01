@@ -6,6 +6,8 @@ import toast, { Toaster } from "react-hot-toast";
 import clsx from "clsx";
 import Navbar from "../Navbar";
 import { BrandMark } from "../BrandLogo";
+import NicknamePrompt from "../NicknamePrompt";
+import { getNickname } from "../utils/nickname";
 import { TAGS, TAG_EMOJIS } from "../data/JournalData";
 import { formatShort } from "../utils/NewDateUtil";
 import { useStreak } from "../hooks/useStreak";
@@ -19,6 +21,7 @@ import { toJournalDate } from "../utils/dayWindow.js";
 // ── Main Page ─────────────────────────────────────────────────────────────
 export default function JournalPage() {
   const {user} = useAuth();
+  const nickname = getNickname(user);
   const [searchParams] = useSearchParams();
   const requestedDate = searchParams.get("date");
   const [entries, setEntries] = useState([]);
@@ -289,11 +292,12 @@ if (loadError) {
         {/* ── Main column ── */}
         <div className="animate-fade-slide-up min-w-0">
 
+          <NicknamePrompt />
+
           {/* Title */}
           <div className="mb-6">
-            <p className="font-parag text-xs text-secondary uppercase tracking-[2px] mb-1.5">Your journal</p>
-            <h1 className="font-heading text-[clamp(26px,5vw,44px)] text-darkb tracking-[-1.5px] leading-10">
-              A record of your<br/>
+            <h1 className="break-words font-heading text-[clamp(26px,5vw,44px)] text-darkb tracking-[-1.5px] leading-10">
+              A record of {nickname ? `${nickname}’s` : 'your'}{' '}<br/>
               <span className="italic text-secondary">good things.</span>
             </h1>
           </div>

@@ -6,6 +6,14 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(undefined); // undefined = loading
 
+  async function updateNickname(nickname) {
+    const result = await supabase.auth.updateUser({ data: { nickname } });
+    if (!result.error && result.data?.user) {
+      setSession((current) => current ? { ...current, user: result.data.user } : current);
+    }
+    return result;
+  }
+
   async function signOut() {
     // A device can be shared; stop reminders for the signed-out account.
     try {
@@ -38,7 +46,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, user: session?.user ?? null, signOut }}>
+    <AuthContext.Provider value={{ session, user: session?.user ?? null, signOut, updateNickname }}>
       {children}
     </AuthContext.Provider>
   );

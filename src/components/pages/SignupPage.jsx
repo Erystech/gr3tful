@@ -4,9 +4,11 @@ import { supabase } from "../../supabaseClient";
 import ThemeToggle from "../ThemeToggle";
 import { Eye, EyeOff } from "lucide-react";
 import BrandLogo from "../BrandLogo";
+import { MAX_NICKNAME_LENGTH, nicknameError, normalizeNickname } from "../utils/nickname";
  
 export default function SignupPage() {
   const navigate = useNavigate();
+  const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -15,8 +17,16 @@ export default function SignupPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  async function handleSignup() {
+  async function handleSignup(event) {
+    event.preventDefault();
+    if (loading) return;
     setError(null);
+
+    const invalidNickname = nicknameError(nickname);
+    if (invalidNickname) {
+      setError(invalidNickname);
+      return;
+    }
 
     if (password !== confirm) {
       setError("Passwords don't match.");
@@ -30,17 +40,19 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    const { error } = await supabase.auth.signUp({ email, password });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      // Supabase sends a confirmation email by default.
-      // Navigate to login with a success note.
+    try {
+      const { error: signupError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { nickname: normalizeNickname(nickname) } },
+      });
+      if (signupError) throw signupError;
       navigate("/login?confirmed=true");
+    } catch (signupError) {
+      setError(signupError.message || "Your account could not be created. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return (
@@ -61,14 +73,32 @@ export default function SignupPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-surface border border-borderline rounded-3xl py-9 px-8">
+        <form onSubmit={handleSignup} className="bg-surface border border-borderline rounded-3xl py-9 px-8">
+          <div className="mb-4">
+            <label htmlFor="signup-nickname" className="mb-2 block text-[12px] uppercase tracking-[1.5px] text-secondary-text">What should we call you?</label>
+            <input
+              id="signup-nickname"
+              name="nickname"
+              type="text"
+              autoComplete="nickname"
+              required
+              maxLength={MAX_NICKNAME_LENGTH}
+              value={nickname}
+              onChange={(event) => setNickname(event.target.value)}
+              placeholder="Your nickname"
+              className="w-full box-border rounded-xl border border-borderline bg-surface px-3.5 py-3 font-parag text-[14px] text-darkb"
+            />
+          </div>
           {/* Email */}
           <div className="mb-4">
-            <label className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
+            <label htmlFor="signup-email" className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
               Email
             </label>
             <input
+              id="signup-email"
               type="email"
+              autoComplete="email"
+              required
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="you@example.com"
@@ -78,11 +108,14 @@ export default function SignupPage() {
 
           {/* Password */}
           <div className="mb-4">
-            <label className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
+            <label htmlFor="signup-password" className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
               Password
             </label>
             <div className="relative">
               <input
+                id="signup-password"
+                autoComplete="new-password"
+                required
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -103,16 +136,18 @@ export default function SignupPage() {
 
           {/* Confirm Password */}
           <div className="mb-4">
-            <label className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
+            <label htmlFor="signup-confirm-password" className="block text-[12px] text-secondary-text uppercase tracking-[1.5px] mb-2">
               Confirm Password
             </label>
             <div className="relative">
               <input
+                id="signup-confirm-password"
+                autoComplete="new-password"
+                required
                 type={showConfirm ? "text" : "password"}
                 value={confirm}
                 onChange={e => setConfirm(e.target.value)}
                 placeholder="••••••••"
-                onKeyDown={e => e.key === "Enter" && handleSignup()}
                 className="w-full box-border bg-surface border border-borderline rounded-xl py-3 pl-3.5 pr-12 font-parag text-[14px] text-darkb"
               />
               <button
@@ -129,15 +164,15 @@ export default function SignupPage() {
 
           {/* Error */}
           {error && (
-            <div className="bg-secondary-bg border border-borderline rounded-xl py-2.5 px-3.5 mb-5 text-[13px] text-red-700" >
+            <div role="alert" className="bg-secondary-bg border border-borderline rounded-xl py-2.5 px-3.5 mb-5 text-[13px] text-red-700" >
               {error}
             </div>
           )}
 
           {/* Submit */}
           <button
-            onClick={handleSignup}
-            disabled={loading || !email || !password || !confirm}
+            type="submit"
+            disabled={loading || !nickname.trim() || !email || !password || !confirm}
             className="w-full p-3.5 rounded-2xl font-heading text-[16px] italic font-bold
               [background:linear-gradient(135deg,#C4622D,#E07B3A)]
               text-fwhite
@@ -150,7 +185,7 @@ export default function SignupPage() {
           >
             {loading ? "Creating account…" : "Create account →"}
           </button>
-        </div>
+        </form>
 
         {/* Footer */}
         <p className="text-center text-[14px] text-secondary-text mt-6">

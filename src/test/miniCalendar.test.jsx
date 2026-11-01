@@ -1,8 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import MiniCalendar from "../components/Journal/MiniCalendar";
 
 describe("MiniCalendar favorite days", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date(2026, 9, 15, 12));
+  });
+  afterEach(() => vi.useRealTimers());
+
   it("shows a heart for a favorite entry and opens that date", () => {
     const onSelect = vi.fn();
     render(

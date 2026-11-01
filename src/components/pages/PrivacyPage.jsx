@@ -3,7 +3,7 @@ import PublicPageLayout from "../layout/PublicPageLayout";
 export default function PrivacyPage() {
   return (
     <PublicPageLayout eyebrow="Legal" title="Privacy Policy">
-      <p>Gr3tful stores the information needed to provide your private gratitude journal: your account email, journal entries, tags, and entry dates.</p>
+      <p>Gr3tful stores the information needed to provide your private gratitude journal: your account email and nickname, journal entries, tags, and entry dates.</p>
       <p>If you enable reminders, Gr3tful also stores a notification address for your device, its time zone, and your reminder choices. We use entry dates to decide whether a reminder is needed; notification messages do not include your journal text.</p>
       <section>
         <h2 className="mb-2 font-heading text-xl text-darkb">How your information is used</h2>
