@@ -2,12 +2,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Resvg } from '@resvg/resvg-js';
+import { createHash } from 'node:crypto';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const output = path.join(root, 'public/brand');
 fs.mkdirSync(output, { recursive: true });
 const palette = { burgundy: '#4A2329', cream: '#FFF4E7', peach: '#EFA879' };
 const source = fs.readFileSync(path.join(root, 'design/gr3tful-brand-mark-v2.svg'), 'utf8');
+const revision = createHash('sha256').update(source.replaceAll('\r', '')).digest('hex').slice(0, 10);
 const artwork = source.replace(/<svg[^>]*>/, '').replace('</svg>', '').replace(/<rect[^>]*\/>/, '');
 const fontFile = path.join(root, 'design/fonts/Nunito-Black.ttf');
 const svg = (width, height, content) => `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${content}</svg>`;
@@ -36,6 +38,25 @@ write('icon-maskable-512.png', png(maskable, 512));
 write('apple-touch-icon.png', png(fullSquare, 180));
 write('favicon-32.png', png(source, 32));
 write('notification-badge.png', png(svg(512, 512, artwork.replaceAll(palette.cream, '#FFFFFF').replaceAll(palette.peach, '#FFFFFF')), 96));
+
+// Give installation artwork a content-based URL so failed or older icon lookups
+// cannot be reused after a brand update. Keep the manifest id stable.
+const installFiles = ['icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
+for (const name of installFiles) fs.copyFileSync(path.join(output, name), path.join(output, name.replace('.png', `-${revision}.png`)));
+const manifestPath = path.join(root, 'public/manifest.webmanifest');
+const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+manifest.icons = manifest.icons.map((icon) => {
+  const file = icon.purpose === 'maskable' ? 'icon-maskable-512.png' : icon.sizes === '192x192' ? 'icon-192.png' : icon.sizes === '512x512' ? 'icon-512.png' : null;
+  return file ? { ...icon, src: `/brand/${file.replace('.png', `-${revision}.png`)}` } : icon;
+});
+fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+const appleUrl = `/apple-touch-icon-${revision}.png`;
+fs.copyFileSync(path.join(output, 'apple-touch-icon.png'), path.join(root, 'public', appleUrl.slice(1)));
+const indexPath = path.join(root, 'index.html');
+const index = fs.readFileSync(indexPath, 'utf8')
+  .replace(/<link rel="manifest"[^>]*\/>/, `<link rel="manifest" href="/manifest.webmanifest?v=${revision}" crossorigin="use-credentials" />`)
+  .replace(/(<link rel="apple-touch-icon(?:-precomposed)?"[^>]*href=")[^"]+/, `$1${appleUrl}`);
+fs.writeFileSync(indexPath, index);
 
 // Multi-size ICO for browsers that do not choose the SVG favicon.
 const frames = [16, 32, 48].map((size) => ({ size, data: png(source, size) }));
@@ -83,6 +104,9 @@ for (const [oldName, newName] of [
   ['pwa-192.png', 'icon-192.png'], ['pwa-512.png', 'icon-512.png'],
   ['pwa-maskable-512.png', 'icon-maskable-512.png'], ['apple-touch-icon.png', 'apple-touch-icon.png'],
   ['gr3tful-social-card.png', 'social-card.png'],
+  ['apple-touch-icon-precomposed.png', 'apple-touch-icon.png'],
+  ['apple-touch-icon-180x180.png', 'apple-touch-icon.png'],
+  ['favicon.ico', 'favicon.ico'],
 ]) fs.copyFileSync(path.join(output, newName), path.join(root, 'public', oldName));
 
 console.info('Generated Gr3tful logo, favicon, Home Screen, notification and social assets in public/brand.');

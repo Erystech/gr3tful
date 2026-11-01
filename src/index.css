@@ -9,6 +9,11 @@
 :root[data-theme="dark"] .brand-logo .brand-logo__dark,
 .brand-logo.brand-logo--inverse .brand-logo__dark { display: block; }
 
+.nickname-dialog::backdrop {
+    background: rgba(23, 16, 13, 0.62);
+    backdrop-filter: blur(4px);
+}
+
 @theme { 
     --color-secondary: #C4622D;
     --color-darkb: #3D2314;

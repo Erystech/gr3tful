@@ -1,4 +1,4 @@
-const CACHE_NAME = "gr3tful-static-v2-g3";
+const CACHE_NAME = "gr3tful-static-v3-install-icons";
 const OFFLINE_URL = "/offline.html";
 const PRECACHE_URLS = [
   OFFLINE_URL,
@@ -46,6 +46,27 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  const isManifest = url.pathname === "/manifest.webmanifest";
+  const isInstallIcon = /^\/(?:brand\/(?:icon-|apple-touch-icon|favicon)|apple-touch-icon|favicon)/.test(url.pathname);
+  if (isManifest || isInstallIcon) {
+    const usable = (response) => response?.ok && !response.redirected && (
+      isManifest ? response.headers.get("content-type")?.includes("json") : response.headers.get("content-type")?.startsWith("image/")
+    );
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(request, { cache: "no-cache" });
+        if (!usable(response)) throw new Error("Install metadata unavailable");
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(request, response.clone());
+        return response;
+      } catch {
+        const cached = await caches.match(request, { ignoreSearch: isManifest });
+        return usable(cached) ? cached : Response.error();
+      }
+    })());
+    return;
+  }
 
   event.respondWith(
     caches.match(request).then((cached) => cached || fetch(request).then((response) => {
