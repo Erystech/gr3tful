@@ -23,6 +23,7 @@ import {
 } from "../utils/dayWindow.js";
 import { formatDate } from "../utils/NewDateUtil";
 import { supabase } from "../../supabaseClient.js"
+import { getGratitudeImagePath } from "../utils/imageUpload";
 
 // ── TEMP FEATURE FLAG ───────────────────────────────────────────────────
 // Lets users back-fill yesterday's entry if they missed it due to the
@@ -36,6 +37,7 @@ export default function DailyEntryPage() {
 
   const [entries, setEntries] = useState(["", "", ""]);
   const [images, setImages] = useState([null, null, null]);
+  const [imageProcessing, setImageProcessing] = useState([false, false, false]);
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [placeholders, setPlaceholders] = useState([0, 1, 2].map(() => getRandomPrompt()));
   const [selectedTags, setSelectedTags] = useState([]);
@@ -59,6 +61,7 @@ export default function DailyEntryPage() {
 
   const filledCount = entries.filter((e) => e.trim().length > 0).length;
   const allFilled = filledCount === 3;
+  const isPreparingImages = imageProcessing.some(Boolean);
 
   useEffect(() => {
     if (!user) return;
@@ -135,7 +138,7 @@ export default function DailyEntryPage() {
   }, []);
 
   const handleSubmit = async () => {
-  if (!allFilled || isSubmitting) return;   // ← blocks double taps immediately
+  if (!allFilled || isSubmitting || isPreparingImages) return;
   setIsSubmitting(true);
 
   try {
@@ -167,7 +170,7 @@ export default function DailyEntryPage() {
 
     const entryId = crypto.randomUUID();
     const imagePaths = images.map((image, index) =>
-      image ? `${user.id}/${entryId}/${index + 1}.webp` : null
+      image ? getGratitudeImagePath(user.id, entryId, index + 1, image) : null
     );
     const uploadedPaths = [];
 
@@ -178,7 +181,7 @@ export default function DailyEntryPage() {
       const { error: uploadError } = await supabase.storage
         .from("gratitude-images")
         .upload(path, images[index], {
-          contentType: "image/webp",
+          contentType: images[index].type,
           cacheControl: "3600",
           upsert: false,
         });
@@ -388,6 +391,10 @@ export default function DailyEntryPage() {
                     onFocus={() => setFocusedIndex(i)}
                     onBlur={() => setFocusedIndex(null)}
                     image={images[i]}
+                    disabled={isSubmitting || isPreparingImages}
+                    onImageProcessingChange={(processing) => {
+                      setImageProcessing((current) => current.map((value, index) => index === i ? processing : value));
+                    }}
                     onImageChange={(file) => {
                       setImages((current) => {
                         const next = [...current];
@@ -417,7 +424,8 @@ export default function DailyEntryPage() {
               allFilled={allFilled} 
               filledCount={filledCount} 
               isSubmitting={isSubmitting}
-              onSubmit={() => allFilled && !isSubmitting && handleSubmit()}/>  
+              isPreparingImages={isPreparingImages}
+              onSubmit={handleSubmit}/>
 
             <div className="mt-12 text-center opacity-0 animate-fade-slide-up-text">
               <p className="font-parag text-[13px] text-secondary-text italic">

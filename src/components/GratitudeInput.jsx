@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ImagePlus, X } from "lucide-react";
 import { prepareGratitudeImage } from "./utils/imageUpload";
 
-function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocus, onBlur, image, onImageChange }) {
+function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocus, onBlur, image, onImageChange, onImageProcessingChange, disabled = false }) {
   const labels = ["First", "Second", "Third"];
   const filled = value.trim().length > 0;
   const inputRef = useRef(null);
@@ -28,12 +28,14 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
 
     setImageError(null);
     setProcessing(true);
+    onImageProcessingChange?.(true);
     try {
       onImageChange(await prepareGratitudeImage(file));
     } catch (error) {
       setImageError(error.message);
     } finally {
       setProcessing(false);
+      onImageProcessingChange?.(false);
     }
   };
 
@@ -122,6 +124,7 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
               type="file"
               accept="image/jpeg,image/png,image/webp"
               onChange={handleImageSelect}
+              disabled={processing || disabled}
               className="sr-only"
               aria-label={`Add an image to your ${labels[index].toLowerCase()} gratitude`}
             />
@@ -136,6 +139,7 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
                 <button
                   type="button"
                   onClick={() => onImageChange(null)}
+                  disabled={processing || disabled}
                   aria-label={`Remove image from ${labels[index].toLowerCase()} gratitude`}
                   className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-deep/80 text-fwhite backdrop-blur"
                 >
@@ -146,7 +150,7 @@ function GratitudeInput({ index, value, onChange, placeholder, isFocused, onFocu
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
-                disabled={processing}
+                disabled={processing || disabled}
                 className="flex items-center gap-2 font-parag text-xs text-secondary disabled:opacity-60"
               >
                 <ImagePlus size={17} />
