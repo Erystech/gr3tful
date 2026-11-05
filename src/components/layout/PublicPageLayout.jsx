@@ -7,7 +7,7 @@ export default function PublicPageLayout({ eyebrow, title, children }) {
     <div className="min-h-screen bg-surface px-6 py-10 text-darkb transition-colors duration-300">
       <div className="mx-auto max-w-190">
         <div className="mb-12 flex items-center justify-between">
-          <Link to="/" aria-label="Gr3tful home">
+          <Link to="/welcome" aria-label="Gr3tful home">
             <BrandLogo className="w-40" />
           </Link>
           <ThemeToggle />

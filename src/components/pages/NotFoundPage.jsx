@@ -9,7 +9,7 @@ export default function NotFoundPage() {
         <p className="mb-8 font-parag text-sm leading-7 text-secondary-text">
           The page may have moved, or the address may be incorrect.
         </p>
-        <Link to="/" className="inline-block rounded-full bg-secondary px-7 py-3 font-parag text-sm italic text-fwhite">
+        <Link to="/welcome" className="inline-block rounded-full bg-secondary px-7 py-3 font-parag text-sm italic text-fwhite">
           Return home
         </Link>
       </div>

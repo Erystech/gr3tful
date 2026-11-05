@@ -9,7 +9,7 @@ function Footer() {
       
     >
       {/* Logo */}
-      <Link to="/" aria-label="Gr3tful home" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+      <Link to="/welcome" aria-label="Gr3tful home" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
         <BrandLogo inverse className="w-36" />
       </Link>
 

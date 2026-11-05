@@ -34,7 +34,7 @@ export default function ForgotPasswordPage() {
       <ThemeToggle className="fixed right-5 top-5" />
       <div className="w-full max-w-105 animate-fade-slide-up">
         <div className="mb-8 text-center">
-          <Link to="/" aria-label="Gr3tful home" className="mb-7 inline-block"><BrandLogo className="w-40" /></Link>
+          <Link to="/welcome" aria-label="Gr3tful home" className="mb-7 inline-block"><BrandLogo className="w-40" /></Link>
           <h1 className="mb-2 font-heading text-4xl text-darkb">Reset your password</h1>
           <p className="text-sm italic text-secondary-text">We’ll email you a secure reset link.</p>
         </div>

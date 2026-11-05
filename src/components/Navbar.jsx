@@ -21,12 +21,12 @@ function NavBar({
 
   async function handleSignOut() {
     const { error } = await signOut();
-    if (!error) navigate("/");
+    if (!error) navigate("/login");
   }
 
   const defaultLinks = [
-    { label: "How it works", href: "/#how-it-works" },
-    { label: "Features", href: "/#features" },
+    { label: "How it works", href: "/welcome#how-it-works" },
+    { label: "Features", href: "/welcome#features" },
     { label: "Journal", to: "/journal" },
   ];
   const navLinks = links ?? defaultLinks;
@@ -37,7 +37,7 @@ function NavBar({
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-surface/95 flex items-center justify-between px-6 md:px-10 py-4 md:py-5 backdrop-blur-md border-b border-borderline transition-colors duration-300">
         {/* Logo */}
-        <Link to="/" className="flex items-center" aria-label="Gr3tful home">
+        <Link to="/welcome" className="flex items-center" aria-label="Gr3tful home">
           <BrandLogo className="w-32 sm:w-36" />
         </Link>
 

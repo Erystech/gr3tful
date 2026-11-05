@@ -3,7 +3,7 @@
   "name": "Gr3tful — Gratitude Journal",
   "short_name": "Gr3tful",
   "description": "A calm, private journal for recording three good things every day.",
-  "start_url": "/",
+  "start_url": "/launch",
   "scope": "/",
   "display": "standalone",
   "background_color": "#FFF8F0",

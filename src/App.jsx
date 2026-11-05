@@ -15,6 +15,8 @@ import NotFoundPage from './components/pages/NotFoundPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './components/context/AuthContext'
 import { ThemeProvider } from './components/context/ThemeContext'
+import StartPage from './components/StartPage'
+import VisitPrivacy from './components/VisitPrivacy'
 
 export default function App() {
   return (
@@ -22,8 +24,11 @@ export default function App() {
     
     <ThemeProvider>
       <AuthProvider>
+          <VisitPrivacy />
           <Routes>
-          <Route path='/' element={<LandingPage />} />
+          <Route path='/' element={<StartPage />} />
+          <Route path='/welcome' element={<LandingPage />} />
+          <Route path='/launch' element={<StartPage installed />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/signup' element={<SignupPage />} />
           <Route path='/forgot-password' element={<ForgotPasswordPage />} />

@@ -8,8 +8,8 @@ function MobileNavbar(props) {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const menuLinks = [
-    { label: "How it works", href: "/#how-it-works" },
-    { label: "Features", href: "/#features" },
+    { label: "How it works", href: "/welcome#how-it-works" },
+    { label: "Features", href: "/welcome#features" },
     { label: "Journal", to: "/journal" },
   ];
 
@@ -17,7 +17,7 @@ function MobileNavbar(props) {
     const { error } = await signOut();
     if (!error) {
       setMenuOpen(false);
-      navigate("/");
+      navigate("/login");
     }
   }
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = "gr3tful-static-v3-install-icons";
+const CACHE_NAME = "gr3tful-static-v4-private-visits";
 const OFFLINE_URL = "/offline.html";
 const PRECACHE_URLS = [
   OFFLINE_URL,
